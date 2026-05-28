@@ -1,0 +1,17 @@
+Estou criando um projeto e defini uma estrutura de diretórios que deve ser seguida:
+
+* `lib/components`: diretório responsável pelos componentes da aplicação, subdividido em:
+
+  * `common`: componentes reutilizáveis e genéricos, como cards, botões, inputs e demais elementos padrão da interface;
+  * `screens`: telas da aplicação e componentes específicos relacionados a cada tela.
+
+* `assets`: diretório destinado aos recursos estáticos, organizado em:
+
+  * `icons`: ícones utilizados na aplicação;
+  * `images`: imagens e demais arquivos visuais.
+
+* `infraestrutura`: responsável pela lógica de infraestrutura da aplicação, incluindo roteamento, integração e conexão com banco de dados. No momento, não é necessário se preocupar com essa camada.
+
+
+Vale lembrar que a estrutura deve seguir os princípios de modularidade e componentização, evitando componentes excessivamente aninhados ou arquivos com múltiplas responsabilidades.
+Além disso, aplique o princípio da responsabilidade única (SRP — *Single Responsibility Principle*) nas funções e componentes, garantindo que cada elemento tenha apenas uma responsabilidade bem definida, facilitando a manutenção, reutilização e escalabilidade do projeto.

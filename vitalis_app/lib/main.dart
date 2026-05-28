@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vitalis_app/components/common/app_colors.dart';
+import 'package:vitalis_app/components/screens/start/start_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,20 +15,18 @@ class MyApp extends StatelessWidget {
       title: 'Vitalis Health',
       theme: ThemeData(
         brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.white,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.light,
+        scaffoldBackgroundColor: AppColors.background,
+        colorScheme: const ColorScheme.light(
+          primary: AppColors.primary,
+          onPrimary: AppColors.onPrimary,
+          secondary: AppColors.secondary,
+          onSecondary: AppColors.onSecondary,
+          surface: AppColors.background,
+          onSurface: AppColors.onSurface,
+          outline: AppColors.outline,
         ),
       ),
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Hello World',
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-      ),
+      home: const StartScreen(),
     );
   }
 }
