@@ -33,13 +33,13 @@ class VitalisHabitCard extends StatelessWidget {
     final isSvg = iconAsset.toLowerCase().endsWith('.svg');
     final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
           color: AppColors.onSurface,
-          fontWeight: FontWeight.w700,
-          fontSize: Theme.of(context).textTheme.titleSmall?.fontSize ?? 14,
+          fontWeight: FontWeight.w600,
+          fontSize: Theme.of(context).textTheme.titleSmall?.fontSize ?? 13,
         );
     final subtitleStyle = Theme.of(context).textTheme.bodySmall?.copyWith(
           color: AppColors.outline,
           height: 1.2,
-          fontSize: Theme.of(context).textTheme.bodySmall?.fontSize ?? 12,
+          fontSize: Theme.of(context).textTheme.bodySmall?.fontSize ?? 11,
         );
 
     return Material(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_bottom_nav_bar.dart';
 import 'package:vitalis_app/components/common/vitalis_habit_card.dart';
+import 'package:vitalis_app/components/common/vitalis_motivation_carousel.dart';
 import 'package:vitalis_app/components/common/vitalis_user_avatar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -79,6 +80,38 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
+              const VitalisMotivationCarousel(
+                quotes: [
+                  VitalisQuote(
+                    text: 'A persistência é o caminho do êxito.',
+                    author: 'Charles Chaplin',
+                  ),
+                  VitalisQuote(
+                    text: 'Não reze por uma vida fácil, reze por forças para suportar uma difícil.',
+                    author: 'Bruce Lee',
+                  ),
+                  VitalisQuote(
+                    text: 'O que não provoca minha morte faz com que eu fique mais forte.',
+                    author: 'Friedrich Nietzsche',
+                  ),
+                  VitalisQuote(
+                    text:
+                        'A vida não é fácil para nenhum de nós. Temos que ter persistência e, acima de tudo, confiança em nós mesmos.',
+                    author: 'Marie Curie',
+                  ),
+                  VitalisQuote(
+                    text:
+                        'Na vida, não existem soluções. Existem forças em marcha: é preciso criá-las e, então, a elas seguem-se as soluções.',
+                    author: 'Antoine de Saint-Exupéry',
+                  ),
+                  VitalisQuote(
+                    text:
+                        'Pois que aproveita ao homem se ganhar o mundo inteiro e perder a sua alma? Ou que dará o homem em troca da sua vida?',
+                    author: 'Jesus Cristo',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
               const _DailyProgressCard(progressPercent: 0.72),
               const SizedBox(height: 16),
               GridView.count(
@@ -113,10 +146,9 @@ class HomeScreen extends StatelessWidget {
                     title: 'Movimento',
                     subtitle: 'Caminhada ativa',
                     progress: 0.58,
-                    progressColor: const Color.fromARGB(255, 255, 255, 255),
+                    progressColor: const Color(0xFF46C37B),
                     iconAsset: 'lib/assets/icons/running.png',
                     topRightText: '4.2km',
-                    iconBackgroundColor: const Color(0xFFFFF1E6),
                     iconSize: 22,
                     onPressed: () {},
                   ),
