@@ -111,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   VitalisQuote(
                     text:
-                        'Não é preciso ter olhos abertos para ver o sol, nem é preciso ter ouvidos afiados para ouvir o trovão. Para ser vitorioso você precisa ver o que não está visível.',
+                        'Não é preciso ter olhos abertos para ver o sol, Para ser vitorioso você precisa ver o que não está visível.',
                     author: 'Sun Tzu',
                   ),
                   VitalisQuote(
