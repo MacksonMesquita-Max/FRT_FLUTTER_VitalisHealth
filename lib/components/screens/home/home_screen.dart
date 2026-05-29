@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_bottom_nav_bar.dart';
 import 'package:vitalis_app/components/common/vitalis_habit_card.dart';
+import 'package:vitalis_app/components/common/vitalis_user_avatar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -33,13 +34,20 @@ class HomeScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    'Vitalis',
-                    style: textTheme.titleLarge?.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.2,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Vitalis',
+                        style: textTheme.titleLarge?.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const VitalisUserAvatar(),
+                    ],
                   ),
                   const Spacer(),
                   IconButton(
@@ -105,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                     title: 'Movimento',
                     subtitle: 'Caminhada ativa',
                     progress: 0.58,
-                    progressColor: const Color(0xFFFF8A34),
+                    progressColor: const Color.fromARGB(255, 255, 255, 255),
                     iconAsset: 'lib/assets/icons/running.png',
                     topRightText: '4.2km',
                     iconBackgroundColor: const Color(0xFFFFF1E6),
@@ -133,6 +141,25 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const _ImageCtaCard(
+                imageAsset: 'lib/assets/images/backgorundImageWinnerFriends.png',
+                title: 'Conecte-se com seus amigos\ne pratique disputas saudáveis!',
+                actionText: 'Iniciar Conexão',
+              ),
+              const SizedBox(height: 6),
+              const _ImageCtaCard(
+                imageAsset: 'lib/assets/images/backgorundImagePisicology.png',
+                title: 'Precisa de ajuda?\nconte com nossa equipe de psicólogos.',
+                actionText: 'Ver Mais',
+              ),
+              const SizedBox(height: 6),
+              const _ImageCtaCard(
+                imageAsset: 'lib/assets/images/backgorundImageLibrary.png',
+                title: 'Sem ideias para boas leituras?\nConfira nossa lista de leituras para você!',
+                actionText: 'Ver Mais',
+              ),
+              const SizedBox(height: 6),
+              const _ImageCtaCard(
+                imageAsset: 'lib/assets/images/backgorundImageMedita.png',
                 title: 'Mantenha a calma e respire\nfundo.',
                 actionText: 'Iniciar Meditação',
               ),
@@ -236,10 +263,12 @@ class _DailyProgressCard extends StatelessWidget {
 
 class _ImageCtaCard extends StatelessWidget {
   const _ImageCtaCard({
+    required this.imageAsset,
     required this.title,
     required this.actionText,
   });
 
+  final String imageAsset;
   final String title;
   final String actionText;
 
@@ -259,8 +288,8 @@ class _ImageCtaCard extends StatelessWidget {
                   color: AppColors.primary.withValues(alpha: 0.08),
                 ),
                 child: Image.asset(
-                  'lib/assets/images/backgroundImage.png',
-                  fit: BoxFit.contain,
+                  imageAsset,
+                  fit: BoxFit.cover,
                   alignment: Alignment.center,
                 ),
               ),
