@@ -11,20 +11,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vitalis_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Fluxo inicial: start -> cadastro -> home', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Vitalis'), findsOneWidget);
+    expect(find.text('Começar Jornada'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.text('Começar Jornada'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bem-vindo(a)'), findsOneWidget);
+    expect(find.text('Continuar'), findsOneWidget);
+
+    await tester.tap(find.text('Continuar'));
     await tester.pump();
+    expect(find.text('Preencha todos os campos para continuar.'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final fields = find.byType(TextField);
+    await tester.enterText(fields.at(0), 'Ana Paula');
+    await tester.enterText(fields.at(1), 'ana@exemplo.com');
+    await tester.enterText(fields.at(2), '12345678');
+
+    await tester.tap(find.text('Continuar'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
+    expect(find.text('Olá, Ana Paula'), findsOneWidget);
   });
 }

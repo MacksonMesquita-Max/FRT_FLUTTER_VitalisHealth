@@ -55,10 +55,15 @@ class StartContentCard extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.8),
                 ),
                 const SizedBox(width: 6),
-                Text(
-                  'Menos de 2 minutos para começar',
-                  style: textTheme.bodySmall?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.8),
+                Flexible(
+                  child: Text(
+                    'Menos de 2 minutos para começar',
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: Colors.white.withValues(alpha: 0.8),
+                    ),
                   ),
                 ),
               ],

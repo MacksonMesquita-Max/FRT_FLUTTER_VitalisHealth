@@ -5,9 +5,62 @@ import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_password_field.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 import 'package:vitalis_app/components/common/vitalis_text_field.dart';
+import 'package:vitalis_app/components/screens/home/home_screen.dart';
 
-class CreateAccountScreen extends StatelessWidget {
+class CreateAccountScreen extends StatefulWidget {
   const CreateAccountScreen({super.key});
+
+  @override
+  State<CreateAccountScreen> createState() => _CreateAccountScreenState();
+}
+
+class _CreateAccountScreenState extends State<CreateAccountScreen> {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleContinue() {
+    final name = _nameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    final isValid = name.isNotEmpty && email.isNotEmpty && password.isNotEmpty;
+    if (!isValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Preencha todos os campos para continuar.'),
+          backgroundColor: const Color(0xFFB3261E),
+          behavior: SnackBarBehavior.fixed,
+        ),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Cadastro realizado com sucesso!'),
+        backgroundColor: AppColors.secondary,
+        behavior: SnackBarBehavior.fixed,
+      ),
+    );
+
+    Future.delayed(const Duration(milliseconds: 450), () {
+      if (!mounted) return;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => HomeScreen(userName: name),
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,29 +108,32 @@ class CreateAccountScreen extends StatelessWidget {
                       const SizedBox(height: 18),
                       const _FieldLabel(text: 'Como devemos te chamar?'),
                       const SizedBox(height: 8),
-                      const VitalisTextField(
+                      VitalisTextField(
                         hintText: 'Nome completo',
+                        controller: _nameController,
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 14),
                       const _FieldLabel(text: 'Seu melhor e-mail'),
                       const SizedBox(height: 8),
-                      const VitalisTextField(
+                      VitalisTextField(
                         hintText: 'email@exemplo.com',
+                        controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 14),
                       const _FieldLabel(text: 'Crie uma senha segura'),
                       const SizedBox(height: 8),
-                      const VitalisPasswordField(
+                      VitalisPasswordField(
                         hintText: 'Mínimo 8 caracteres',
+                        controller: _passwordController,
                         textInputAction: TextInputAction.done,
                       ),
                       const SizedBox(height: 18),
                       VitalisPrimaryButton(
-                        label: 'Criar Conta',
-                        onPressed: () {},
+                        label: 'Continuar',
+                        onPressed: _handleContinue,
                       ),
                       const SizedBox(height: 18),
                       const DividerWithText(text: 'ou continue com'),
