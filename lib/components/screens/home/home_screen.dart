@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Como você está se sentindo hoje? Reserve\num momento para você.',
+                'Como você está se sentindo hoje?\nReserve um momento para você.',
                 style: textTheme.bodyMedium?.copyWith(
                   color: AppColors.outline,
                   height: 1.25,
@@ -101,8 +101,23 @@ class HomeScreen extends StatelessWidget {
                   ),
                   VitalisQuote(
                     text:
+                        'Sem disciplina, o talento não serve pra nada.',
+                    author: 'Cristiano Ronaldo',
+                  ),
+                  VitalisQuote(
+                    text:
                         'Na vida, não existem soluções. Existem forças em marcha: é preciso criá-las e, então, a elas seguem-se as soluções.',
                     author: 'Antoine de Saint-Exupéry',
+                  ),
+                  VitalisQuote(
+                    text:
+                        'Não é preciso ter olhos abertos para ver o sol, nem é preciso ter ouvidos afiados para ouvir o trovão. Para ser vitorioso você precisa ver o que não está visível.',
+                    author: 'Sun Tzu',
+                  ),
+                  VitalisQuote(
+                    text:
+                        'Acima de tudo, não tenha medo dos momentos difíceis. O que há de melhor vem com eles.',
+                    author: 'Rita Levi Montalcini',
                   ),
                   VitalisQuote(
                     text:
@@ -149,6 +164,7 @@ class HomeScreen extends StatelessWidget {
                     progressColor: const Color(0xFF46C37B),
                     iconAsset: 'lib/assets/icons/running.png',
                     topRightText: '4.2km',
+                    iconBackgroundColor: const Color(0xFFEAF9F0),
                     iconSize: 22,
                     onPressed: () {},
                   ),
@@ -180,13 +196,13 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 6),
               const _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImagePisicology.png',
-                title: 'Precisa de ajuda?\nconte com nossa equipe de psicólogos.',
+                title: 'Precisa de ajuda?\nConte com nossa equipe de psicólogos.',
                 actionText: 'Ver Mais',
               ),
               const SizedBox(height: 6),
               const _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageLibrary.png',
-                title: 'Sem ideias para boas leituras?\nConfira nossa lista de leituras para você!',
+                title: 'Sem boas leituras?\nConfira nossa lista de livros!',
                 actionText: 'Ver Mais',
               ),
               const SizedBox(height: 6),
@@ -195,7 +211,7 @@ class HomeScreen extends StatelessWidget {
                 title: 'Mantenha a calma e respire\nfundo.',
                 actionText: 'Iniciar Meditação',
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
             ],
           ),
         ),
@@ -349,7 +365,7 @@ class _ImageCtaCard extends StatelessWidget {
                     title,
                     style: textTheme.titleLarge?.copyWith(
                       color: Colors.white,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       height: 1.12,
                     ),
                   ),
@@ -358,7 +374,7 @@ class _ImageCtaCard extends StatelessWidget {
                     actionText,
                     style: textTheme.titleSmall?.copyWith(
                       color: const Color(0xFFBDF3E4),
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ],
