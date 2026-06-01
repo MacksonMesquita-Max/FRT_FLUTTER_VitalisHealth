@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_bottom_nav_bar.dart';
+import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_habit_card.dart';
 import 'package:vitalis_app/components/common/vitalis_motivation_carousel.dart';
 import 'package:vitalis_app/components/common/vitalis_user_avatar.dart';
+import 'package:vitalis_app/components/screens/habits/select_habits_screen.dart';
+import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -16,6 +19,21 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final selectedHabits = VitalisHabitsScope.of(context).habits;
+
+    void openPremium() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => const VitalisPremiumScreen(),
+        ),
+      );
+    }
+
+    Future<void> openSelectHabits() async {
+      await Navigator.of(context).push<bool>(
+        MaterialPageRoute(builder: (_) => const SelectHabitsScreen()),
+      );
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -23,7 +41,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: AppColors.secondary,
         foregroundColor: AppColors.onSecondary,
         shape: const CircleBorder(),
-        onPressed: () {},
+        onPressed: openSelectHabits,
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: const VitalisBottomNavBar(),
@@ -129,87 +147,94 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               const _DailyProgressCard(progressPercent: 0.72),
               const SizedBox(height: 16),
-              GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 1.13,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  VitalisHabitCard(
-                    title: 'Hidratação',
-                    subtitle: 'Faltam apenas 500ml',
-                    progress: 6 / 8,
-                    progressColor: const Color(0xFF2E79FF),
-                    iconAsset: 'lib/assets/icons/water_drop.svg',
-                    topRightText: '6/8',
-                    iconBackgroundColor: const Color(0xFFEAF2FF),
-                    onPressed: () {},
-                  ),
-                  VitalisHabitCard(
-                    title: 'Sono',
-                    subtitle: 'Qualidade boa',
-                    progress: 0.82,
-                    progressColor: const Color(0xFF6B78FF),
-                    iconAsset: 'lib/assets/icons/moon.svg',
-                    topRightText: '7h 20m',
-                    iconBackgroundColor: const Color(0xFFEDEFFF),
-                    onPressed: () {},
-                  ),
-                  VitalisHabitCard(
-                    title: 'Movimento',
-                    subtitle: 'Caminhada ativa',
-                    progress: 0.58,
-                    progressColor: const Color(0xFF46C37B),
-                    iconAsset: 'lib/assets/icons/running.png',
-                    topRightText: '4.2km',
-                    iconBackgroundColor: const Color(0xFFEAF9F0),
-                    iconSize: 22,
-                    onPressed: () {},
-                  ),
-                  VitalisHabitCard(
-                    title: 'Humor',
-                    subtitle: 'Radiante e Calmo',
-                    progress: 0.72,
-                    progressColor: const Color(0xFF46C37B),
-                    iconAsset: 'lib/assets/icons/mood.svg',
-                    iconBackgroundColor: const Color(0xFFEAF9F0),
-                    trailing: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.more_horiz),
-                      color: AppColors.outline,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                      iconSize: 18,
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
+              if (selectedHabits.isEmpty)
+                _NoHabitsCard(onAddPressed: openSelectHabits)
+              else
+                GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 1.13,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    if (selectedHabits.contains(VitalisHabit.hydration))
+                      const VitalisHabitCard(
+                        title: 'Hidratação',
+                        subtitle: 'Faltam apenas 500ml',
+                        progress: 6 / 8,
+                        progressColor: Color(0xFF2E79FF),
+                        iconAsset: 'lib/assets/icons/water_drop.svg',
+                        topRightText: '6/8',
+                        iconBackgroundColor: Color(0xFFEAF2FF),
+                      ),
+                    if (selectedHabits.contains(VitalisHabit.sleep))
+                      const VitalisHabitCard(
+                        title: 'Sono',
+                        subtitle: 'Qualidade boa',
+                        progress: 0.82,
+                        progressColor: Color(0xFF6B78FF),
+                        iconAsset: 'lib/assets/icons/moon.svg',
+                        topRightText: '7h 20m',
+                        iconBackgroundColor: Color(0xFFEDEFFF),
+                      ),
+                    if (selectedHabits.contains(VitalisHabit.movement))
+                      const VitalisHabitCard(
+                        title: 'Movimento',
+                        subtitle: 'Caminhada ativa',
+                        progress: 0.58,
+                        progressColor: Color(0xFFFF8A34),
+                        iconAsset: 'lib/assets/icons/running.png',
+                        topRightText: '4.2km',
+                        iconBackgroundColor: Color(0xFFFFF1E6),
+                        iconSize: 22,
+                      ),
+                    if (selectedHabits.contains(VitalisHabit.mood))
+                      VitalisHabitCard(
+                        title: 'Humor',
+                        subtitle: 'Radiante e Calmo',
+                        progress: 0.72,
+                        progressColor: const Color(0xFF46C37B),
+                        iconAsset: 'lib/assets/icons/mood.svg',
+                        iconBackgroundColor: const Color(0xFFEAF9F0),
+                        trailing: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.more_horiz),
+                          color: AppColors.outline,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                          iconSize: 18,
+                        ),
+                      ),
+                  ],
+                ),
               const SizedBox(height: 16),
-              const _ImageCtaCard(
+              _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageWinnerFriends.png',
                 title: 'Conecte-se com seus amigos\ne pratique disputas saudáveis!',
                 actionText: 'Iniciar Conexão',
+                onPressed: openPremium,
               ),
               const SizedBox(height: 6),
-              const _ImageCtaCard(
+              _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImagePisicology.png',
                 title: 'Precisa de ajuda?\nConte com nossa equipe de psicólogos.',
                 actionText: 'Ver Mais',
+                onPressed: openPremium,
               ),
               const SizedBox(height: 6),
-              const _ImageCtaCard(
+              _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageLibrary.png',
                 title: 'Sem boas leituras?\nConfira nossa lista de livros!',
                 actionText: 'Ver Mais',
+                onPressed: openPremium,
               ),
               const SizedBox(height: 6),
-              const _ImageCtaCard(
+              _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageMedita.png',
                 title: 'Mantenha a calma e respire\nfundo.',
                 actionText: 'Iniciar Meditação',
+                onPressed: openPremium,
               ),
               const SizedBox(height: 30),
             ],
@@ -309,16 +334,84 @@ class _DailyProgressCard extends StatelessWidget {
   }
 }
 
+class _NoHabitsCard extends StatelessWidget {
+  const _NoHabitsCard({
+    required this.onAddPressed,
+  });
+
+  final VoidCallback onAddPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: AppColors.surfaceContainer, width: 1),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const SizedBox(
+                  width: 44,
+                  height: 44,
+                  child: Icon(Icons.auto_awesome_outlined, color: AppColors.primary),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Vixi, me parece que você não tem hábitos adicionados a sua rotina ainda.',
+                      style: textTheme.titleSmall?.copyWith(
+                        color: AppColors.onSurface,
+                        fontWeight: FontWeight.w800,
+                        height: 1.15,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Clique no botão de adição e selecione os hábitos que desejar.',
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.outline,
+                        height: 1.25,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _ImageCtaCard extends StatelessWidget {
   const _ImageCtaCard({
     required this.imageAsset,
     required this.title,
     required this.actionText,
+    this.onPressed,
   });
 
   final String imageAsset;
   final String title;
   final String actionText;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -326,61 +419,68 @@ class _ImageCtaCard extends StatelessWidget {
 
     return SizedBox(
       height: 180,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(18),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(18),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.08),
+                    ),
+                    child: Image.asset(
+                      imageAsset,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                  ),
                 ),
-                child: Image.asset(
-                  imageAsset,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
+                Positioned.fill(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.06),
+                          Colors.black.withValues(alpha: 0.32),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black.withValues(alpha: 0.06),
-                      Colors.black.withValues(alpha: 0.32),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: textTheme.titleLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          height: 1.12,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        actionText,
+                        style: textTheme.titleSmall?.copyWith(
+                          color: const Color(0xFFBDF3E4),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      height: 1.12,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    actionText,
-                    style: textTheme.titleSmall?.copyWith(
-                      color: const Color(0xFFBDF3E4),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

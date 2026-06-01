@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
+import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/screens/start/start_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _habitsController = VitalisHabitsController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +34,12 @@ class MyApp extends StatelessWidget {
           outline: AppColors.outline,
         ),
       ),
+      builder: (context, child) {
+        return VitalisHabitsScope(
+          controller: _habitsController,
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       home: const StartScreen(),
     );
   }
