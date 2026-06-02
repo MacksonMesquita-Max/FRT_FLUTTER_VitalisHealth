@@ -18,6 +18,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  String? _emailError;
+  String? _passwordError;
 
   @override
   void dispose() {
@@ -27,6 +29,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     super.dispose();
   }
 
+  bool _isValidEmail(String value) {
+    final email = value.trim();
+    final regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    return regex.hasMatch(email);
+  }
+
   void _handleContinue() {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
@@ -34,11 +42,32 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
     final isValid = name.isNotEmpty && email.isNotEmpty && password.isNotEmpty;
     if (!isValid) {
+      setState(() {
+        _emailError = null;
+        _passwordError = null;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Preencha todos os campos para continuar.'),
           backgroundColor: const Color(0xFFB3261E),
           behavior: SnackBarBehavior.fixed,
+        ),
+      );
+      return;
+    }
+
+    final emailOk = _isValidEmail(email);
+    final passwordOk = password.length >= 8;
+    if (!emailOk || !passwordOk) {
+      setState(() {
+        _emailError = emailOk ? null : 'E-mail inválido. Informe um e-mail com @ e domínio.';
+        _passwordError = passwordOk ? null : 'Senha deve ter pelo menos 8 caracteres.';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Verifique os campos destacados.'),
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: Color(0xFFB3261E),
         ),
       );
       return;
@@ -121,6 +150,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
+                        errorText: _emailError,
+                        onChanged: (value) {
+                          if (_emailError == null) return;
+                          if (_isValidEmail(value)) {
+                            setState(() => _emailError = null);
+                          }
+                        },
                       ),
                       const SizedBox(height: 14),
                       const _FieldLabel(text: 'Crie uma senha segura'),
@@ -129,6 +165,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         hintText: 'Mínimo 8 caracteres',
                         controller: _passwordController,
                         textInputAction: TextInputAction.done,
+                        errorText: _passwordError,
+                        onChanged: (value) {
+                          if (_passwordError == null) return;
+                          if (value.length >= 8) {
+                            setState(() => _passwordError = null);
+                          }
+                        },
                       ),
                       const SizedBox(height: 18),
                       VitalisPrimaryButton(
