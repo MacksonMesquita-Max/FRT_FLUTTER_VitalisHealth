@@ -48,7 +48,8 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
     VitalisHabitsScope.of(context).addAll(_selected);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Sucesso! hábitos novos foram adicionados a sua rotina.'),
+        content: Text('Sucesso! Hábitos novos foram adicionados a sua rotina.'),
+        backgroundColor: AppColors.secondary,
         behavior: SnackBarBehavior.fixed,
       ),
     );

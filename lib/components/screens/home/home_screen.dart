@@ -374,7 +374,7 @@ class _NoHabitsCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Vixi, me parece que você não tem hábitos adicionados a sua rotina ainda.',
+                      'Oops, parece que você não tem nenhum hábito adicionado a sua rotina.',
                       style: textTheme.titleSmall?.copyWith(
                         color: AppColors.onSurface,
                         fontWeight: FontWeight.w800,
@@ -383,7 +383,7 @@ class _NoHabitsCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Clique no botão de adição e selecione os hábitos que desejar.',
+                      'Clique no botão de adição e selecione os hábitos que desejar!',
                       style: textTheme.bodySmall?.copyWith(
                         color: AppColors.outline,
                         height: 1.25,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/screens/premium/premium_terms_screen.dart';
 
 class VitalisPremiumScreen extends StatefulWidget {
   const VitalisPremiumScreen({super.key});
@@ -17,7 +18,7 @@ enum _PlanOption {
 }
 
 class _VitalisPremiumScreenState extends State<VitalisPremiumScreen> {
-  _PlanOption _selectedPlan = _PlanOption.mensal;
+  _PlanOption _selectedPlan = _PlanOption.anual;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +46,10 @@ class _VitalisPremiumScreenState extends State<VitalisPremiumScreen> {
                   const Spacer(),
                   IconButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Mais informações em breve.')),
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const PremiumTermsScreen(showConsentActions: false),
+                        ),
                       );
                     },
                     icon: const Icon(Icons.info_outline),
@@ -93,6 +96,7 @@ class _VitalisPremiumScreenState extends State<VitalisPremiumScreen> {
                 priceSuffix: '/ano',
                 selected: _selectedPlan == _PlanOption.anual,
                 leadingIcon: Icons.calendar_month_outlined,
+                badgeText: 'Mais rentável',
                 value: _PlanOption.anual,
                 groupValue: _selectedPlan,
                 onChanged: (value) => setState(() => _selectedPlan = value),
@@ -101,10 +105,22 @@ class _VitalisPremiumScreenState extends State<VitalisPremiumScreen> {
               VitalisPrimaryButton(
                 label: 'Selecionar plano ativo',
                 trailing: const Icon(Icons.arrow_forward, size: 18),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Assinatura em breve.')),
+                onPressed: () async {
+                  final accepted = await Navigator.of(context).push<bool>(
+                    MaterialPageRoute(
+                      builder: (_) => const PremiumTermsScreen(showConsentActions: true),
+                    ),
                   );
+                  if (!context.mounted) return;
+                  if (accepted == true) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Perfeito! Vamos seguir com a assinatura.')),
+                    );
+                  } else if (accepted == false) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Tudo bem! Você pode assinar quando quiser.')),
+                    );
+                  }
                 },
               ),
               const SizedBox(height: 10),
@@ -193,7 +209,7 @@ class _PremiumHeroCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Eleve sua jornada\npara o próximo nível',
+                  'Eleve sua jornada\npara o próximo nível!',
                   style: textTheme.headlineSmall?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w900,
@@ -202,7 +218,7 @@ class _PremiumHeroCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Desbloqueie ferramentas exclusivas desenhadas para seu bem-estar profundo e crescimento pessoal constante.',
+                  'Desbloqueie ferramentas exclusivas desenhadas para seu bem-estar e crescimento pessoal constante.',
                   style: textTheme.bodySmall?.copyWith(
                     color: Colors.white.withValues(alpha: 0.88),
                     height: 1.25,
@@ -224,6 +240,7 @@ class _PlanCard extends StatelessWidget {
     required this.priceSuffix,
     required this.selected,
     required this.leadingIcon,
+    this.badgeText,
     required this.value,
     required this.groupValue,
     required this.onChanged,
@@ -234,6 +251,7 @@ class _PlanCard extends StatelessWidget {
   final String priceSuffix;
   final bool selected;
   final IconData leadingIcon;
+  final String? badgeText;
   final _PlanOption value;
   final _PlanOption groupValue;
   final ValueChanged<_PlanOption> onChanged;
@@ -299,6 +317,24 @@ class _PlanCard extends StatelessWidget {
                             color: AppColors.outline,
                           ),
                         ),
+                        if (badgeText != null) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondary,
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Text(
+                              badgeText!,
+                              style: textTheme.labelSmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ],

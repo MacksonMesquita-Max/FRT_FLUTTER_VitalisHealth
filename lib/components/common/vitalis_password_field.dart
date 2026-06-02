@@ -8,11 +8,15 @@ class VitalisPasswordField extends StatefulWidget {
     required this.hintText,
     this.controller,
     this.textInputAction,
+    this.onChanged,
+    this.errorText,
   });
 
   final String hintText;
   final TextEditingController? controller;
   final TextInputAction? textInputAction;
+  final ValueChanged<String>? onChanged;
+  final String? errorText;
 
   @override
   State<VitalisPasswordField> createState() => _VitalisPasswordFieldState();
@@ -28,6 +32,8 @@ class _VitalisPasswordFieldState extends State<VitalisPasswordField> {
       controller: widget.controller,
       obscureText: _obscureText,
       textInputAction: widget.textInputAction,
+      onChanged: widget.onChanged,
+      errorText: widget.errorText,
       suffixIcon: IconButton(
         icon: Icon(
           _obscureText ? Icons.visibility_off_outlined : Icons.visibility,

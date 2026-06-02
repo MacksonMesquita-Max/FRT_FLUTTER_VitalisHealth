@@ -11,6 +11,7 @@ class VitalisTextField extends StatelessWidget {
     this.obscureText = false,
     this.onChanged,
     this.suffixIcon,
+    this.errorText,
   });
 
   final String hintText;
@@ -20,48 +21,65 @@ class VitalisTextField extends StatelessWidget {
   final bool obscureText;
   final ValueChanged<String>? onChanged;
   final Widget? suffixIcon;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 56,
-      child: TextField(
-        controller: controller,
-        keyboardType: keyboardType,
-        textInputAction: textInputAction,
-        obscureText: obscureText,
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          hintText: hintText,
-          filled: true,
-          fillColor: AppColors.background,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16.5,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: AppColors.outlineVariant,
-              width: 1,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(
-              color: AppColors.outlineVariant,
-              width: 1,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-              color: AppColors.primary.withValues(alpha: 0.85),
-              width: 1.5,
-            ),
-          ),
-          suffixIcon: suffixIcon,
+    const errorColor = Color(0xFFB3261E);
+    final hasError = errorText != null && errorText!.trim().isNotEmpty;
+
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      obscureText: obscureText,
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        hintText: hintText,
+        errorText: hasError ? errorText : null,
+        errorMaxLines: 2,
+        filled: true,
+        fillColor: AppColors.background,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16.5,
         ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: AppColors.outlineVariant,
+            width: 1,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: AppColors.outlineVariant,
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: AppColors.primary.withValues(alpha: 0.85),
+            width: 1.5,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: errorColor,
+            width: 1.2,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: errorColor,
+            width: 1.5,
+          ),
+        ),
+        suffixIcon: suffixIcon,
       ),
     );
   }
