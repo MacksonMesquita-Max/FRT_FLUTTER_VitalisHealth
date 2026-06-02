@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
+import 'package:vitalis_app/components/common/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 
@@ -113,32 +114,16 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
                       childAspectRatio: 1.05,
-                      children: [
-                        _HabitTile(
-                          title: 'Movimento',
-                          iconAsset: 'lib/assets/icons/running.png',
-                          isSelected: _selected.contains(VitalisHabit.movement),
-                          onTap: () => _toggle(VitalisHabit.movement),
-                        ),
-                        _HabitTile(
-                          title: 'Sono',
-                          iconAsset: 'lib/assets/icons/moon.svg',
-                          isSelected: _selected.contains(VitalisHabit.sleep),
-                          onTap: () => _toggle(VitalisHabit.sleep),
-                        ),
-                        _HabitTile(
-                          title: 'Hidratação',
-                          iconAsset: 'lib/assets/icons/water_drop.svg',
-                          isSelected: _selected.contains(VitalisHabit.hydration),
-                          onTap: () => _toggle(VitalisHabit.hydration),
-                        ),
-                        _HabitTile(
-                          title: 'Humor',
-                          iconAsset: 'lib/assets/icons/mood.svg',
-                          isSelected: _selected.contains(VitalisHabit.mood),
-                          onTap: () => _toggle(VitalisHabit.mood),
-                        ),
-                      ],
+                      children: VitalisHabitsCatalog.definitions
+                          .map(
+                            (d) => _HabitTile(
+                              title: d.title,
+                              iconAsset: d.iconAsset,
+                              isSelected: _selected.contains(d.habit),
+                              onTap: () => _toggle(d.habit),
+                            ),
+                          )
+                          .toList(),
                     ),
                     const SizedBox(height: 18),
                     VitalisPrimaryButton(
@@ -173,6 +158,9 @@ class _HabitTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSvg = iconAsset.toLowerCase().endsWith('.svg');
+    final iconLower = iconAsset.toLowerCase();
+    final applySvgColorFilter = !(iconLower.endsWith('medicine.svg') ||
+        iconLower.endsWith('reading.svg'));
     final textTheme = Theme.of(context).textTheme;
 
     return Material(
@@ -216,10 +204,12 @@ class _HabitTile extends StatelessWidget {
                                 iconAsset,
                                 width: 24,
                                 height: 24,
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.primary,
-                                  BlendMode.srcIn,
-                                ),
+                                colorFilter: applySvgColorFilter
+                                    ? const ColorFilter.mode(
+                                        AppColors.primary,
+                                        BlendMode.srcIn,
+                                      )
+                                    : null,
                               )
                             : Image.asset(
                                 iconAsset,
@@ -237,6 +227,9 @@ class _HabitTile extends StatelessWidget {
                       color: AppColors.onSurface,
                       fontWeight: FontWeight.w800,
                     ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

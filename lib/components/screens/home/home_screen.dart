@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_bottom_nav_bar.dart';
+import 'package:vitalis_app/components/common/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_habit_card.dart';
 import 'package:vitalis_app/components/common/vitalis_motivation_carousel.dart';
@@ -20,6 +21,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final selectedHabits = VitalisHabitsScope.of(context).habits;
+    final selectedDefinitions = VitalisHabitsCatalog.definitions
+        .where((d) => selectedHabits.contains(d.habit))
+        .toList();
 
     void openPremium() {
       Navigator.of(context).push(
@@ -150,63 +154,29 @@ class HomeScreen extends StatelessWidget {
               if (selectedHabits.isEmpty)
                 _NoHabitsCard(onAddPressed: openSelectHabits)
               else
-                GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 1.13,
+                GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1.13,
+                  ),
+                  itemCount: selectedDefinitions.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    if (selectedHabits.contains(VitalisHabit.hydration))
-                      const VitalisHabitCard(
-                        title: 'Hidratação',
-                        subtitle: 'Faltam apenas 500ml',
-                        progress: 6 / 8,
-                        progressColor: Color(0xFF2E79FF),
-                        iconAsset: 'lib/assets/icons/water_drop.svg',
-                        topRightText: '6/8',
-                        iconBackgroundColor: Color(0xFFEAF2FF),
-                      ),
-                    if (selectedHabits.contains(VitalisHabit.sleep))
-                      const VitalisHabitCard(
-                        title: 'Sono',
-                        subtitle: 'Qualidade boa',
-                        progress: 0.82,
-                        progressColor: Color(0xFF6B78FF),
-                        iconAsset: 'lib/assets/icons/moon.svg',
-                        topRightText: '7h 20m',
-                        iconBackgroundColor: Color(0xFFEDEFFF),
-                      ),
-                    if (selectedHabits.contains(VitalisHabit.movement))
-                      const VitalisHabitCard(
-                        title: 'Movimento',
-                        subtitle: 'Caminhada ativa',
-                        progress: 0.58,
-                        progressColor: Color(0xFFFF8A34),
-                        iconAsset: 'lib/assets/icons/running.png',
-                        topRightText: '4.2km',
-                        iconBackgroundColor: Color(0xFFFFF1E6),
-                        iconSize: 22,
-                      ),
-                    if (selectedHabits.contains(VitalisHabit.mood))
-                      VitalisHabitCard(
-                        title: 'Humor',
-                        subtitle: 'Radiante e Calmo',
-                        progress: 0.72,
-                        progressColor: const Color(0xFF46C37B),
-                        iconAsset: 'lib/assets/icons/mood.svg',
-                        iconBackgroundColor: const Color(0xFFEAF9F0),
-                        trailing: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_horiz),
-                          color: AppColors.outline,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                          iconSize: 18,
-                        ),
-                      ),
-                  ],
+                  itemBuilder: (context, index) {
+                    final d = selectedDefinitions[index];
+                    return VitalisHabitCard(
+                      title: d.title,
+                      subtitle: d.subtitle ?? '50% concluído',
+                      progress: VitalisHabitsCatalog.progress,
+                      progressColor: d.progressColor,
+                      iconAsset: d.iconAsset,
+                      topRightText: d.topRightText ?? '50%',
+                      iconBackgroundColor: d.iconBackgroundColor,
+                      iconSize: d.iconSize,
+                    );
+                  },
                 ),
               const SizedBox(height: 16),
               _ImageCtaCard(

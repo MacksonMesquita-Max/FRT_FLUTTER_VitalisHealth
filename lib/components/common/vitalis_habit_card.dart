@@ -31,6 +31,9 @@ class VitalisHabitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSvg = iconAsset.toLowerCase().endsWith('.svg');
+    final iconLower = iconAsset.toLowerCase();
+    final applySvgColorFilter = !(iconLower.endsWith('medicine.svg') ||
+        iconLower.endsWith('reading.svg'));
     final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
           color: AppColors.onSurface,
           fontWeight: FontWeight.w600,
@@ -83,10 +86,12 @@ class VitalisHabitCard extends StatelessWidget {
                                 width: iconSize,
                                 height: iconSize,
                                 fit: BoxFit.contain,
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.primary,
-                                  BlendMode.srcIn,
-                                ),
+                                colorFilter: applySvgColorFilter
+                                    ? const ColorFilter.mode(
+                                        AppColors.primary,
+                                        BlendMode.srcIn,
+                                      )
+                                    : null,
                               )
                             : Image.asset(
                                 iconAsset,
@@ -113,7 +118,12 @@ class VitalisHabitCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              Text(title, style: titleStyle),
+              Text(
+                title,
+                style: titleStyle,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
               const SizedBox(height: 12),
               ClipRRect(
                 borderRadius: BorderRadius.circular(999),
@@ -125,7 +135,12 @@ class VitalisHabitCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Text(subtitle, style: subtitleStyle),
+              Text(
+                subtitle,
+                style: subtitleStyle,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
         ),
