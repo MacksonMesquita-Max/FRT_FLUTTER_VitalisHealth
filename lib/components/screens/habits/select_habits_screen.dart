@@ -5,6 +5,11 @@ import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/screens/habits_settings/habit_settings_placeholder_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/hydration_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/movement_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/mood_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/sleep_habit_settings_screen.dart';
 
 class SelectHabitsScreen extends StatefulWidget {
   const SelectHabitsScreen({super.key});
@@ -33,6 +38,33 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
         _selected.add(habit);
       }
     });
+  }
+
+  Future<void> _openHabitSettings(VitalisHabit habit) async {
+    final definition = VitalisHabitsCatalog.definitionFor(habit);
+    final route = MaterialPageRoute<bool>(
+      builder: (_) {
+        switch (habit) {
+          case VitalisHabit.hydration:
+            return const HydrationHabitSettingsScreen();
+          case VitalisHabit.sleep:
+            return const SleepHabitSettingsScreen();
+          case VitalisHabit.movement:
+            return const MovementHabitSettingsScreen();
+          case VitalisHabit.mood:
+            return const MoodHabitSettingsScreen();
+          default:
+            return HabitSettingsPlaceholderScreen(title: definition.title);
+        }
+      },
+    );
+
+    final confirmed = await Navigator.of(context).push<bool>(route);
+    if (!mounted) return;
+
+    if (confirmed == true) {
+      setState(() => _selected.add(habit));
+    }
   }
 
   Future<void> _handleAdd() async {
@@ -120,7 +152,8 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
                               title: d.title,
                               iconAsset: d.iconAsset,
                               isSelected: _selected.contains(d.habit),
-                              onTap: () => _toggle(d.habit),
+                              onTap: () => _openHabitSettings(d.habit),
+                              onLongPress: () => _toggle(d.habit),
                             ),
                           )
                           .toList(),
@@ -148,12 +181,14 @@ class _HabitTile extends StatelessWidget {
     required this.iconAsset,
     required this.isSelected,
     required this.onTap,
+    required this.onLongPress,
   });
 
   final String title;
   final String iconAsset;
   final bool isSelected;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +204,7 @@ class _HabitTile extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),

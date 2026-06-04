@@ -21,9 +21,55 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final selectedHabits = VitalisHabitsScope.of(context).habits;
+    final habitsController = VitalisHabitsScope.of(context);
     final selectedDefinitions = VitalisHabitsCatalog.definitions
         .where((d) => selectedHabits.contains(d.habit))
         .toList();
+
+    String formatLiters(int ml) {
+      final liters = ml / 1000;
+      final fixed = liters.toStringAsFixed(1);
+      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
+    }
+
+    String formatHours(int minutes) {
+      final hours = minutes / 60;
+      final fixed = hours.toStringAsFixed(1);
+      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
+    }
+
+    String formatKm(int meters) {
+      final km = meters / 1000;
+      final fixed = km.toStringAsFixed(1);
+      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
+    }
+
+    String formatMovementDays(Set<int> daysOfWeek) {
+      if (daysOfWeek.isEmpty) return '';
+      if (daysOfWeek.length >= 7) return 'Todos os dias';
+      const labels = <int, String>{
+        1: 'Seg',
+        2: 'Ter',
+        3: 'Qua',
+        4: 'Qui',
+        5: 'Sex',
+        6: 'Sáb',
+        7: 'Dom',
+      };
+      final ordered = daysOfWeek.toList()..sort();
+      final text = ordered.map((d) => labels[d]).whereType<String>().join(', ');
+      return text.isEmpty ? '' : 'Dias: $text';
+    }
+
+    String moodLabel(int level) {
+      return switch (level.clamp(0, 4)) {
+        0 => 'Radiante',
+        1 => 'Feliz',
+        2 => 'Calmo',
+        3 => 'Ansioso',
+        _ => 'Triste',
+      };
+    }
 
     void openPremium() {
       Navigator.of(context).push(
@@ -166,13 +212,101 @@ class HomeScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     final d = selectedDefinitions[index];
+
+                    final dynamicSubtitle = switch (d.habit) {
+                      VitalisHabit.hydration => () {
+                          final goal = habitsController.hydrationGoalMl;
+                          final consumed = habitsController.hydrationConsumedMl;
+                          if (goal == null || goal <= 0) return 'Defina sua meta diária';
+                          final remaining = (goal - consumed).clamp(0, goal);
+                          return 'Bebeu ${formatLiters(consumed)}L • Faltam ${formatLiters(remaining)}L';
+                        }(),
+                      VitalisHabit.sleep => () {
+                          final goal = habitsController.sleepGoalMinutes;
+                          final slept = habitsController.sleepMinutes;
+                          if (goal == null || goal <= 0) return 'Defina sua meta diária';
+                          final remaining = (goal - slept).clamp(0, goal);
+                          return 'Dormiu ${formatHours(slept)}h • Faltam ${formatHours(remaining)}h';
+                        }(),
+                      VitalisHabit.movement => () {
+                          final goal = habitsController.movementGoalMeters;
+                          final moved = habitsController.movementMeters;
+                          if (goal == null || goal <= 0) return 'Defina sua meta de distância';
+                          final remaining = (goal - moved).clamp(0, goal);
+                          final line1 = 'Fez ${formatKm(moved)}km • Faltam ${formatKm(remaining)}km';
+                          final days = formatMovementDays(habitsController.movementDaysOfWeek);
+                          return days.isEmpty ? line1 : '$line1\n$days';
+                        }(),
+                      VitalisHabit.mood => () {
+                          final last = habitsController.moodLastWeekLevel;
+                          final target = habitsController.moodTargetLevel;
+                          if (last == null || target == null) return 'Defina seu humor e sua meta';
+                          return 'Última: ${moodLabel(last)} • Meta: ${moodLabel(target)}';
+                        }(),
+                      _ => d.subtitle ?? '50% concluído',
+                    };
+
+                    final dynamicTopRightText = switch (d.habit) {
+                      VitalisHabit.hydration => () {
+                          final goal = habitsController.hydrationGoalMl;
+                          final consumed = habitsController.hydrationConsumedMl;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatLiters(consumed)} / ${formatLiters(goal)}L';
+                        }(),
+                      VitalisHabit.sleep => () {
+                          final goal = habitsController.sleepGoalMinutes;
+                          final slept = habitsController.sleepMinutes;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatHours(slept)} / ${formatHours(goal)}h';
+                        }(),
+                      VitalisHabit.movement => () {
+                          final goal = habitsController.movementGoalMeters;
+                          final moved = habitsController.movementMeters;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatKm(moved)} / ${formatKm(goal)}km';
+                        }(),
+                      VitalisHabit.mood => () {
+                          final target = habitsController.moodTargetLevel;
+                          if (target == null) return '—';
+                          return moodLabel(target);
+                        }(),
+                      _ => d.topRightText ?? '50%',
+                    };
+
+                    final dynamicProgress = switch (d.habit) {
+                      VitalisHabit.hydration => () {
+                          final goal = habitsController.hydrationGoalMl;
+                          final consumed = habitsController.hydrationConsumedMl;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (consumed / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.sleep => () {
+                          final goal = habitsController.sleepGoalMinutes;
+                          final slept = habitsController.sleepMinutes;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (slept / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.movement => () {
+                          final goal = habitsController.movementGoalMeters;
+                          final moved = habitsController.movementMeters;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (moved / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.mood => () {
+                          final target = habitsController.moodTargetLevel;
+                          if (target == null) return 0.0;
+                          return (target / 4).clamp(0.0, 1.0);
+                        }(),
+                      _ => VitalisHabitsCatalog.progress,
+                    };
+
                     return VitalisHabitCard(
                       title: d.title,
-                      subtitle: d.subtitle ?? '50% concluído',
-                      progress: VitalisHabitsCatalog.progress,
+                      subtitle: dynamicSubtitle,
+                      progress: dynamicProgress,
                       progressColor: d.progressColor,
                       iconAsset: d.iconAsset,
-                      topRightText: d.topRightText ?? '50%',
+                      topRightText: dynamicTopRightText,
                       iconBackgroundColor: d.iconBackgroundColor,
                       iconSize: d.iconSize,
                     );
