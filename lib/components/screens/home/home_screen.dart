@@ -181,28 +181,40 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageWinnerFriends.png',
+                icon: Icons.groups_outlined,
+                iconBackgroundColor: const Color(0xFFEAF9F0),
                 title: 'Conecte-se com seus amigos\ne pratique disputas saudáveis!',
+                description: 'A motivação é maior quando compartilhada.\nCrie desafios e celebre vitórias juntos.',
                 actionText: 'Iniciar Conexão',
                 onPressed: openPremium,
               ),
               const SizedBox(height: 6),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImagePisicology.png',
+                icon: Icons.psychology_outlined,
+                iconBackgroundColor: const Color(0xFFEDEFFF),
                 title: 'Precisa de ajuda?\nConte com nossa equipe de psicólogos.',
+                description: 'Uma mente merece cuidado profissional.\nEncontre suporte quando mais precisar.',
                 actionText: 'Ver Mais',
                 onPressed: openPremium,
               ),
               const SizedBox(height: 6),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageLibrary.png',
+                icon: Icons.menu_book_outlined,
+                iconBackgroundColor: const Color(0xFFEAF2FF),
                 title: 'Sem boas leituras?\nConfira nossa lista de livros!',
+                description: 'Expanda seus horizontes com curadorias\nfocadas em desenvolvimento pessoal.',
                 actionText: 'Ver Mais',
                 onPressed: openPremium,
               ),
               const SizedBox(height: 6),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageMedita.png',
+                icon: Icons.self_improvement_outlined,
+                iconBackgroundColor: const Color(0xFFFFF1E6),
                 title: 'Mantenha a calma e respire\nfundo.',
+                description: 'Sessões guiadas para reduzir estresse,\naumentar foco e relaxar.',
                 actionText: 'Iniciar Meditação',
                 onPressed: openPremium,
               ),
@@ -373,13 +385,19 @@ class _NoHabitsCard extends StatelessWidget {
 class _ImageCtaCard extends StatelessWidget {
   const _ImageCtaCard({
     required this.imageAsset,
+    required this.icon,
+    required this.iconBackgroundColor,
     required this.title,
+    required this.description,
     required this.actionText,
     this.onPressed,
   });
 
   final String imageAsset;
+  final IconData icon;
+  final Color iconBackgroundColor;
   final String title;
+  final String description;
   final String actionText;
   final VoidCallback? onPressed;
 
@@ -387,69 +405,92 @@ class _ImageCtaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return SizedBox(
-      height: 180,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(18),
-          child: ClipRRect(
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.08),
-                    ),
-                    child: Image.asset(
-                      imageAsset,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
-                  ),
+            border: Border.all(color: AppColors.surfaceContainer, width: 1),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: iconBackgroundColor,
+                  borderRadius: BorderRadius.circular(999),
                 ),
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.06),
-                          Colors.black.withValues(alpha: 0.32),
-                        ],
+                child: SizedBox(
+                  width: 46,
+                  height: 46,
+                  child: Icon(icon, color: AppColors.secondary),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.onSurface,
+                        height: 1.12,
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          height: 1.12,
+                    const SizedBox(height: 6),
+                    Text(
+                      description,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.outline,
+                        height: 1.25,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          actionText,
+                          style: textTheme.labelLarge?.copyWith(
+                            color: AppColors.secondary,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        actionText,
-                        style: textTheme.titleSmall?.copyWith(
-                          color: const Color(0xFFBDF3E4),
-                          fontWeight: FontWeight.w700,
+                        const SizedBox(width: 6),
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 16,
+                          color: AppColors.secondary,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.surfaceContainer, width: 1),
+                ),
+                child: ClipOval(
+                  child: Image.asset(
+                    imageAsset,
+                    width: 56,
+                    height: 56,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
