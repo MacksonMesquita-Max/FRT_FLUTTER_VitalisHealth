@@ -36,10 +36,24 @@ class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
         top: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(18, 10, 18, 16),
-          child: VitalisPrimaryButton(
-            label: 'Confirmar Configuração',
-            trailing: const Icon(Icons.check_circle_outline, size: 18),
-            onPressed: _confirm,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              VitalisPrimaryButton(
+                label: 'Confirmar Configuração',
+                trailing: const Icon(Icons.check, size: 18),
+                onPressed: _confirm,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Você pode atualizar essas configurações a qualquer momento em seu perfil.',
+                textAlign: TextAlign.center,
+                style: textTheme.bodySmall?.copyWith(
+                  color: AppColors.outline,
+                  height: 1.2,
+                ),
+              ),
+            ],
           ),
         ),
       ),
