@@ -116,25 +116,15 @@ class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.nightlight_round,
-                                        size: 16,
-                                        color: Color(0xFFBDF3E4),
-                                      ),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        'Foco: Recuperação',
-                                        style: textTheme.labelSmall?.copyWith(
-                                          color: Colors.white.withValues(alpha: 0.85),
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    'PERSONALIZE SEU FLUXO',
+                                    style: textTheme.labelSmall?.copyWith(
+                                      color: Colors.white.withValues(alpha: 0.85),
+                                      letterSpacing: 0.6,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: 6),
                                   Text(
                                     'Defina seu Descanso',
                                     style: textTheme.titleLarge?.copyWith(
@@ -145,7 +135,7 @@ class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
                                   ),
                                   const SizedBox(height: 6),
                                   Text(
-                                    'O sono de qualidade é a base para sua\nenergia física e mental de amanhã.',
+                                    'Um sono de qualidade é a base para sua\nenergia física e mental.',
                                     style: textTheme.bodySmall?.copyWith(
                                       color: Colors.white.withValues(alpha: 0.88),
                                       height: 1.25,
@@ -190,7 +180,7 @@ class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
                                     ),
                                     child: Text(
                                       goalLabel,
-                                      style: textTheme.labelSmall?.copyWith(
+                                      style: textTheme.labelLarge?.copyWith(
                                         color: AppColors.secondary,
                                         fontWeight: FontWeight.w900,
                                       ),
@@ -235,18 +225,93 @@ class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 12),
-                              Text(
-                                '“Especialistas recomendam entre 7 e 9 horas\npara adultos.”',
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: AppColors.outline,
-                                  height: 1.25,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
                             ],
                           ),
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    const _NoticeCard(
+                      accentColor: Color(0xFF63F089),
+                      iconColor: AppColors.secondary,
+                      icon: Icons.medical_information_outlined,
+                      title: 'Recomendações Médicas',
+                      description:
+                          'Especialistas recomendam entre 7 e 9 horas\npara adultos.\nUm bom sono restaura o organismo, fortalece a imunidade, regula hormônios, controla o peso, melhora o humor, potencializa a memória e protege a saúde mental e cardiovascular',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NoticeCard extends StatelessWidget {
+  const _NoticeCard({
+    required this.accentColor,
+    required this.iconColor,
+    required this.icon,
+    required this.title,
+    required this.description,
+  });
+
+  final Color accentColor;
+  final Color iconColor;
+  final IconData icon;
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: AppColors.surfaceContainer, width: 1),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 4,
+              height: 150,
+              color: accentColor,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(icon, color: iconColor, size: 24),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: textTheme.titleMedium?.copyWith(
+                              color: AppColors.onSurface,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            description,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: AppColors.onSurface,
+                              height: 1.35,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

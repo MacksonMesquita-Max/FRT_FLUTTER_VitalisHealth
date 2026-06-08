@@ -145,11 +145,32 @@ class _MoodHabitSettingsScreenState extends State<MoodHabitSettingsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Como você se\nsente?',
+                                    'PERSONALIZE SEU FLUXO',
+                                    style: textTheme.labelSmall?.copyWith(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.85,
+                                      ),
+                                      letterSpacing: 0.6,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    'Como você se sente?',
                                     style: textTheme.headlineSmall?.copyWith(
                                       color: const Color.fromARGB(255, 255, 255, 255).withValues(alpha: 0.90),
                                       fontWeight: FontWeight.w900,
                                       height: 1.12,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    'Uma saúde mental estável é a chave para a vitória.',
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.88,
+                                      ),
+                                      height: 1.25,
                                     ),
                                   ),
                                 ],

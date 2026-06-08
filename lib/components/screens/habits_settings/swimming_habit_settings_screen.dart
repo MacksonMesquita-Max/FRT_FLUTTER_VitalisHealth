@@ -4,14 +4,14 @@ import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 
-class MovementHabitSettingsScreen extends StatefulWidget {
-  const MovementHabitSettingsScreen({super.key});
+class SwimmingHabitSettingsScreen extends StatefulWidget {
+  const SwimmingHabitSettingsScreen({super.key});
 
   @override
-  State<MovementHabitSettingsScreen> createState() => _MovementHabitSettingsScreenState();
+  State<SwimmingHabitSettingsScreen> createState() => _SwimmingHabitSettingsScreenState();
 }
 
-class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScreen> {
+class _SwimmingHabitSettingsScreenState extends State<SwimmingHabitSettingsScreen> {
   double _distanceKm = 5;
   final Set<int> _selectedDaysOfWeek = {};
   bool _initialized = false;
@@ -21,11 +21,11 @@ class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScree
     super.didChangeDependencies();
     if (_initialized) return;
     final controller = VitalisHabitsScope.of(context);
-    final goalMeters = controller.movementGoalMeters;
+    final goalMeters = controller.swimmingGoalMeters;
     if (goalMeters != null && goalMeters > 0) {
       _distanceKm = (goalMeters / 1000).clamp(1, 42).toDouble();
     }
-    _selectedDaysOfWeek.addAll(controller.movementDaysOfWeek);
+    _selectedDaysOfWeek.addAll(controller.swimmingDaysOfWeek);
     _initialized = true;
   }
 
@@ -34,18 +34,18 @@ class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScree
     return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
   }
 
-  _MovementPlan _planForDistance(double km) {
-    if (km < 5) return const _MovementPlan(intensity: 'Iniciante', forecast: '~30 min');
-    if (km <= 10) return const _MovementPlan(intensity: 'Moderada', forecast: '1h–1h20');
-    if (km <= 20) return const _MovementPlan(intensity: 'Intensa', forecast: '2h–3h');
-    if (km <= 50) return const _MovementPlan(intensity: 'Profissional', forecast: '3h–4h');
-    return const _MovementPlan(intensity: 'Profissional', forecast: '4h+');
+  _SwimmingPlan _planForDistance(double km) {
+    if (km < 5) return const _SwimmingPlan(intensity: 'Iniciante', forecast: '~30 min');
+    if (km <= 10) return const _SwimmingPlan(intensity: 'Moderada', forecast: '1h–1h20');
+    if (km <= 20) return const _SwimmingPlan(intensity: 'Intensa', forecast: '2h–3h');
+    if (km <= 50) return const _SwimmingPlan(intensity: 'Profissional', forecast: '3h–4h');
+    return const _SwimmingPlan(intensity: 'Profissional', forecast: '4h+');
   }
 
   Future<void> _confirm() async {
     final controller = VitalisHabitsScope.of(context);
-    controller.setMovementGoalMeters((_distanceKm * 1000).round());
-    controller.setMovementDaysOfWeek(_selectedDaysOfWeek);
+    controller.setSwimmingGoalMeters((_distanceKm * 1000).round());
+    controller.setSwimmingDaysOfWeek(_selectedDaysOfWeek);
     Navigator.of(context).pop(true);
   }
 
@@ -126,9 +126,30 @@ class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScree
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/walkForHabits.png',
+                                'lib/assets/images/swimingForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return DecoratedBox(
+                                    decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Color(0xFF0C4A60),
+                                          Color(0xFF1D6D86),
+                                        ],
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.pool_outlined,
+                                        size: 56,
+                                        color: Colors.white.withValues(alpha: 0.9),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             Positioned.fill(
@@ -160,21 +181,21 @@ class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScree
                                   ),
                                   const SizedBox(height: 6),
                                   Text(
-                                    'Defina sua Meta de\nCorrida',
+                                    'Defina sua Meta de\nNatação',
                                     style: textTheme.headlineSmall?.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
                                       height: 1.12,
                                     ),
                                   ),
-                                  const SizedBox(height: 6),
+                                  const SizedBox(height: 4),
                                   Text(
-                                    'Uma boa corrida melhora a circulação sanguínea e diminui o risco de doenças.',
-                                    style: textTheme.bodySmall?.copyWith(
+                                    'Natação é uma forma de exercitar a resistência muscular.',
+                                    style: textTheme.bodyMedium?.copyWith(
                                       color: Colors.white.withValues(
-                                        alpha: 0.88,
+                                        alpha: 0.9,
                                       ),
-                                      height: 1.25,
+                                      height: 1.2,
                                     ),
                                   ),
                                 ],
@@ -391,8 +412,8 @@ class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScree
   }
 }
 
-class _MovementPlan {
-  const _MovementPlan({
+class _SwimmingPlan {
+  const _SwimmingPlan({
     required this.intensity,
     required this.forecast,
   });

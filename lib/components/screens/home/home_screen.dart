@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
       return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
     }
 
-    String formatMovementDays(Set<int> daysOfWeek) {
+    String formatDaysOfWeek(Set<int> daysOfWeek) {
       if (daysOfWeek.isEmpty) return '';
       if (daysOfWeek.length >= 7) return 'Todos os dias';
       const labels = <int, String>{
@@ -234,14 +234,60 @@ class HomeScreen extends StatelessWidget {
                           if (goal == null || goal <= 0) return 'Defina sua meta de distância';
                           final remaining = (goal - moved).clamp(0, goal);
                           final line1 = 'Fez ${formatKm(moved)}km • Faltam ${formatKm(remaining)}km';
-                          final days = formatMovementDays(habitsController.movementDaysOfWeek);
+                          final days = formatDaysOfWeek(habitsController.movementDaysOfWeek);
                           return days.isEmpty ? line1 : '$line1\n$days';
+                        }(),
+                      VitalisHabit.swimming => () {
+                          final goal = habitsController.swimmingGoalMeters;
+                          final moved = habitsController.swimmingMeters;
+                          if (goal == null || goal <= 0) return 'Defina sua meta de distância';
+                          final remaining = (goal - moved).clamp(0, goal);
+                          final line1 = 'Nadou ${formatKm(moved)}km • Faltam ${formatKm(remaining)}km';
+                          final days = formatDaysOfWeek(habitsController.swimmingDaysOfWeek);
+                          return days.isEmpty ? line1 : '$line1\n$days';
+                        }(),
+                      VitalisHabit.reading => () {
+                          final book = habitsController.readingBookName;
+                          final pages = habitsController.readingPageGoal;
+                          if (book == null || pages == null) return 'Defina seu livro e sua meta';
+                          final days = formatDaysOfWeek(habitsController.readingDaysOfWeek);
+                          final line1 = book;
+                          final line2 = 'Meta: $pages pág./dia';
+                          if (days.isEmpty) return '$line1\n$line2';
+                          return '$line1\n$days';
+                        }(),
+                      VitalisHabit.fasting => () {
+                          final purpose = habitsController.fastingPurpose;
+                          final hours = habitsController.fastingDurationHours;
+                          if (purpose == null || hours == null) return 'Defina seu propósito e duração';
+                          return '$purpose\nMeta: ${hours}h de jejum';
                         }(),
                       VitalisHabit.mood => () {
                           final last = habitsController.moodLastWeekLevel;
                           final target = habitsController.moodTargetLevel;
                           if (last == null || target == null) return 'Defina seu humor e sua meta';
                           return 'Última: ${moodLabel(last)} • Meta: ${moodLabel(target)}';
+                        }(),
+                      VitalisHabit.gym => () {
+                          final duration = habitsController.gymDurationMinutes;
+                          final intensity = habitsController.gymIntensity;
+                          final focus = habitsController.gymFocus;
+                          if (duration == null || intensity == null || focus == null) {
+                            return 'Defina seu treino na academia';
+                          }
+                          final focusLabel = switch (focus) {
+                            VitalisGymFocus.forca => 'Força',
+                            VitalisGymFocus.cardio => 'Cardio',
+                            VitalisGymFocus.flexibilidade => 'Flexibilidade',
+                          };
+                          final intensityLabel = switch (intensity) {
+                            VitalisGymIntensity.leve => 'Leve',
+                            VitalisGymIntensity.moderada => 'Moderada',
+                            VitalisGymIntensity.intensa => 'Intensa',
+                          };
+                          final line1 = '$focusLabel • $intensityLabel';
+                          final days = formatDaysOfWeek(habitsController.gymDaysOfWeek);
+                          return days.isEmpty ? line1 : '$line1\n$days';
                         }(),
                       _ => d.subtitle ?? '50% concluído',
                     };
@@ -265,10 +311,31 @@ class HomeScreen extends StatelessWidget {
                           if (goal == null || goal <= 0) return '—';
                           return '${formatKm(moved)} / ${formatKm(goal)}km';
                         }(),
+                      VitalisHabit.swimming => () {
+                          final goal = habitsController.swimmingGoalMeters;
+                          final moved = habitsController.swimmingMeters;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatKm(moved)} / ${formatKm(goal)}km';
+                        }(),
+                      VitalisHabit.reading => () {
+                          final pages = habitsController.readingPageGoal;
+                          if (pages == null) return '—';
+                          return '$pages pág.';
+                        }(),
+                      VitalisHabit.fasting => () {
+                          final hours = habitsController.fastingDurationHours;
+                          if (hours == null) return '—';
+                          return '${hours}h';
+                        }(),
                       VitalisHabit.mood => () {
                           final target = habitsController.moodTargetLevel;
                           if (target == null) return '—';
                           return moodLabel(target);
+                        }(),
+                      VitalisHabit.gym => () {
+                          final duration = habitsController.gymDurationMinutes;
+                          if (duration == null) return '—';
+                          return '${duration}min';
                         }(),
                       _ => d.topRightText ?? '50%',
                     };
@@ -292,10 +359,31 @@ class HomeScreen extends StatelessWidget {
                           if (goal == null || goal <= 0) return 0.0;
                           return (moved / goal).clamp(0.0, 1.0);
                         }(),
+                      VitalisHabit.swimming => () {
+                          final goal = habitsController.swimmingGoalMeters;
+                          final moved = habitsController.swimmingMeters;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (moved / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.reading => () {
+                          final pages = habitsController.readingPageGoal;
+                          if (pages == null || pages <= 0) return 0.0;
+                          return 0.0;
+                        }(),
+                      VitalisHabit.fasting => () {
+                          final hours = habitsController.fastingDurationHours;
+                          if (hours == null || hours <= 0) return 0.0;
+                          return (hours / 24).clamp(0.0, 1.0);
+                        }(),
                       VitalisHabit.mood => () {
                           final target = habitsController.moodTargetLevel;
                           if (target == null) return 0.0;
                           return (target / 4).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.gym => () {
+                          final duration = habitsController.gymDurationMinutes;
+                          if (duration == null) return 0.0;
+                          return (duration / 120).clamp(0.0, 1.0);
                         }(),
                       _ => VitalisHabitsCatalog.progress,
                     };

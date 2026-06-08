@@ -6,10 +6,14 @@ import 'package:vitalis_app/components/common/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 import 'package:vitalis_app/components/screens/habits_settings/habit_settings_placeholder_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/gym_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/fasting_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/hydration_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/movement_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/mood_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/reading_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/sleep_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/swimming_habit_settings_screen.dart';
 
 class SelectHabitsScreen extends StatefulWidget {
   const SelectHabitsScreen({super.key});
@@ -53,6 +57,14 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
             return const MovementHabitSettingsScreen();
           case VitalisHabit.mood:
             return const MoodHabitSettingsScreen();
+          case VitalisHabit.gym:
+            return const GymHabitSettingsScreen();
+          case VitalisHabit.swimming:
+            return const SwimmingHabitSettingsScreen();
+          case VitalisHabit.reading:
+            return const ReadingHabitSettingsScreen();
+          case VitalisHabit.fasting:
+            return const FastingHabitSettingsScreen();
           default:
             return HabitSettingsPlaceholderScreen(title: definition.title);
         }
@@ -97,6 +109,17 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 10, 18, 16),
+          child: VitalisPrimaryButton(
+            label: 'Adicionar Hábitos',
+            trailing: const Icon(Icons.add, size: 18),
+            onPressed: _handleAdd,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -118,7 +141,7 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(18, 8, 18, 18),
+                padding: const EdgeInsets.fromLTRB(18, 8, 18, 26),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -157,12 +180,6 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
                             ),
                           )
                           .toList(),
-                    ),
-                    const SizedBox(height: 18),
-                    VitalisPrimaryButton(
-                      label: 'Adicionar',
-                      trailing: const Icon(Icons.add, size: 18),
-                      onPressed: _handleAdd,
                     ),
                   ],
                 ),
