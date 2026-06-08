@@ -385,32 +385,28 @@ class _BenefitsCard extends StatelessWidget {
                 icon: Icons.insights_outlined,
                 iconBackground: Color(0xFFEAF2FF),
                 title: 'Estatísticas Avançadas',
-                description:
-                    'Relatórios detalhados de sono, humor e tendências de bem-estar semanal.',
+                description: 'Relatórios detalhados de sono, humor e tendências de bem-estar semanal.',
               ),
               SizedBox(height: 14),
               _BenefitRow(
                 icon: Icons.groups_outlined,
                 iconBackground: Color(0xFFFFF1E6),
                 title: 'Desafios Exclusivos',
-                description:
-                    'Participe de jogos coletivos e desafios exclusivos com seus amigos.',
+                description: 'Participe de jogos coletivos e desafios exclusivos com seus amigos.',
               ),
               SizedBox(height: 14),
               _BenefitRow(
                 icon: Icons.psychology_outlined,
                 iconBackground: Color(0xFFEDEFFF),
                 title: 'Psicólogos Parceiros',
-                description:
-                    'Acesso a uma rede exclusiva de psicólogos parceiros para atendimento online especializado.',
+                description: 'Acesso a uma rede exclusiva de psicólogos parceiros para atendimento online especializado.',
               ),
               SizedBox(height: 14),
               _BenefitRow(
                 icon: Icons.fitness_center_outlined,
                 iconBackground: Color(0xFFEAF9F0),
                 title: 'Exercícios Personalizados',
-                description:
-                    'Planos de yoga, corrida e natação adaptados aos seus objetivos e nível de condicionamento.',
+                description: 'Planos de yoga, corrida e natação adaptados aos seus objetivos e nível de condicionamento.',
               ),
             ],
           ),

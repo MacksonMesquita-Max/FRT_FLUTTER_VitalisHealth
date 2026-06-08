@@ -21,9 +21,55 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final selectedHabits = VitalisHabitsScope.of(context).habits;
+    final habitsController = VitalisHabitsScope.of(context);
     final selectedDefinitions = VitalisHabitsCatalog.definitions
         .where((d) => selectedHabits.contains(d.habit))
         .toList();
+
+    String formatLiters(int ml) {
+      final liters = ml / 1000;
+      final fixed = liters.toStringAsFixed(1);
+      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
+    }
+
+    String formatHours(int minutes) {
+      final hours = minutes / 60;
+      final fixed = hours.toStringAsFixed(1);
+      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
+    }
+
+    String formatKm(int meters) {
+      final km = meters / 1000;
+      final fixed = km.toStringAsFixed(1);
+      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
+    }
+
+    String formatDaysOfWeek(Set<int> daysOfWeek) {
+      if (daysOfWeek.isEmpty) return '';
+      if (daysOfWeek.length >= 7) return 'Todos os dias';
+      const labels = <int, String>{
+        1: 'Seg',
+        2: 'Ter',
+        3: 'Qua',
+        4: 'Qui',
+        5: 'Sex',
+        6: 'Sáb',
+        7: 'Dom',
+      };
+      final ordered = daysOfWeek.toList()..sort();
+      final text = ordered.map((d) => labels[d]).whereType<String>().join(', ');
+      return text.isEmpty ? '' : 'Dias: $text';
+    }
+
+    String moodLabel(int level) {
+      return switch (level.clamp(0, 4)) {
+        0 => 'Radiante',
+        1 => 'Feliz',
+        2 => 'Calmo',
+        3 => 'Ansioso',
+        _ => 'Triste',
+      };
+    }
 
     void openPremium() {
       Navigator.of(context).push(
@@ -166,13 +212,189 @@ class HomeScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     final d = selectedDefinitions[index];
+
+                    final dynamicSubtitle = switch (d.habit) {
+                      VitalisHabit.hydration => () {
+                          final goal = habitsController.hydrationGoalMl;
+                          final consumed = habitsController.hydrationConsumedMl;
+                          if (goal == null || goal <= 0) return 'Defina sua meta diária';
+                          final remaining = (goal - consumed).clamp(0, goal);
+                          return 'Bebeu ${formatLiters(consumed)}L • Faltam ${formatLiters(remaining)}L';
+                        }(),
+                      VitalisHabit.sleep => () {
+                          final goal = habitsController.sleepGoalMinutes;
+                          final slept = habitsController.sleepMinutes;
+                          if (goal == null || goal <= 0) return 'Defina sua meta diária';
+                          final remaining = (goal - slept).clamp(0, goal);
+                          return 'Dormiu ${formatHours(slept)}h • Faltam ${formatHours(remaining)}h';
+                        }(),
+                      VitalisHabit.movement => () {
+                          final goal = habitsController.movementGoalMeters;
+                          final moved = habitsController.movementMeters;
+                          if (goal == null || goal <= 0) return 'Defina sua meta de distância';
+                          final remaining = (goal - moved).clamp(0, goal);
+                          final line1 = 'Fez ${formatKm(moved)}km • Faltam ${formatKm(remaining)}km';
+                          final days = formatDaysOfWeek(habitsController.movementDaysOfWeek);
+                          return days.isEmpty ? line1 : '$line1\n$days';
+                        }(),
+                      VitalisHabit.swimming => () {
+                          final goal = habitsController.swimmingGoalMeters;
+                          final moved = habitsController.swimmingMeters;
+                          if (goal == null || goal <= 0) return 'Defina sua meta de distância';
+                          final remaining = (goal - moved).clamp(0, goal);
+                          final line1 = 'Nadou ${formatKm(moved)}km • Faltam ${formatKm(remaining)}km';
+                          final days = formatDaysOfWeek(habitsController.swimmingDaysOfWeek);
+                          return days.isEmpty ? line1 : '$line1\n$days';
+                        }(),
+                      VitalisHabit.reading => () {
+                          final book = habitsController.readingBookName;
+                          final pages = habitsController.readingPageGoal;
+                          if (book == null || pages == null) return 'Defina seu livro e sua meta';
+                          final days = formatDaysOfWeek(habitsController.readingDaysOfWeek);
+                          final line1 = book;
+                          final line2 = 'Meta: $pages pág./dia';
+                          if (days.isEmpty) return '$line1\n$line2';
+                          return '$line1\n$days';
+                        }(),
+                      VitalisHabit.fasting => () {
+                          final purpose = habitsController.fastingPurpose;
+                          final hours = habitsController.fastingDurationHours;
+                          if (purpose == null || hours == null) return 'Defina seu propósito e duração';
+                          return '$purpose\nMeta: ${hours}h de jejum';
+                        }(),
+                      VitalisHabit.mood => () {
+                          final last = habitsController.moodLastWeekLevel;
+                          final target = habitsController.moodTargetLevel;
+                          if (last == null || target == null) return 'Defina seu humor e sua meta';
+                          return 'Última: ${moodLabel(last)} • Meta: ${moodLabel(target)}';
+                        }(),
+                      VitalisHabit.gym => () {
+                          final duration = habitsController.gymDurationMinutes;
+                          final intensity = habitsController.gymIntensity;
+                          final focus = habitsController.gymFocus;
+                          if (duration == null || intensity == null || focus == null) {
+                            return 'Defina seu treino na academia';
+                          }
+                          final focusLabel = switch (focus) {
+                            VitalisGymFocus.forca => 'Força',
+                            VitalisGymFocus.cardio => 'Cardio',
+                            VitalisGymFocus.flexibilidade => 'Flexibilidade',
+                          };
+                          final intensityLabel = switch (intensity) {
+                            VitalisGymIntensity.leve => 'Leve',
+                            VitalisGymIntensity.moderada => 'Moderada',
+                            VitalisGymIntensity.intensa => 'Intensa',
+                          };
+                          final line1 = '$focusLabel • $intensityLabel';
+                          final days = formatDaysOfWeek(habitsController.gymDaysOfWeek);
+                          return days.isEmpty ? line1 : '$line1\n$days';
+                        }(),
+                      _ => d.subtitle ?? '50% concluído',
+                    };
+
+                    final dynamicTopRightText = switch (d.habit) {
+                      VitalisHabit.hydration => () {
+                          final goal = habitsController.hydrationGoalMl;
+                          final consumed = habitsController.hydrationConsumedMl;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatLiters(consumed)} / ${formatLiters(goal)}L';
+                        }(),
+                      VitalisHabit.sleep => () {
+                          final goal = habitsController.sleepGoalMinutes;
+                          final slept = habitsController.sleepMinutes;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatHours(slept)} / ${formatHours(goal)}h';
+                        }(),
+                      VitalisHabit.movement => () {
+                          final goal = habitsController.movementGoalMeters;
+                          final moved = habitsController.movementMeters;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatKm(moved)} / ${formatKm(goal)}km';
+                        }(),
+                      VitalisHabit.swimming => () {
+                          final goal = habitsController.swimmingGoalMeters;
+                          final moved = habitsController.swimmingMeters;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatKm(moved)} / ${formatKm(goal)}km';
+                        }(),
+                      VitalisHabit.reading => () {
+                          final pages = habitsController.readingPageGoal;
+                          if (pages == null) return '—';
+                          return '$pages pág.';
+                        }(),
+                      VitalisHabit.fasting => () {
+                          final hours = habitsController.fastingDurationHours;
+                          if (hours == null) return '—';
+                          return '${hours}h';
+                        }(),
+                      VitalisHabit.mood => () {
+                          final target = habitsController.moodTargetLevel;
+                          if (target == null) return '—';
+                          return moodLabel(target);
+                        }(),
+                      VitalisHabit.gym => () {
+                          final duration = habitsController.gymDurationMinutes;
+                          if (duration == null) return '—';
+                          return '${duration}min';
+                        }(),
+                      _ => d.topRightText ?? '50%',
+                    };
+
+                    final dynamicProgress = switch (d.habit) {
+                      VitalisHabit.hydration => () {
+                          final goal = habitsController.hydrationGoalMl;
+                          final consumed = habitsController.hydrationConsumedMl;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (consumed / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.sleep => () {
+                          final goal = habitsController.sleepGoalMinutes;
+                          final slept = habitsController.sleepMinutes;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (slept / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.movement => () {
+                          final goal = habitsController.movementGoalMeters;
+                          final moved = habitsController.movementMeters;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (moved / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.swimming => () {
+                          final goal = habitsController.swimmingGoalMeters;
+                          final moved = habitsController.swimmingMeters;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (moved / goal).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.reading => () {
+                          final pages = habitsController.readingPageGoal;
+                          if (pages == null || pages <= 0) return 0.0;
+                          return 0.0;
+                        }(),
+                      VitalisHabit.fasting => () {
+                          final hours = habitsController.fastingDurationHours;
+                          if (hours == null || hours <= 0) return 0.0;
+                          return (hours / 24).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.mood => () {
+                          final target = habitsController.moodTargetLevel;
+                          if (target == null) return 0.0;
+                          return (target / 4).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.gym => () {
+                          final duration = habitsController.gymDurationMinutes;
+                          if (duration == null) return 0.0;
+                          return (duration / 120).clamp(0.0, 1.0);
+                        }(),
+                      _ => VitalisHabitsCatalog.progress,
+                    };
+
                     return VitalisHabitCard(
                       title: d.title,
-                      subtitle: d.subtitle ?? '50% concluído',
-                      progress: VitalisHabitsCatalog.progress,
+                      subtitle: dynamicSubtitle,
+                      progress: dynamicProgress,
                       progressColor: d.progressColor,
                       iconAsset: d.iconAsset,
-                      topRightText: d.topRightText ?? '50%',
+                      topRightText: dynamicTopRightText,
                       iconBackgroundColor: d.iconBackgroundColor,
                       iconSize: d.iconSize,
                     );
@@ -181,28 +403,40 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageWinnerFriends.png',
+                icon: Icons.groups_outlined,
+                iconBackgroundColor: const Color(0xFFEAF9F0),
                 title: 'Conecte-se com seus amigos\ne pratique disputas saudáveis!',
+                description: 'A motivação é maior quando compartilhada.\nCrie desafios e celebre vitórias juntos.',
                 actionText: 'Iniciar Conexão',
                 onPressed: openPremium,
               ),
               const SizedBox(height: 6),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImagePisicology.png',
+                icon: Icons.psychology_outlined,
+                iconBackgroundColor: const Color(0xFFEDEFFF),
                 title: 'Precisa de ajuda?\nConte com nossa equipe de psicólogos.',
+                description: 'Uma mente merece cuidado profissional.\nEncontre suporte quando mais precisar.',
                 actionText: 'Ver Mais',
                 onPressed: openPremium,
               ),
               const SizedBox(height: 6),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageLibrary.png',
+                icon: Icons.menu_book_outlined,
+                iconBackgroundColor: const Color(0xFFEAF2FF),
                 title: 'Sem boas leituras?\nConfira nossa lista de livros!',
+                description: 'Expanda seus horizontes com curadorias\nfocadas em desenvolvimento pessoal.',
                 actionText: 'Ver Mais',
                 onPressed: openPremium,
               ),
               const SizedBox(height: 6),
               _ImageCtaCard(
                 imageAsset: 'lib/assets/images/backgorundImageMedita.png',
+                icon: Icons.self_improvement_outlined,
+                iconBackgroundColor: const Color(0xFFFFF1E6),
                 title: 'Mantenha a calma e respire\nfundo.',
+                description: 'Sessões guiadas para reduzir estresse,\naumentar foco e relaxar.',
                 actionText: 'Iniciar Meditação',
                 onPressed: openPremium,
               ),
@@ -373,13 +607,19 @@ class _NoHabitsCard extends StatelessWidget {
 class _ImageCtaCard extends StatelessWidget {
   const _ImageCtaCard({
     required this.imageAsset,
+    required this.icon,
+    required this.iconBackgroundColor,
     required this.title,
+    required this.description,
     required this.actionText,
     this.onPressed,
   });
 
   final String imageAsset;
+  final IconData icon;
+  final Color iconBackgroundColor;
   final String title;
+  final String description;
   final String actionText;
   final VoidCallback? onPressed;
 
@@ -387,69 +627,92 @@ class _ImageCtaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return SizedBox(
-      height: 180,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
-          borderRadius: BorderRadius.circular(18),
-          child: ClipRRect(
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.08),
-                    ),
-                    child: Image.asset(
-                      imageAsset,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                    ),
-                  ),
+            border: Border.all(color: AppColors.surfaceContainer, width: 1),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: iconBackgroundColor,
+                  borderRadius: BorderRadius.circular(999),
                 ),
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.06),
-                          Colors.black.withValues(alpha: 0.32),
-                        ],
+                child: SizedBox(
+                  width: 46,
+                  height: 46,
+                  child: Icon(icon, color: AppColors.secondary),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.onSurface,
+                        height: 1.12,
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          height: 1.12,
+                    const SizedBox(height: 6),
+                    Text(
+                      description,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.outline,
+                        height: 1.25,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          actionText,
+                          style: textTheme.labelLarge?.copyWith(
+                            color: AppColors.secondary,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        actionText,
-                        style: textTheme.titleSmall?.copyWith(
-                          color: const Color(0xFFBDF3E4),
-                          fontWeight: FontWeight.w700,
+                        const SizedBox(width: 6),
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 16,
+                          color: AppColors.secondary,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.surfaceContainer, width: 1),
+                ),
+                child: ClipOval(
+                  child: Image.asset(
+                    imageAsset,
+                    width: 56,
+                    height: 56,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
