@@ -394,6 +394,7 @@ class HomeScreen extends StatelessWidget {
                       progress: dynamicProgress,
                       progressColor: d.progressColor,
                       iconAsset: d.iconAsset,
+                      iconData: d.iconData,
                       topRightText: dynamicTopRightText,
                       iconBackgroundColor: d.iconBackgroundColor,
                       iconSize: d.iconSize,
