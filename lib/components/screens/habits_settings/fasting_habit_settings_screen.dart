@@ -3,6 +3,7 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/common/vitalis_reminder_time_field.dart';
 import 'package:vitalis_app/components/common/vitalis_text_field.dart';
 
 class FastingHabitSettingsScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class FastingHabitSettingsScreen extends StatefulWidget {
 class _FastingHabitSettingsScreenState extends State<FastingHabitSettingsScreen> {
   final _purposeController = TextEditingController();
   double _durationHours = 8;
+  TimeOfDay _reminderTime = const TimeOfDay(hour: 20, minute: 0);
   String? _purposeError;
   bool _initialized = false;
 
@@ -114,7 +116,7 @@ class _FastingHabitSettingsScreenState extends State<FastingHabitSettingsScreen>
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/fastForHabits.png',
+                                'lib/assets/images/habitsImages/fastForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
                                 errorBuilder: (context, error, stackTrace) {
@@ -273,6 +275,11 @@ class _FastingHabitSettingsScreenState extends State<FastingHabitSettingsScreen>
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(height: 18),
+                    VitalisReminderTimeField(
+                      time: _reminderTime,
+                      onChanged: (value) => setState(() => _reminderTime = value),
                     ),
                     const SizedBox(height: 18),
                     const _NoticeCard(

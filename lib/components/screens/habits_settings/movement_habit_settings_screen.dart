@@ -3,6 +3,7 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/common/vitalis_reminder_time_field.dart';
 
 class MovementHabitSettingsScreen extends StatefulWidget {
   const MovementHabitSettingsScreen({super.key});
@@ -14,6 +15,7 @@ class MovementHabitSettingsScreen extends StatefulWidget {
 class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScreen> {
   double _distanceKm = 5;
   final Set<int> _selectedDaysOfWeek = {};
+  TimeOfDay _reminderTime = const TimeOfDay(hour: 20, minute: 0);
   bool _initialized = false;
 
   @override
@@ -126,7 +128,7 @@ class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScree
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/walkForHabits.png',
+                                'lib/assets/images/habitsImages/walkForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
                               ),
@@ -359,6 +361,11 @@ class _MovementHabitSettingsScreenState extends State<MovementHabitSettingsScree
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(height: 12),
+                    VitalisReminderTimeField(
+                      time: _reminderTime,
+                      onChanged: (value) => setState(() => _reminderTime = value),
                     ),
                     const SizedBox(height: 12),
                     Row(

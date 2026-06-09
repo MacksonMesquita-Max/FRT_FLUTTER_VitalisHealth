@@ -5,17 +5,19 @@ class VitalisHabitDefinition {
   const VitalisHabitDefinition({
     required this.habit,
     required this.title,
-    required this.iconAsset,
     required this.progressColor,
     required this.iconBackgroundColor,
+    this.iconAsset,
+    this.iconData,
     this.subtitle,
     this.topRightText,
     this.iconSize = 22,
-  });
+  }) : assert(iconAsset != null || iconData != null);
 
   final VitalisHabit habit;
   final String title;
-  final String iconAsset;
+  final String? iconAsset;
+  final IconData? iconData;
   final String? subtitle;
   final String? topRightText;
   final Color progressColor;
@@ -104,7 +106,7 @@ abstract final class VitalisHabitsCatalog {
     ),
     VitalisHabitDefinition(
       habit: VitalisHabit.extraNotifications,
-      title: 'Notificações',
+      title: 'Notificação Personalizada',
       subtitle: '50% concluído',
       topRightText: '50%',
       iconAsset: 'lib/assets/icons/notifications.svg',
@@ -233,7 +235,7 @@ abstract final class VitalisHabitsCatalog {
       title: 'Ciclismo',
       subtitle: '50% concluído',
       topRightText: '50%',
-      iconAsset: 'lib/assets/icons/cycling.svg',
+      iconData: Icons.pedal_bike_outlined,
       progressColor: Color(0xFFFF8A34),
       iconBackgroundColor: Color(0xFFFFF1E6),
     ),

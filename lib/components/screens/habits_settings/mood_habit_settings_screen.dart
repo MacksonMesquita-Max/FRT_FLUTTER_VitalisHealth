@@ -3,6 +3,7 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/common/vitalis_reminder_time_field.dart';
 
 class MoodHabitSettingsScreen extends StatefulWidget {
   const MoodHabitSettingsScreen({super.key});
@@ -14,6 +15,7 @@ class MoodHabitSettingsScreen extends StatefulWidget {
 class _MoodHabitSettingsScreenState extends State<MoodHabitSettingsScreen> {
   int _lastWeekLevel = 2;
   VitalisMoodGoalMethod _method = VitalisMoodGoalMethod.manterCalma;
+  TimeOfDay _reminderTime = const TimeOfDay(hour: 20, minute: 0);
   bool _initialized = false;
 
   @override
@@ -120,7 +122,7 @@ class _MoodHabitSettingsScreenState extends State<MoodHabitSettingsScreen> {
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/smileForHabits.png',
+                                'lib/assets/images/habitsImages/smileForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
                               ),
@@ -288,6 +290,11 @@ class _MoodHabitSettingsScreenState extends State<MoodHabitSettingsScreen> {
                       title: 'Reduzir ansiedade',
                       subtitle: 'Aprender técnicas de respiração e\npresença.',
                       onTap: () => setState(() => _method = VitalisMoodGoalMethod.reduzirAnsiedade),
+                    ),
+                    const SizedBox(height: 18),
+                    VitalisReminderTimeField(
+                      time: _reminderTime,
+                      onChanged: (value) => setState(() => _reminderTime = value),
                     ),
                   ],
                 ),
