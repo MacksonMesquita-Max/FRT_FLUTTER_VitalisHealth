@@ -177,15 +177,6 @@ abstract final class VitalisHabitsCatalog {
       iconBackgroundColor: Color(0xFFEDEFFF),
     ),
     VitalisHabitDefinition(
-      habit: VitalisHabit.trail,
-      title: 'Trilha',
-      subtitle: '50% concluído',
-      topRightText: '50%',
-      iconAsset: 'lib/assets/icons/trail.svg',
-      progressColor: Color(0xFF46C37B),
-      iconBackgroundColor: Color(0xFFEAF9F0),
-    ),
-    VitalisHabitDefinition(
       habit: VitalisHabit.socialActivities,
       title: 'Social',
       subtitle: '50% concluído',

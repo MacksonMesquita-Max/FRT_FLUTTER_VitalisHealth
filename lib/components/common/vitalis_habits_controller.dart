@@ -17,7 +17,6 @@ enum VitalisHabit {
   studies,
   climbing,
   music,
-  trail,
   socialActivities,
   martialArts,
   dance,
@@ -86,6 +85,46 @@ class VitalisHabitsController extends ChangeNotifier {
   int? _drawingPaintingDurationMinutes;
   final Set<int> _drawingPaintingDaysOfWeek = {};
   int? _drawingPaintingReminderMinutes;
+  String? _medicineName;
+  final Set<int> _medicineDaysOfWeek = {};
+  int? _medicineReminderMinutes;
+  String? _studiesSubject;
+  int? _studiesStudyMinutes;
+  final Set<int> _studiesDaysOfWeek = {};
+  int? _studiesReminderMinutes;
+  int? _climbingGoalMeters;
+  int _climbingMeters = 0;
+  final Set<int> _climbingDaysOfWeek = {};
+  int? _climbingReminderMinutes;
+  int? _musicStudyMinutes;
+  final Set<int> _musicDaysOfWeek = {};
+  int? _musicReminderMinutes;
+  String? _socialEventName;
+  final Set<int> _socialDaysOfWeek = {};
+  int? _socialStartMinutes;
+  int? _socialReminderMinutes;
+  String? _martialArtName;
+  final Set<int> _martialArtsDaysOfWeek = {};
+  int? _martialArtsStartMinutes;
+  int? _martialArtsReminderMinutes;
+  String? _danceStyleName;
+  final Set<int> _danceDaysOfWeek = {};
+  int? _danceStartMinutes;
+  int? _danceReminderMinutes;
+  String? _financialPurposeName;
+  int? _financialSavedAmount;
+  int? _financialTargetAmount;
+  final Set<int> _financialDaysOfWeek = {};
+  int? _financialReminderMinutes;
+  String? _travelDestinationName;
+  DateTime? _travelDate;
+  final List<String> _travelPackingItems = [];
+  final Set<int> _travelDaysOfWeek = {};
+  int? _travelReminderMinutes;
+  int? _cyclingGoalMeters;
+  int _cyclingMeters = 0;
+  final Set<int> _cyclingDaysOfWeek = {};
+  int? _cyclingReminderMinutes;
 
   Set<VitalisHabit> get habits => Set.unmodifiable(_habits);
 
@@ -174,6 +213,86 @@ class VitalisHabitsController extends ChangeNotifier {
 
   int? get drawingPaintingReminderMinutes =>
       _drawingPaintingReminderMinutes;
+
+  String? get medicineName => _medicineName;
+
+  Set<int> get medicineDaysOfWeek => Set.unmodifiable(_medicineDaysOfWeek);
+
+  int? get medicineReminderMinutes => _medicineReminderMinutes;
+
+  String? get studiesSubject => _studiesSubject;
+
+  int? get studiesStudyMinutes => _studiesStudyMinutes;
+
+  Set<int> get studiesDaysOfWeek => Set.unmodifiable(_studiesDaysOfWeek);
+
+  int? get studiesReminderMinutes => _studiesReminderMinutes;
+
+  int? get climbingGoalMeters => _climbingGoalMeters;
+
+  int get climbingMeters => _climbingMeters;
+
+  Set<int> get climbingDaysOfWeek => Set.unmodifiable(_climbingDaysOfWeek);
+
+  int? get climbingReminderMinutes => _climbingReminderMinutes;
+
+  int? get musicStudyMinutes => _musicStudyMinutes;
+
+  Set<int> get musicDaysOfWeek => Set.unmodifiable(_musicDaysOfWeek);
+
+  int? get musicReminderMinutes => _musicReminderMinutes;
+
+  String? get socialEventName => _socialEventName;
+
+  Set<int> get socialDaysOfWeek => Set.unmodifiable(_socialDaysOfWeek);
+
+  int? get socialStartMinutes => _socialStartMinutes;
+
+  int? get socialReminderMinutes => _socialReminderMinutes;
+
+  String? get martialArtName => _martialArtName;
+
+  Set<int> get martialArtsDaysOfWeek => Set.unmodifiable(_martialArtsDaysOfWeek);
+
+  int? get martialArtsStartMinutes => _martialArtsStartMinutes;
+
+  int? get martialArtsReminderMinutes => _martialArtsReminderMinutes;
+
+  String? get danceStyleName => _danceStyleName;
+
+  Set<int> get danceDaysOfWeek => Set.unmodifiable(_danceDaysOfWeek);
+
+  int? get danceStartMinutes => _danceStartMinutes;
+
+  int? get danceReminderMinutes => _danceReminderMinutes;
+
+  String? get financialPurposeName => _financialPurposeName;
+
+  int? get financialSavedAmount => _financialSavedAmount;
+
+  int? get financialTargetAmount => _financialTargetAmount;
+
+  Set<int> get financialDaysOfWeek => Set.unmodifiable(_financialDaysOfWeek);
+
+  int? get financialReminderMinutes => _financialReminderMinutes;
+
+  String? get travelDestinationName => _travelDestinationName;
+
+  DateTime? get travelDate => _travelDate;
+
+  List<String> get travelPackingItems => List.unmodifiable(_travelPackingItems);
+
+  Set<int> get travelDaysOfWeek => Set.unmodifiable(_travelDaysOfWeek);
+
+  int? get travelReminderMinutes => _travelReminderMinutes;
+
+  int? get cyclingGoalMeters => _cyclingGoalMeters;
+
+  int get cyclingMeters => _cyclingMeters;
+
+  Set<int> get cyclingDaysOfWeek => Set.unmodifiable(_cyclingDaysOfWeek);
+
+  int? get cyclingReminderMinutes => _cyclingReminderMinutes;
 
   void setHydrationGoalMl(int goalMl) {
     if (goalMl <= 0) return;
@@ -420,6 +539,197 @@ class VitalisHabitsController extends ChangeNotifier {
       ..clear()
       ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
     _drawingPaintingReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setMedicinePlan({
+    required String medicineName,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    final normalizedMedicineName = medicineName.trim();
+    if (normalizedMedicineName.isEmpty) return;
+
+    _medicineName = normalizedMedicineName;
+    _medicineDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _medicineReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setStudiesPlan({
+    required String subject,
+    required int studyMinutes,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    final normalizedSubject = subject.trim();
+    if (normalizedSubject.isEmpty || studyMinutes <= 0) return;
+
+    _studiesSubject = normalizedSubject;
+    _studiesStudyMinutes = studyMinutes.clamp(5, 180);
+    _studiesDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _studiesReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setClimbingPlan({
+    required int goalMeters,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    if (goalMeters <= 0) return;
+
+    _climbingGoalMeters = goalMeters;
+    if (_climbingMeters > goalMeters) {
+      _climbingMeters = goalMeters;
+    }
+    _climbingDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _climbingReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setMusicPlan({
+    required int studyMinutes,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    if (studyMinutes <= 0) return;
+
+    _musicStudyMinutes = studyMinutes.clamp(5, 180);
+    _musicDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _musicReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setSocialActivitiesPlan({
+    required String eventName,
+    required Set<int> daysOfWeek,
+    required int startMinutes,
+    required int reminderMinutes,
+  }) {
+    final normalizedEventName = eventName.trim();
+    if (normalizedEventName.isEmpty) return;
+
+    _socialEventName = normalizedEventName;
+    _socialDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _socialStartMinutes = startMinutes.clamp(0, 1439);
+    _socialReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setMartialArtsPlan({
+    required String martialArtName,
+    required Set<int> daysOfWeek,
+    required int startMinutes,
+    required int reminderMinutes,
+  }) {
+    final normalizedMartialArtName = martialArtName.trim();
+    if (normalizedMartialArtName.isEmpty) return;
+
+    _martialArtName = normalizedMartialArtName;
+    _martialArtsDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _martialArtsStartMinutes = startMinutes.clamp(0, 1439);
+    _martialArtsReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setDancePlan({
+    required String danceStyleName,
+    required Set<int> daysOfWeek,
+    required int startMinutes,
+    required int reminderMinutes,
+  }) {
+    final normalizedDanceStyleName = danceStyleName.trim();
+    if (normalizedDanceStyleName.isEmpty) return;
+
+    _danceStyleName = normalizedDanceStyleName;
+    _danceDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _danceStartMinutes = startMinutes.clamp(0, 1439);
+    _danceReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setFinancialGoalsPlan({
+    required String purposeName,
+    required int savedAmount,
+    required int targetAmount,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    final normalizedPurposeName = purposeName.trim();
+    if (normalizedPurposeName.isEmpty || savedAmount < 0 || targetAmount <= 0) {
+      return;
+    }
+
+    _financialPurposeName = normalizedPurposeName;
+    _financialSavedAmount = savedAmount;
+    _financialTargetAmount = targetAmount;
+    _financialDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _financialReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setTravelPlan({
+    required String destinationName,
+    required DateTime travelDate,
+    required List<String> packingItems,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    final normalizedDestinationName = destinationName.trim();
+    final normalizedItems = packingItems
+        .map((item) => item.trim())
+        .where((item) => item.isNotEmpty)
+        .toList();
+    if (normalizedDestinationName.isEmpty) return;
+
+    _travelDestinationName = normalizedDestinationName;
+    _travelDate = DateTime(
+      travelDate.year,
+      travelDate.month,
+      travelDate.day,
+    );
+    _travelPackingItems
+      ..clear()
+      ..addAll(normalizedItems);
+    _travelDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _travelReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setCyclingPlan({
+    required int goalMeters,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    if (goalMeters <= 0) return;
+
+    _cyclingGoalMeters = goalMeters;
+    if (_cyclingMeters > goalMeters) {
+      _cyclingMeters = goalMeters;
+    }
+    _cyclingDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _cyclingReminderMinutes = reminderMinutes.clamp(0, 1439);
     notifyListeners();
   }
 
