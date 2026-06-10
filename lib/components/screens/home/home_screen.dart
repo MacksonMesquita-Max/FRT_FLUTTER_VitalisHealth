@@ -45,6 +45,32 @@ class HomeScreen extends StatelessWidget {
       return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
     }
 
+    String formatTimeFromMinutes(int totalMinutes) {
+      final normalized = totalMinutes.clamp(0, 1439);
+      final hour = (normalized ~/ 60).toString().padLeft(2, '0');
+      final minute = (normalized % 60).toString().padLeft(2, '0');
+      return '$hour:$minute';
+    }
+
+    String formatMoney(int amount) {
+      final digits = amount.toString();
+      final buffer = StringBuffer();
+      for (var i = 0; i < digits.length; i++) {
+        buffer.write(digits[i]);
+        final remaining = digits.length - i - 1;
+        if (remaining > 0 && remaining % 3 == 0) {
+          buffer.write('.');
+        }
+      }
+      return 'R\$ ${buffer.toString()}';
+    }
+
+    String formatDate(DateTime value) {
+      final day = value.day.toString().padLeft(2, '0');
+      final month = value.month.toString().padLeft(2, '0');
+      return '$day/$month/${value.year}';
+    }
+
     String formatDaysOfWeek(Set<int> daysOfWeek) {
       if (daysOfWeek.isEmpty) return '';
       if (daysOfWeek.length >= 7) return 'Todos os dias';
@@ -147,7 +173,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Como você está se sentindo hoje?\nReserve um momento para você.',
+                'Como está se sentindo hoje?\nReserve um momento para você.',
                 style: textTheme.bodyMedium?.copyWith(
                   color: AppColors.outline,
                   height: 1.25,
@@ -298,6 +324,60 @@ class HomeScreen extends StatelessWidget {
                           final days = formatDaysOfWeek(habitsController.gymDaysOfWeek);
                           return days.isEmpty ? line1 : '$line1\n$days';
                         }(),
+                      VitalisHabit.socialActivities => () {
+                          final eventName = habitsController.socialEventName;
+                          if (eventName == null || eventName.isEmpty) {
+                            return 'Defina seu evento social';
+                          }
+                          final days = formatDaysOfWeek(habitsController.socialDaysOfWeek);
+                          return days.isEmpty ? eventName : '$eventName\n$days';
+                        }(),
+                      VitalisHabit.martialArts => () {
+                          final martialArtName = habitsController.martialArtName;
+                          if (martialArtName == null || martialArtName.isEmpty) {
+                            return 'Defina sua arte marcial';
+                          }
+                          final days = formatDaysOfWeek(
+                            habitsController.martialArtsDaysOfWeek,
+                          );
+                          return days.isEmpty
+                              ? martialArtName
+                              : '$martialArtName\n$days';
+                        }(),
+                      VitalisHabit.dance => () {
+                          final danceStyleName = habitsController.danceStyleName;
+                          if (danceStyleName == null || danceStyleName.isEmpty) {
+                            return 'Defina sua danca';
+                          }
+                          final days = formatDaysOfWeek(habitsController.danceDaysOfWeek);
+                          return days.isEmpty ? danceStyleName : '$danceStyleName\n$days';
+                        }(),
+                      VitalisHabit.financialGoals => () {
+                          final purposeName = habitsController.financialPurposeName;
+                          final saved = habitsController.financialSavedAmount;
+                          final target = habitsController.financialTargetAmount;
+                          if (purposeName == null || saved == null || target == null) {
+                            return 'Defina seu objetivo financeiro';
+                          }
+                          return '$purposeName\n${formatMoney(saved)} de ${formatMoney(target)}';
+                        }(),
+                      VitalisHabit.travel => () {
+                          final destination = habitsController.travelDestinationName;
+                          final travelDate = habitsController.travelDate;
+                          if (destination == null || travelDate == null) {
+                            return 'Defina seu destino e a data da viagem';
+                          }
+                          return '$destination\n${formatDate(travelDate)}';
+                        }(),
+                      VitalisHabit.cycling => () {
+                          final goal = habitsController.cyclingGoalMeters;
+                          if (goal == null || goal <= 0) {
+                            return 'Defina sua meta de distancia';
+                          }
+                          final days = formatDaysOfWeek(habitsController.cyclingDaysOfWeek);
+                          final line1 = 'Meta: ${formatKm(goal)}km por sessao';
+                          return days.isEmpty ? line1 : '$line1\n$days';
+                        }(),
                       _ => d.subtitle ?? '50% concluído',
                     };
 
@@ -346,6 +426,41 @@ class HomeScreen extends StatelessWidget {
                           if (duration == null) return '—';
                           return '${duration}min';
                         }(),
+                      VitalisHabit.socialActivities => () {
+                          final start = habitsController.socialStartMinutes;
+                          if (start == null) return '—';
+                          return formatTimeFromMinutes(start);
+                        }(),
+                      VitalisHabit.martialArts => () {
+                          final start = habitsController.martialArtsStartMinutes;
+                          if (start == null) return '—';
+                          return formatTimeFromMinutes(start);
+                        }(),
+                      VitalisHabit.dance => () {
+                          final start = habitsController.danceStartMinutes;
+                          if (start == null) return '—';
+                          return formatTimeFromMinutes(start);
+                        }(),
+                      VitalisHabit.financialGoals => () {
+                          final saved = habitsController.financialSavedAmount;
+                          final target = habitsController.financialTargetAmount;
+                          if (saved == null || target == null || target <= 0) return '—';
+                          return '${((saved / target) * 100).clamp(0, 100).round()}%';
+                        }(),
+                      VitalisHabit.travel => () {
+                          final travelDate = habitsController.travelDate;
+                          if (travelDate == null) return '—';
+                          final now = DateTime.now();
+                          final today = DateTime(now.year, now.month, now.day);
+                          final days = travelDate.difference(today).inDays;
+                          if (days <= 0) return 'Hoje';
+                          return '${days}d';
+                        }(),
+                      VitalisHabit.cycling => () {
+                          final goal = habitsController.cyclingGoalMeters;
+                          if (goal == null || goal <= 0) return '—';
+                          return '${formatKm(goal)}km';
+                        }(),
                       _ => d.topRightText ?? '50%',
                     };
 
@@ -393,6 +508,26 @@ class HomeScreen extends StatelessWidget {
                           final duration = habitsController.gymDurationMinutes;
                           if (duration == null) return 0.0;
                           return (duration / 120).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.financialGoals => () {
+                          final saved = habitsController.financialSavedAmount;
+                          final target = habitsController.financialTargetAmount;
+                          if (saved == null || target == null || target <= 0) return 0.0;
+                          return (saved / target).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.travel => () {
+                          final travelDate = habitsController.travelDate;
+                          if (travelDate == null) return 0.0;
+                          final now = DateTime.now();
+                          final today = DateTime(now.year, now.month, now.day);
+                          final days = travelDate.difference(today).inDays;
+                          if (days <= 0) return 1.0;
+                          return (1 / (days + 1)).clamp(0.0, 1.0);
+                        }(),
+                      VitalisHabit.cycling => () {
+                          final goal = habitsController.cyclingGoalMeters;
+                          if (goal == null || goal <= 0) return 0.0;
+                          return (goal / 60000).clamp(0.0, 1.0);
                         }(),
                       _ => VitalisHabitsCatalog.progress,
                     };

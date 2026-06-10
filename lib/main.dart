@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
-import 'package:vitalis_app/components/screens/start/start_screen.dart';
+import 'package:vitalis_app/components/screens/start/entry_animation_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
           child: child ?? const SizedBox.shrink(),
         );
       },
-      home: const StartScreen(),
+      home: const EntryAnimationScreen(),
     );
   }
 }

@@ -7,13 +7,15 @@ class VitalisReminderTimeField extends StatelessWidget {
     required this.time,
     required this.onChanged,
     this.label = 'HORARIO DO LEMBRETE',
-    this.helperText = 'Voce recebera uma notificacao no horario definido.',
+    this.helperText = 'Você recebera uma notificação no horário definido.',
+    this.trailingIcon = Icons.notifications_none_outlined,
   });
 
   final TimeOfDay time;
   final ValueChanged<TimeOfDay> onChanged;
   final String label;
   final String helperText;
+  final IconData trailingIcon;
 
   String _formatTime(TimeOfDay value) {
     final hour = value.hour.toString().padLeft(2, '0');
@@ -79,7 +81,7 @@ class VitalisReminderTimeField extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const _ReminderTrailingIcon(),
+                  _ReminderTrailingIcon(icon: trailingIcon),
                 ],
               ),
             ),
@@ -88,7 +90,7 @@ class VitalisReminderTimeField extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           helperText,
-          style: textTheme.bodyLarge?.copyWith(
+          style: textTheme.bodyMedium?.copyWith(
             color: AppColors.outlineVariant,
             height: 1.25,
           ),
@@ -99,12 +101,16 @@ class VitalisReminderTimeField extends StatelessWidget {
 }
 
 class _ReminderTrailingIcon extends StatelessWidget {
-  const _ReminderTrailingIcon();
+  const _ReminderTrailingIcon({
+    required this.icon,
+  });
+
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(
-      Icons.notifications_none_outlined,
+    return Icon(
+      icon,
       size: 22,
       color: AppColors.outlineVariant,
     );

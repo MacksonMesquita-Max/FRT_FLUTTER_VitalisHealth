@@ -5,19 +5,28 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
-import 'package:vitalis_app/components/screens/habits_settings/habit_settings_placeholder_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/gym_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/fasting_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/drawing_painting_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/climbing_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/cycling_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/dance_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/hydration_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/financial_goals_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/languages_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/martial_arts_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/medicine_time_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/movement_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/mood_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/music_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/notifications_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/reading_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/religious_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/sleep_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/social_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/studies_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/swimming_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/travel_habit_settings_screen.dart';
 
 class SelectHabitsScreen extends StatefulWidget {
   const SelectHabitsScreen({super.key});
@@ -49,7 +58,6 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
   }
 
   Future<void> _openHabitSettings(VitalisHabit habit) async {
-    final definition = VitalisHabitsCatalog.definitionFor(habit);
     final route = MaterialPageRoute<bool>(
       builder: (_) {
         switch (habit) {
@@ -77,8 +85,26 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
             return const DrawingPaintingHabitSettingsScreen();
           case VitalisHabit.languages:
             return const LanguagesHabitSettingsScreen();
-          default:
-            return HabitSettingsPlaceholderScreen(title: definition.title);
+          case VitalisHabit.medicineTime:
+            return const MedicineTimeHabitSettingsScreen();
+          case VitalisHabit.studies:
+            return const StudiesHabitSettingsScreen();
+          case VitalisHabit.climbing:
+            return const ClimbingHabitSettingsScreen();
+          case VitalisHabit.music:
+            return const MusicHabitSettingsScreen();
+          case VitalisHabit.socialActivities:
+            return const SocialHabitSettingsScreen();
+          case VitalisHabit.martialArts:
+            return const MartialArtsHabitSettingsScreen();
+          case VitalisHabit.dance:
+            return const DanceHabitSettingsScreen();
+          case VitalisHabit.financialGoals:
+            return const FinancialGoalsHabitSettingsScreen();
+          case VitalisHabit.travel:
+            return const TravelHabitSettingsScreen();
+          case VitalisHabit.cycling:
+            return const CyclingHabitSettingsScreen();
         }
       },
     );
@@ -227,6 +253,11 @@ class _HabitTile extends StatelessWidget {
     final asset = iconAsset;
     final isSvg = asset?.toLowerCase().endsWith('.svg') ?? false;
     final iconLower = asset?.toLowerCase() ?? '';
+    final useReadingCatalogIcon = iconLower.endsWith('reading.svg');
+    final useTravelCatalogIcon = iconLower.endsWith('travel.svg');
+    final useNotificationsCatalogIcon = iconLower.endsWith('notifications.svg');
+    final useClimbingCatalogIcon = iconLower.endsWith('climbing.svg');
+    final useReligiousCatalogIcon = iconLower.endsWith('religious.svg');
     final applySvgColorFilter = !(iconLower.endsWith('medicine.svg') ||
         iconLower.endsWith('reading.svg'));
     final textTheme = Theme.of(context).textTheme;
@@ -271,7 +302,37 @@ class _HabitTile extends StatelessWidget {
                         width: 46,
                         height: 46,
                         child: Center(
-                          child: iconData != null
+                          child: useReadingCatalogIcon
+                              ? const Icon(
+                                  Icons.auto_stories_outlined,
+                                  size: 24,
+                                  color: AppColors.primary,
+                                )
+                              : useTravelCatalogIcon
+                              ? const Icon(
+                                  Icons.airplane_ticket_outlined,
+                                  size: 24,
+                                  color: AppColors.primary,
+                                )
+                              : useNotificationsCatalogIcon
+                              ? const Icon(
+                                  Icons.circle_notifications_outlined,
+                                  size: 24,
+                                  color: AppColors.primary,
+                                )
+                              : useClimbingCatalogIcon
+                              ? const Icon(
+                                  Icons.hiking_outlined,
+                                  size: 24,
+                                  color: AppColors.primary,
+                                )
+                              : useReligiousCatalogIcon
+                              ? const Icon(
+                                  Icons.church,
+                                  size: 24,
+                                  color: AppColors.primary,
+                                )
+                              : iconData != null
                               ? Icon(
                                   iconData,
                                   size: 24,
