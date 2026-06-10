@@ -3,6 +3,7 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/common/vitalis_reminder_time_field.dart';
 import 'package:vitalis_app/components/common/vitalis_text_field.dart';
 
 class ReadingHabitSettingsScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class _ReadingHabitSettingsScreenState extends State<ReadingHabitSettingsScreen>
   final _bookController = TextEditingController();
   final Set<int> _selectedDays = {};
   double _pageGoal = 20;
+  TimeOfDay _reminderTime = const TimeOfDay(hour: 20, minute: 0);
   String? _bookError;
   bool _initialized = false;
 
@@ -126,7 +128,7 @@ class _ReadingHabitSettingsScreenState extends State<ReadingHabitSettingsScreen>
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/readForHabits.png',
+                                'lib/assets/images/habitsImages/readForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
                               ),
@@ -324,14 +326,12 @@ class _ReadingHabitSettingsScreenState extends State<ReadingHabitSettingsScreen>
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Lembretes serão enviados às 20h nos dias selecionados.',
-                      style: textTheme.bodyLarge?.copyWith(
-                        color: AppColors.outlineVariant,
-                        height: 1.3,
-                      ),
+                    const SizedBox(height: 18),
+                    VitalisReminderTimeField(
+                      time: _reminderTime,
+                      onChanged: (value) => setState(() => _reminderTime = value),
                     ),
+                    const SizedBox(height: 5),
                   ],
                 ),
               ),

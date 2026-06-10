@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vitalis_app/components/components/habits/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
-import 'package:vitalis_app/components/common/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 import 'package:vitalis_app/components/screens/habits_settings/habit_settings_placeholder_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/gym_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/fasting_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/drawing_painting_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/hydration_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/languages_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/movement_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/mood_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/notifications_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/reading_habit_settings_screen.dart';
+import 'package:vitalis_app/components/screens/habits_settings/religious_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/sleep_habit_settings_screen.dart';
 import 'package:vitalis_app/components/screens/habits_settings/swimming_habit_settings_screen.dart';
 
@@ -65,6 +69,14 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
             return const ReadingHabitSettingsScreen();
           case VitalisHabit.fasting:
             return const FastingHabitSettingsScreen();
+          case VitalisHabit.extraNotifications:
+            return const NotificationsHabitSettingsScreen();
+          case VitalisHabit.religious:
+            return const ReligiousHabitSettingsScreen();
+          case VitalisHabit.drawingPainting:
+            return const DrawingPaintingHabitSettingsScreen();
+          case VitalisHabit.languages:
+            return const LanguagesHabitSettingsScreen();
           default:
             return HabitSettingsPlaceholderScreen(title: definition.title);
         }
@@ -112,7 +124,7 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
       bottomNavigationBar: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 10, 18, 16),
+          padding: const EdgeInsets.fromLTRB(14, 9, 14, 14),
           child: VitalisPrimaryButton(
             label: 'Adicionar Hábitos',
             trailing: const Icon(Icons.add, size: 18),
@@ -174,6 +186,7 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
                             (d) => _HabitTile(
                               title: d.title,
                               iconAsset: d.iconAsset,
+                              iconData: d.iconData,
                               isSelected: _selected.contains(d.habit),
                               onTap: () => _openHabitSettings(d.habit),
                               onLongPress: () => _toggle(d.habit),
@@ -195,22 +208,25 @@ class _SelectHabitsScreenState extends State<SelectHabitsScreen> {
 class _HabitTile extends StatelessWidget {
   const _HabitTile({
     required this.title,
-    required this.iconAsset,
+    this.iconAsset,
+    this.iconData,
     required this.isSelected,
     required this.onTap,
     required this.onLongPress,
-  });
+  }) : assert(iconAsset != null || iconData != null);
 
   final String title;
-  final String iconAsset;
+  final String? iconAsset;
+  final IconData? iconData;
   final bool isSelected;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
-    final isSvg = iconAsset.toLowerCase().endsWith('.svg');
-    final iconLower = iconAsset.toLowerCase();
+    final asset = iconAsset;
+    final isSvg = asset?.toLowerCase().endsWith('.svg') ?? false;
+    final iconLower = asset?.toLowerCase() ?? '';
     final applySvgColorFilter = !(iconLower.endsWith('medicine.svg') ||
         iconLower.endsWith('reading.svg'));
     final textTheme = Theme.of(context).textTheme;
@@ -240,51 +256,61 @@ class _HabitTile extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
           child: Stack(
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceContainerLow,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: SizedBox(
-                      width: 46,
-                      height: 46,
-                      child: Center(
-                        child: isSvg
-                            ? SvgPicture.asset(
-                                iconAsset,
-                                width: 24,
-                                height: 24,
-                                colorFilter: applySvgColorFilter
-                                    ? const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
-                                      )
-                                    : null,
-                              )
-                            : Image.asset(
-                                iconAsset,
-                                width: 24,
-                                height: 24,
-                                fit: BoxFit.contain,
-                              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.surfaceContainerLow,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: SizedBox(
+                        width: 46,
+                        height: 46,
+                        child: Center(
+                          child: iconData != null
+                              ? Icon(
+                                  iconData,
+                                  size: 24,
+                                  color: AppColors.primary,
+                                )
+                              : isSvg
+                                  ? SvgPicture.asset(
+                                      asset!,
+                                      width: 24,
+                                      height: 24,
+                                      colorFilter: applySvgColorFilter
+                                          ? const ColorFilter.mode(
+                                              AppColors.primary,
+                                              BlendMode.srcIn,
+                                            )
+                                          : null,
+                                    )
+                                  : Image.asset(
+                                      asset!,
+                                      width: 24,
+                                      height: 24,
+                                      fit: BoxFit.contain,
+                                    ),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    title,
-                    style: textTheme.labelLarge?.copyWith(
-                      color: AppColors.onSurface,
-                      fontWeight: FontWeight.w800,
+                    const SizedBox(height: 10),
+                    Text(
+                      title,
+                      style: textTheme.labelLarge?.copyWith(
+                        color: AppColors.onSurface,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                  ],
+                ),
               ),
               Positioned(
                 top: 0,

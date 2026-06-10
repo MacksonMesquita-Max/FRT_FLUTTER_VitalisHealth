@@ -3,6 +3,7 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/common/vitalis_reminder_time_field.dart';
 import 'package:vitalis_app/components/common/vitalis_text_field.dart';
 
 class HydrationHabitSettingsScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _HydrationHabitSettingsScreenState extends State<HydrationHabitSettingsScr
   String? _ageError;
   String? _manualGoalError;
   int? _calculatedGoalMl;
+  TimeOfDay _reminderTime = const TimeOfDay(hour: 20, minute: 0);
 
   @override
   void dispose() {
@@ -182,7 +184,7 @@ class _HydrationHabitSettingsScreenState extends State<HydrationHabitSettingsScr
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/waterForHabits.png',
+                                'lib/assets/images/habitsImages/waterForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
                               ),
@@ -399,6 +401,11 @@ class _HydrationHabitSettingsScreenState extends State<HydrationHabitSettingsScr
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(height: 12),
+                    VitalisReminderTimeField(
+                      time: _reminderTime,
+                      onChanged: (value) => setState(() => _reminderTime = value),
                     ),
                     const SizedBox(height: 12),
                     _ReferenceTableCard(),

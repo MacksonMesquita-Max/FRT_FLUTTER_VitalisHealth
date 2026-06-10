@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:vitalis_app/components/components/start/start_content_card.dart';
 import 'package:vitalis_app/components/screens/auth/create_account/create_account_screen.dart';
-import 'package:vitalis_app/components/screens/start/start_content_card.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({

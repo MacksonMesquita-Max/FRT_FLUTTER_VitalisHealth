@@ -9,19 +9,21 @@ class VitalisHabitCard extends StatelessWidget {
     required this.subtitle,
     required this.progress,
     required this.progressColor,
-    required this.iconAsset,
+    this.iconAsset,
+    this.iconData,
     this.iconBackgroundColor = AppColors.surfaceContainerLow,
     this.iconSize = 20,
     this.topRightText,
     this.trailing,
     this.onPressed,
-  });
+  }) : assert(iconAsset != null || iconData != null);
 
   final String title;
   final String subtitle;
   final double progress;
   final Color progressColor;
-  final String iconAsset;
+  final String? iconAsset;
+  final IconData? iconData;
   final Color iconBackgroundColor;
   final double iconSize;
   final String? topRightText;
@@ -30,8 +32,9 @@ class VitalisHabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSvg = iconAsset.toLowerCase().endsWith('.svg');
-    final iconLower = iconAsset.toLowerCase();
+    final asset = iconAsset;
+    final isSvg = asset?.toLowerCase().endsWith('.svg') ?? false;
+    final iconLower = asset?.toLowerCase() ?? '';
     final applySvgColorFilter = !(iconLower.endsWith('medicine.svg') ||
         iconLower.endsWith('reading.svg'));
     final titleStyle = Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -80,30 +83,36 @@ class VitalisHabitCard extends StatelessWidget {
                       width: 38,
                       height: 38,
                       child: Center(
-                        child: isSvg
-                            ? SvgPicture.asset(
-                                iconAsset,
-                                width: iconSize,
-                                height: iconSize,
-                                fit: BoxFit.contain,
-                                colorFilter: applySvgColorFilter
-                                    ? const ColorFilter.mode(
-                                        AppColors.primary,
-                                        BlendMode.srcIn,
-                                      )
-                                    : null,
+                        child: iconData != null
+                            ? Icon(
+                                iconData,
+                                size: iconSize,
+                                color: AppColors.primary,
                               )
-                            : Image.asset(
-                                iconAsset,
-                                width: iconSize,
-                                height: iconSize,
-                                fit: BoxFit.contain,
-                              ),
+                            : isSvg
+                                ? SvgPicture.asset(
+                                    asset!,
+                                    width: iconSize,
+                                    height: iconSize,
+                                    fit: BoxFit.contain,
+                                    colorFilter: applySvgColorFilter
+                                        ? const ColorFilter.mode(
+                                            AppColors.primary,
+                                            BlendMode.srcIn,
+                                          )
+                                        : null,
+                                  )
+                                : Image.asset(
+                                    asset!,
+                                    width: iconSize,
+                                    height: iconSize,
+                                    fit: BoxFit.contain,
+                                  ),
                       ),
                     ),
                   ),
                   const Spacer(),
-                  if (trailing != null) trailing!,
+                  if (trailing case final Widget trailingWidget) trailingWidget,
                   if (trailing == null && topRightText != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),

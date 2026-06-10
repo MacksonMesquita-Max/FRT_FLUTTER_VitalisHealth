@@ -3,6 +3,7 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/common/vitalis_reminder_time_field.dart';
 
 class GymHabitSettingsScreen extends StatefulWidget {
   const GymHabitSettingsScreen({super.key});
@@ -16,6 +17,7 @@ class _GymHabitSettingsScreenState extends State<GymHabitSettingsScreen> {
   VitalisGymIntensity _intensity = VitalisGymIntensity.moderada;
   VitalisGymFocus _focus = VitalisGymFocus.cardio;
   final Set<int> _selectedDays = {};
+  TimeOfDay _reminderTime = const TimeOfDay(hour: 20, minute: 0);
   bool _initialized = false;
 
   @override
@@ -139,7 +141,7 @@ class _GymHabitSettingsScreenState extends State<GymHabitSettingsScreen> {
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/gymForHabits.png',
+                                'lib/assets/images/habitsImages/gymForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
                               ),
@@ -363,6 +365,11 @@ class _GymHabitSettingsScreenState extends State<GymHabitSettingsScreen> {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 18),
+                    VitalisReminderTimeField(
+                      time: _reminderTime,
+                      onChanged: (value) => setState(() => _reminderTime = value),
                     ),
                   ],
                 ),

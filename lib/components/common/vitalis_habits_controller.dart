@@ -68,6 +68,24 @@ class VitalisHabitsController extends ChangeNotifier {
   final Set<int> _readingDaysOfWeek = {};
   String? _fastingPurpose;
   int? _fastingDurationHours;
+  String? _extraNotificationsTitle;
+  int? _extraNotificationsDurationMinutes;
+  final Set<int> _extraNotificationsDaysOfWeek = {};
+  int? _extraNotificationsReminderMinutes;
+  String? _extraNotificationsSubject;
+  String? _extraNotificationsIconKey;
+  String? _religiousPracticeName;
+  int? _religiousDurationMinutes;
+  final Set<int> _religiousDaysOfWeek = {};
+  int? _religiousReminderMinutes;
+  String? _languagesName;
+  int? _languagesStudyMinutes;
+  final Set<int> _languagesDaysOfWeek = {};
+  int? _languagesReminderMinutes;
+  String? _drawingPaintingTechnique;
+  int? _drawingPaintingDurationMinutes;
+  final Set<int> _drawingPaintingDaysOfWeek = {};
+  int? _drawingPaintingReminderMinutes;
 
   Set<VitalisHabit> get habits => Set.unmodifiable(_habits);
 
@@ -116,6 +134,46 @@ class VitalisHabitsController extends ChangeNotifier {
   String? get fastingPurpose => _fastingPurpose;
 
   int? get fastingDurationHours => _fastingDurationHours;
+
+  String? get extraNotificationsTitle => _extraNotificationsTitle;
+
+  int? get extraNotificationsDurationMinutes => _extraNotificationsDurationMinutes;
+
+  Set<int> get extraNotificationsDaysOfWeek =>
+      Set.unmodifiable(_extraNotificationsDaysOfWeek);
+
+  int? get extraNotificationsReminderMinutes =>
+      _extraNotificationsReminderMinutes;
+
+  String? get extraNotificationsSubject => _extraNotificationsSubject;
+
+  String? get extraNotificationsIconKey => _extraNotificationsIconKey;
+
+  String? get religiousPracticeName => _religiousPracticeName;
+
+  int? get religiousDurationMinutes => _religiousDurationMinutes;
+
+  Set<int> get religiousDaysOfWeek => Set.unmodifiable(_religiousDaysOfWeek);
+
+  int? get religiousReminderMinutes => _religiousReminderMinutes;
+
+  String? get languagesName => _languagesName;
+
+  int? get languagesStudyMinutes => _languagesStudyMinutes;
+
+  Set<int> get languagesDaysOfWeek => Set.unmodifiable(_languagesDaysOfWeek);
+
+  int? get languagesReminderMinutes => _languagesReminderMinutes;
+
+  String? get drawingPaintingTechnique => _drawingPaintingTechnique;
+
+  int? get drawingPaintingDurationMinutes => _drawingPaintingDurationMinutes;
+
+  Set<int> get drawingPaintingDaysOfWeek =>
+      Set.unmodifiable(_drawingPaintingDaysOfWeek);
+
+  int? get drawingPaintingReminderMinutes =>
+      _drawingPaintingReminderMinutes;
 
   void setHydrationGoalMl(int goalMl) {
     if (goalMl <= 0) return;
@@ -279,6 +337,89 @@ class VitalisHabitsController extends ChangeNotifier {
     if (normalizedPurpose.isEmpty || durationHours < 0) return;
     _fastingPurpose = normalizedPurpose;
     _fastingDurationHours = durationHours.clamp(0, 24);
+    notifyListeners();
+  }
+
+  void setExtraNotificationsPlan({
+    required String title,
+    required int durationMinutes,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+    required String subject,
+    required String iconKey,
+  }) {
+    final normalizedTitle = title.trim();
+    final normalizedSubject = subject.trim();
+    final normalizedIconKey = iconKey.trim();
+    if (normalizedTitle.isEmpty ||
+        normalizedSubject.isEmpty ||
+        normalizedIconKey.isEmpty ||
+        durationMinutes <= 0) {
+      return;
+    }
+
+    _extraNotificationsTitle = normalizedTitle;
+    _extraNotificationsDurationMinutes = durationMinutes.clamp(1, 180);
+    _extraNotificationsDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _extraNotificationsReminderMinutes = reminderMinutes.clamp(0, 1439);
+    _extraNotificationsSubject = normalizedSubject;
+    _extraNotificationsIconKey = normalizedIconKey;
+    notifyListeners();
+  }
+
+  void setReligiousPlan({
+    required String practiceName,
+    required int durationMinutes,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    final normalizedPracticeName = practiceName.trim();
+    if (normalizedPracticeName.isEmpty || durationMinutes <= 0) return;
+
+    _religiousPracticeName = normalizedPracticeName;
+    _religiousDurationMinutes = durationMinutes.clamp(1, 180);
+    _religiousDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _religiousReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setLanguagesPlan({
+    required String languageName,
+    required int studyMinutes,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    final normalizedLanguageName = languageName.trim();
+    if (normalizedLanguageName.isEmpty || studyMinutes <= 0) return;
+
+    _languagesName = normalizedLanguageName;
+    _languagesStudyMinutes = studyMinutes.clamp(1, 180);
+    _languagesDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _languagesReminderMinutes = reminderMinutes.clamp(0, 1439);
+    notifyListeners();
+  }
+
+  void setDrawingPaintingPlan({
+    required String technique,
+    required int durationMinutes,
+    required Set<int> daysOfWeek,
+    required int reminderMinutes,
+  }) {
+    final normalizedTechnique = technique.trim();
+    if (normalizedTechnique.isEmpty || durationMinutes <= 0) return;
+
+    _drawingPaintingTechnique = normalizedTechnique;
+    _drawingPaintingDurationMinutes = durationMinutes.clamp(1, 180);
+    _drawingPaintingDaysOfWeek
+      ..clear()
+      ..addAll(daysOfWeek.where((d) => d >= 1 && d <= 7));
+    _drawingPaintingReminderMinutes = reminderMinutes.clamp(0, 1439);
     notifyListeners();
   }
 

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:vitalis_app/components/components/habits/vitalis_habits_catalog.dart';
+import 'package:vitalis_app/components/components/home/vitalis_bottom_nav_bar.dart';
+import 'package:vitalis_app/components/components/home/vitalis_habit_card.dart';
+import 'package:vitalis_app/components/components/home/vitalis_motivation_carousel.dart';
+import 'package:vitalis_app/components/components/home/vitalis_tutorial_banner_card.dart';
+import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
-import 'package:vitalis_app/components/common/vitalis_bottom_nav_bar.dart';
-import 'package:vitalis_app/components/common/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
-import 'package:vitalis_app/components/common/vitalis_habit_card.dart';
-import 'package:vitalis_app/components/common/vitalis_motivation_carousel.dart';
-import 'package:vitalis_app/components/common/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/screens/habits/select_habits_screen.dart';
 import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
 
@@ -79,6 +80,12 @@ class HomeScreen extends StatelessWidget {
       );
     }
 
+    void openTutorial() {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tutorial em breve.')),
+      );
+    }
+
     Future<void> openSelectHabits() async {
       await Navigator.of(context).push<bool>(
         MaterialPageRoute(builder: (_) => const SelectHabitsScreen()),
@@ -147,6 +154,8 @@ class HomeScreen extends StatelessWidget {
                   fontSize: (textTheme.bodyMedium?.fontSize ?? 14) + 1,
                 ),
               ),
+              const SizedBox(height: 16),
+              VitalisTutorialBannerCard(onPressed: openTutorial),
               const SizedBox(height: 16),
               const VitalisMotivationCarousel(
                 quotes: [
@@ -394,6 +403,7 @@ class HomeScreen extends StatelessWidget {
                       progress: dynamicProgress,
                       progressColor: d.progressColor,
                       iconAsset: d.iconAsset,
+                      iconData: d.iconData,
                       topRightText: dynamicTopRightText,
                       iconBackgroundColor: d.iconBackgroundColor,
                       iconSize: d.iconSize,

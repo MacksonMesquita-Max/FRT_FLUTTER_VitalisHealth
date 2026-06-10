@@ -3,6 +3,7 @@ import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
+import 'package:vitalis_app/components/common/vitalis_reminder_time_field.dart';
 
 class SleepHabitSettingsScreen extends StatefulWidget {
   const SleepHabitSettingsScreen({super.key});
@@ -13,6 +14,7 @@ class SleepHabitSettingsScreen extends StatefulWidget {
 
 class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
   double _goalHours = 8;
+  TimeOfDay _reminderTime = const TimeOfDay(hour: 20, minute: 0);
 
   String _formatHours(double hours) {
     final fixed = hours.toStringAsFixed(1);
@@ -92,7 +94,7 @@ class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
                           children: [
                             Positioned.fill(
                               child: Image.asset(
-                                'lib/assets/images/sleepForHabits.png',
+                                'lib/assets/images/habitsImages/sleepForHabits.png',
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
                               ),
@@ -229,6 +231,11 @@ class _SleepHabitSettingsScreenState extends State<SleepHabitSettingsScreen> {
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(height: 14),
+                    VitalisReminderTimeField(
+                      time: _reminderTime,
+                      onChanged: (value) => setState(() => _reminderTime = value),
                     ),
                     const SizedBox(height: 14),
                     const _NoticeCard(
