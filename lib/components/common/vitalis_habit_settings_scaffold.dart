@@ -157,7 +157,6 @@ class _VitalisHabitHeroCard extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
                     VitalisHabitSettingsSpec.heroEyebrow,

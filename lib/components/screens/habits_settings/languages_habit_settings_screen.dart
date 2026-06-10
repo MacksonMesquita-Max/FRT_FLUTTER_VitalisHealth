@@ -39,9 +39,7 @@ class _LanguagesHabitSettingsScreenState
 
     final controller = VitalisHabitsScope.of(context);
     _languageController.text = controller.languagesName ?? '';
-    _studyMinutes = (controller.languagesStudyMinutes ?? 15)
-        .clamp(5, 60)
-        .toDouble();
+    _studyMinutes = (controller.languagesStudyMinutes ?? 15).clamp(5, 60).toDouble();
     _selectedDays.addAll(controller.languagesDaysOfWeek);
     _reminderTime = _timeFromMinutes(
       controller.languagesReminderMinutes ?? 540,
