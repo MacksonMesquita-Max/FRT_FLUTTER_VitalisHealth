@@ -45,7 +45,7 @@ class VitalisTutorialBannerCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Clique aqui para ver o tutorial que preparamos para você e embarque na jorada de aprendizado e criação de hábitos!',
+                        'Clique aqui para ver o tutorial que preparamos para você!',
                         style: textTheme.bodyMedium?.copyWith(
                           color: AppColors.onSurface,
                           height: 1.3,

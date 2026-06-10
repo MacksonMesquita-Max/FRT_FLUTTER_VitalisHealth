@@ -112,7 +112,7 @@ class VitalisHabitCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  if (trailing != null) trailing!,
+                  if (trailing case final Widget trailingWidget) trailingWidget,
                   if (trailing == null && topRightText != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),

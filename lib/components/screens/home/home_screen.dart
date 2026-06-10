@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:vitalis_app/components/components/habits/vitalis_habits_catalog.dart';
+import 'package:vitalis_app/components/components/home/vitalis_bottom_nav_bar.dart';
+import 'package:vitalis_app/components/components/home/vitalis_habit_card.dart';
+import 'package:vitalis_app/components/components/home/vitalis_motivation_carousel.dart';
+import 'package:vitalis_app/components/components/home/vitalis_tutorial_banner_card.dart';
+import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
-import 'package:vitalis_app/components/common/vitalis_bottom_nav_bar.dart';
-import 'package:vitalis_app/components/common/vitalis_habits_catalog.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
-import 'package:vitalis_app/components/common/vitalis_habit_card.dart';
-import 'package:vitalis_app/components/common/vitalis_motivation_carousel.dart';
-import 'package:vitalis_app/components/common/vitalis_tutorial_banner_card.dart';
-import 'package:vitalis_app/components/common/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/screens/habits/select_habits_screen.dart';
 import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
 
