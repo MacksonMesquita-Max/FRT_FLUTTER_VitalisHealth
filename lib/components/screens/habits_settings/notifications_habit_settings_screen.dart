@@ -20,8 +20,8 @@ class _NotificationsHabitSettingsScreenState
     extends State<NotificationsHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
-    heroTitle: 'Personalizar Notificacao',
-    heroSubtitle: 'Organize lembretes para reforcar o que importa na sua rotina.',
+    heroTitle: 'Personalizar Notificações',
+    heroSubtitle: 'Organize lembretes para reforçar o que importa na sua rotina.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/notificationForHabit.png',
   );
 
@@ -152,7 +152,7 @@ class _NotificationsHabitSettingsScreenState
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         Text(
-          'TITULO DO HABITO',
+          'Titulo do Hábito',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,
@@ -161,14 +161,14 @@ class _NotificationsHabitSettingsScreenState
         ),
         const SizedBox(height: 10),
         VitalisTextField(
-          hintText: 'Ex: Meditacao Matinal',
+          hintText: 'Ex: Meditação Matinal',
           controller: _titleController,
           textInputAction: TextInputAction.next,
           errorText: _titleError,
         ),
         const SizedBox(height: 18),
         VitalisSettingSliderCard(
-          title: 'META A SER ATINGIDA',
+          title: 'Meta a ser atingida',
           valueText: '${_goalMinutes.round()} min',
           value: _goalMinutes,
           min: 5,
@@ -199,7 +199,7 @@ class _NotificationsHabitSettingsScreenState
         ),
         const SizedBox(height: 18),
         Text(
-          'ASSUNTO DO HABITO',
+          'Assunto do Hábito',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,
@@ -208,14 +208,14 @@ class _NotificationsHabitSettingsScreenState
         ),
         const SizedBox(height: 10),
         VitalisTextField(
-          hintText: 'Ex: Respiracao e Foco',
+          hintText: 'Ex: Respiração e Foco',
           controller: _subjectController,
           textInputAction: TextInputAction.done,
           errorText: _subjectError,
         ),
         const SizedBox(height: 18),
         VitalisIconPickerField(
-          label: 'ESCOLHER ICONE',
+          label: 'Escolher ícone',
           options: _iconOptions,
           selectedKey: _selectedIconKey,
           onChanged: (value) => setState(() => _selectedIconKey = value),

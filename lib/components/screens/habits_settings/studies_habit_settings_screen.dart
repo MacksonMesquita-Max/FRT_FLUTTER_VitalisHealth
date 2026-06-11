@@ -98,7 +98,7 @@ class _StudiesHabitSettingsScreenState extends State<StudiesHabitSettingsScreen>
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         _QuestionCard(
-          title: 'Qual materia voce vai estudar?',
+          title: 'Qual materia você vai estudar?',
           child: VitalisTextField(
             hintText: 'Ex: Matematica, Ingles, Programacao...',
             controller: _subjectController,
@@ -127,7 +127,7 @@ class _StudiesHabitSettingsScreenState extends State<StudiesHabitSettingsScreen>
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce pretende estudar.',
+          helperText: 'Selecione os dias em que você pretende estudar.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),

@@ -162,7 +162,7 @@ class _FastingHabitSettingsScreenState extends State<FastingHabitSettingsScreen>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'PERSONALIZE SEU FLUXO',
+                                    'Personalize seu fluxo',
                                     style: textTheme.labelSmall?.copyWith(
                                       color: Colors.white.withValues(alpha: 0.85),
                                       letterSpacing: 0.6,
@@ -180,7 +180,7 @@ class _FastingHabitSettingsScreenState extends State<FastingHabitSettingsScreen>
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Equilibrio entre corpo e mente.',
+                                    'Equilíbrio entre corpo e mente.',
                                     style: textTheme.bodyMedium?.copyWith(
                                       color: Colors.white.withValues(alpha: 0.9),
                                       height: 1.2,

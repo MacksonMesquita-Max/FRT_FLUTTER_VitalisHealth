@@ -18,8 +18,8 @@ class _MedicineTimeHabitSettingsScreenState
     extends State<MedicineTimeHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
-    heroTitle: 'Hora do Remedio',
-    heroSubtitle: 'Organize seus lembretes e mantenha a consistencia do tratamento.',
+    heroTitle: 'Hora do Remédio',
+    heroSubtitle: 'Organize seus lembretes e mantenha a consistência do tratamento.',
     backgroundImageAsset:
         'lib/assets/images/habitsImages/MedicalReminderForHabits.png',
   );
@@ -97,7 +97,7 @@ class _MedicineTimeHabitSettingsScreenState
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         _QuestionCard(
-          title: 'Qual remedio voce deseja lembrar?',
+          title: 'Qual remedio você deseja lembrar?',
           child: VitalisTextField(
             hintText: 'Ex: Vitamina D, Metformina...',
             controller: _medicineController,
@@ -113,7 +113,7 @@ class _MedicineTimeHabitSettingsScreenState
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce deve tomar o remedio.',
+          helperText: 'Selecione os dias em que você deve tomar o remedio.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),

@@ -82,7 +82,7 @@ class _DrawingPaintingHabitSettingsScreenState
 
     setState(() {
       _techniqueError =
-          technique.isEmpty ? 'Informe a tecnica que deseja praticar.' : null;
+          technique.isEmpty ? 'Informe a técnica que deseja praticar.' : null;
       _daysError = _selectedDays.isEmpty ? 'Selecione ao menos um dia.' : null;
     });
 
@@ -108,9 +108,9 @@ class _DrawingPaintingHabitSettingsScreenState
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         _QuestionCard(
-          title: 'Qual tecnica voce quer praticar?',
+          title: 'Qual técnica você quer praticar?',
           child: VitalisTextField(
-            hintText: 'Ex: Aquarela, Desenho a Lapis, Giz Pastel...',
+            hintText: 'Ex: Aquarela, Desenho a Lápis, Giz Pastel...',
             controller: _techniqueController,
             textInputAction: TextInputAction.done,
             errorText: _techniqueError,
@@ -122,7 +122,7 @@ class _DrawingPaintingHabitSettingsScreenState
         ),
         const SizedBox(height: 18),
         VitalisSettingSliderCard(
-          title: 'TEMPO DE DEDICACAO',
+          title: 'Tempo de dedicação',
           valueText: '${_durationMinutes.round()} min',
           value: _durationMinutes,
           min: 5,

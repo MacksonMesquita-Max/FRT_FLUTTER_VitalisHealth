@@ -156,7 +156,7 @@ class _MartialArtsHabitSettingsScreenState
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce quer treinar sua modalidade.',
+          helperText: 'Selecione os dias em que você quer treinar sua modalidade.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),

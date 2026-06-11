@@ -17,7 +17,7 @@ class SocialHabitSettingsScreen extends StatefulWidget {
 class _SocialHabitSettingsScreenState extends State<SocialHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
-    heroTitle: 'Habito Social',
+    heroTitle: 'Hábito Social',
     heroSubtitle: 'Planeje encontros importantes e mantenha sua vida social ativa.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/socialForHabits.png',
   );

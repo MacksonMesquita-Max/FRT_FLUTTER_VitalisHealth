@@ -159,7 +159,7 @@ class _TravelHabitSettingsScreenState extends State<TravelHabitSettingsScreen> {
         ),
         const SizedBox(height: 10),
         VitalisTextField(
-          hintText: 'Ex: Lisboa, Rio de Janeiro, Gramado...',
+          hintText: 'Ex: Lisboa, Rio de Janeiro, Escócia...',
           controller: _destinationController,
           textInputAction: TextInputAction.next,
           errorText: _destinationError,
@@ -181,7 +181,7 @@ class _TravelHabitSettingsScreenState extends State<TravelHabitSettingsScreen> {
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce quer revisar o planejamento da viagem.',
+          helperText: 'Selecione os dias em que você quer revisar o planejamento da viagem.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),
@@ -196,12 +196,12 @@ class _TravelHabitSettingsScreenState extends State<TravelHabitSettingsScreen> {
         const SizedBox(height: 18),
         VitalisReminderTimeField(
           time: _reminderTime,
-          helperText: 'Defina um horario para lembrar de revisar a viagem e a mala.',
+          helperText: 'Defina um horário para lembrar de revisar a viagem e a mala de viagem.',
           onChanged: (value) => setState(() => _reminderTime = value),
         ),
         const SizedBox(height: 18),
         Text(
-          'ITENS PARA LEVAR',
+          'Itens para levar',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,
@@ -272,7 +272,7 @@ class _TravelDateField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'QUANDO E A VIAGEM?',
+          'Quando é a viagem?',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,
@@ -345,7 +345,7 @@ class _TravelCountdownCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final label = switch (daysUntilTravel) {
-      < 0 => 'A data escolhida ja passou.',
+      < 0 => 'A data escolhida já passou.',
       0 => 'Sua viagem e hoje!',
       1 => 'Falta 1 dia para a viagem.',
       _ => 'Faltam $daysUntilTravel dias para a viagem.',

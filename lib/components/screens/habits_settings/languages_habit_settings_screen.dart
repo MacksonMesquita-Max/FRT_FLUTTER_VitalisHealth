@@ -105,7 +105,7 @@ class _LanguagesHabitSettingsScreenState
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         _QuestionCard(
-          title: 'Qual idioma voce quer aprender?',
+          title: 'Qual idioma você quer aprender?',
           child: VitalisTextField(
             hintText: 'Ex: Ingles, Frances, Japones...',
             controller: _languageController,

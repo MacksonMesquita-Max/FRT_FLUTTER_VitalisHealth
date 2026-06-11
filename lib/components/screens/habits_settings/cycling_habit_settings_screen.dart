@@ -18,7 +18,7 @@ class _CyclingHabitSettingsScreenState extends State<CyclingHabitSettingsScreen>
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
     heroTitle: 'Ciclismo',
-    heroSubtitle: 'Pedale com constancia, evolua seu ritmo e acompanhe sua meta.',
+    heroSubtitle: 'Pedale com constância, evolua seu ritmo e acompanhe sua meta.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/ciclismForHabits.png',
   );
 
@@ -103,7 +103,7 @@ class _CyclingHabitSettingsScreenState extends State<CyclingHabitSettingsScreen>
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         VitalisSettingSliderCard(
-          title: 'META DE DISTANCIA',
+          title: 'Meta de distância',
           valueText: '${_formatKm(_distanceKm)} km',
           value: _distanceKm,
           min: 1,
@@ -112,13 +112,13 @@ class _CyclingHabitSettingsScreenState extends State<CyclingHabitSettingsScreen>
           markers: const ['1 km', '30 km', '60 km'],
           onChanged: (value) => setState(() => _distanceKm = value),
           icon: Icons.pedal_bike_outlined,
-          helperText: 'Ajuste a distancia ideal para cada sessao de ciclismo.',
+          helperText: 'Ajuste a distância ideal para cada sessão de ciclismo.',
         ),
         const SizedBox(height: 18),
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce pretende pedalar.',
+          helperText: 'Selecione os dias em que você pretende pedalar.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),
@@ -141,7 +141,7 @@ class _CyclingHabitSettingsScreenState extends State<CyclingHabitSettingsScreen>
             Expanded(
               child: _InfoCard(
                 icon: Icons.bolt_outlined,
-                label: 'INTENSIDADE',
+                label: 'Intensidade',
                 value: plan.intensity,
               ),
             ),
@@ -149,7 +149,7 @@ class _CyclingHabitSettingsScreenState extends State<CyclingHabitSettingsScreen>
             Expanded(
               child: _InfoCard(
                 icon: Icons.timer_outlined,
-                label: 'TEMPO ESTIMADO',
+                label: 'Tempo estimado',
                 value: plan.forecast,
               ),
             ),

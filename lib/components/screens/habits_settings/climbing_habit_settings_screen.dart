@@ -17,7 +17,7 @@ class _ClimbingHabitSettingsScreenState extends State<ClimbingHabitSettingsScree
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
     heroTitle: 'Escalada',
-    heroSubtitle: 'Evolua com seguranca, tecnica e regularidade.',
+    heroSubtitle: 'Evolua com segurança, técnica e regularidade.',
     backgroundImageAsset:
         'lib/assets/images/habitsImages/montainClimbForHabits.png',
   );
@@ -91,7 +91,7 @@ class _ClimbingHabitSettingsScreenState extends State<ClimbingHabitSettingsScree
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         VitalisSettingSliderCard(
-          title: 'META DE DISTANCIA',
+          title: 'Meta de distância',
           valueText: '${_formatKm(_distanceKm)} km',
           value: _distanceKm,
           min: 1,
@@ -100,13 +100,13 @@ class _ClimbingHabitSettingsScreenState extends State<ClimbingHabitSettingsScree
           markers: const ['1 km', '21 km', '42 km'],
           onChanged: (value) => setState(() => _distanceKm = value),
           icon: Icons.terrain_outlined,
-          helperText: 'Ajuste a sua meta de distancia para cada sessao de escalada.',
+          helperText: 'Ajuste a sua meta de distância para cada sessão de escalada.',
         ),
         const SizedBox(height: 18),
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce pretende escalar.',
+          helperText: 'Selecione os dias em que você pretende escalar.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),

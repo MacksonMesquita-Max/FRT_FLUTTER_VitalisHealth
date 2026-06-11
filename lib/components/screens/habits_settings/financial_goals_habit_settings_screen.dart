@@ -87,9 +87,9 @@ class _FinancialGoalsHabitSettingsScreenState
 
     setState(() {
       _purposeError = purposeName.isEmpty ? 'Informe o objetivo financeiro.' : null;
-      _savedError = savedAmount == null ? 'Informe quanto voce ja guardou.' : null;
+      _savedError = savedAmount == null ? 'Informe quanto você ja guardou.' : null;
       _targetError = targetAmount == null
-          ? 'Informe quanto voce quer alcancar.'
+          ? 'Informe quanto você quer alcancar.'
           : targetAmount <= 0
               ? 'A meta precisa ser maior que zero.'
               : savedAmount != null && targetAmount < savedAmount
@@ -148,7 +148,7 @@ class _FinancialGoalsHabitSettingsScreenState
         ),
         const SizedBox(height: 18),
         Text(
-          'QUANTO VOCÊ TEM AGORA',
+          'Quantanto você tem agora?',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,
@@ -169,7 +169,7 @@ class _FinancialGoalsHabitSettingsScreenState
         ),
         const SizedBox(height: 18),
         Text(
-          'QUANTO VOCÊ QUER CHEGAR?',
+          'Quantanto você quer chegar a?',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,
@@ -192,7 +192,7 @@ class _FinancialGoalsHabitSettingsScreenState
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce quer revisar ou fortalecer essa meta.',
+          helperText: 'Selecione os dias em que você quer revisar ou fortalecer essa meta.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),
@@ -207,7 +207,7 @@ class _FinancialGoalsHabitSettingsScreenState
         const SizedBox(height: 18),
         VitalisReminderTimeField(
           time: _reminderTime,
-          helperText: 'Defina quando voce quer ser lembrado de acompanhar sua meta.',
+          helperText: 'Defina quando você quer ser lembrado de acompanhar sua meta.',
           onChanged: (value) => setState(() => _reminderTime = value),
         ),
       ],
