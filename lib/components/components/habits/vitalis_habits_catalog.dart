@@ -106,7 +106,7 @@ abstract final class VitalisHabitsCatalog {
     ),
     VitalisHabitDefinition(
       habit: VitalisHabit.extraNotifications,
-      title: 'Notificação Personalizada',
+      title: 'Notificações Personalizadas',
       subtitle: '50% concluído',
       topRightText: '50%',
       iconData: Icons.circle_notifications_outlined,
@@ -160,7 +160,7 @@ abstract final class VitalisHabitsCatalog {
     ),
     VitalisHabitDefinition(
       habit: VitalisHabit.climbing,
-      title: 'Escalada',
+      title: 'Alpinismo',
       subtitle: '50% concluído',
       topRightText: '50%',
       iconData: Icons.hiking_outlined,

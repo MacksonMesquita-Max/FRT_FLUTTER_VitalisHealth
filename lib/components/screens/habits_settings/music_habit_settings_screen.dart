@@ -96,7 +96,7 @@ class _MusicHabitSettingsScreenState extends State<MusicHabitSettingsScreen> {
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce quer praticar musica.',
+          helperText: 'Selecione os dias em que você quer praticar musica.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),

@@ -6,8 +6,8 @@ class VitalisReminderTimeField extends StatelessWidget {
     super.key,
     required this.time,
     required this.onChanged,
-    this.label = 'HORARIO DO LEMBRETE',
-    this.helperText = 'Você recebera uma notificação no horário definido.',
+    this.label = 'Horário do lembrete',
+    this.helperText = 'Você receberá uma notificação no horário definido.',
     this.trailingIcon = Icons.notifications_none_outlined,
   });
 

@@ -17,7 +17,7 @@ class SocialHabitSettingsScreen extends StatefulWidget {
 class _SocialHabitSettingsScreenState extends State<SocialHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
-    heroTitle: 'Habito Social',
+    heroTitle: 'Hábito Social',
     heroSubtitle: 'Planeje encontros importantes e mantenha sua vida social ativa.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/socialForHabits.png',
   );
@@ -134,8 +134,8 @@ class _SocialHabitSettingsScreenState extends State<SocialHabitSettingsScreen> {
         const SizedBox(height: 18),
         VitalisReminderTimeField(
           time: _startTime,
-          label: 'HORARIO DE INICIO',
-          helperText: 'Defina o horario em que o evento social comeca.',
+          label: 'Horário de início',
+          helperText: 'Defina o horário em que o evento social começa.',
           trailingIcon: Icons.schedule_outlined,
           onChanged: (value) => setState(() => _startTime = value),
         ),

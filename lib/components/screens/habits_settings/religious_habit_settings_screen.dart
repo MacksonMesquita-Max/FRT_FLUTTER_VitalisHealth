@@ -19,7 +19,7 @@ class _ReligiousHabitSettingsScreenState
     extends State<ReligiousHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
-    heroTitle: 'Habito Religioso',
+    heroTitle: 'Hábito Religioso',
     heroSubtitle: 'Cultivando a fe e a paz interior.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/religionForHabit.png',
     imageAlignment: Alignment.topCenter,

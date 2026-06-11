@@ -16,8 +16,8 @@ class DanceHabitSettingsScreen extends StatefulWidget {
 class _DanceHabitSettingsScreenState extends State<DanceHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
-    heroTitle: 'Danca',
-    heroSubtitle: 'Escolha seu estilo e mantenha consistencia nos treinos.',
+    heroTitle: 'Dança',
+    heroSubtitle: 'Escolha seu estilo e mantenha consistência nos treinos.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/danceForHabits.png',
   );
 
@@ -70,7 +70,7 @@ class _DanceHabitSettingsScreenState extends State<DanceHabitSettingsScreen> {
     final danceStyleName = _danceController.text.trim();
 
     setState(() {
-      _danceError = danceStyleName.isEmpty ? 'Informe o nome da danca.' : null;
+      _danceError = danceStyleName.isEmpty ? 'Informe o nome da dança.' : null;
       _daysError = _selectedDays.isEmpty ? 'Selecione ao menos um dia.' : null;
     });
 
@@ -96,7 +96,7 @@ class _DanceHabitSettingsScreenState extends State<DanceHabitSettingsScreen> {
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         Text(
-          'NOME DA DANCA',
+          'Nome da dança',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,
@@ -118,7 +118,7 @@ class _DanceHabitSettingsScreenState extends State<DanceHabitSettingsScreen> {
         VitalisWeekdaySelectorCard(
           selectedDays: _selectedDays,
           onToggleDay: _toggleDay,
-          helperText: 'Selecione os dias em que voce vai praticar a danca.',
+          helperText: 'Selecione os dias em que você vai praticar a dança.',
         ),
         if (_daysError != null) ...[
           const SizedBox(height: 8),
@@ -133,8 +133,8 @@ class _DanceHabitSettingsScreenState extends State<DanceHabitSettingsScreen> {
         const SizedBox(height: 18),
         VitalisReminderTimeField(
           time: _startTime,
-          label: 'HORARIO DE INICIO',
-          helperText: 'Defina o horario em que o treino ou aula comeca.',
+          label: 'Horário de início',
+          helperText: 'Defina o horário em que o treino ou aula começa.',
           trailingIcon: Icons.schedule_outlined,
           onChanged: (value) => setState(() => _startTime = value),
         ),
