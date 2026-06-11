@@ -581,7 +581,7 @@ class HomeScreen extends StatelessWidget {
                 icon: Icons.self_improvement_outlined,
                 iconBackgroundColor: const Color(0xFFFFF1E6),
                 title: 'Mantenha a calma e respire\nfundo.',
-                description: 'Sessões guiadas para reduzir estresse,\naumentar foco e relaxar.',
+                description: 'Sessões guiadas para reduzir estresse, aumentar foco\ne relaxar.',
                 actionText: 'Iniciar Meditação',
                 onPressed: openPremium,
               ),

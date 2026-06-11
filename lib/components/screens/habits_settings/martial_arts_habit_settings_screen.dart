@@ -171,8 +171,8 @@ class _MartialArtsHabitSettingsScreenState
         const SizedBox(height: 18),
         VitalisReminderTimeField(
           time: _startTime,
-          label: 'HORARIO DE INICIO',
-          helperText: 'Defina o horario em que a aula ou treino comeca.',
+          label: 'Horário de início',
+          helperText: 'Defina o horário em que a aula ou treino começa.',
           trailingIcon: Icons.schedule_outlined,
           onChanged: (value) => setState(() => _startTime = value),
         ),

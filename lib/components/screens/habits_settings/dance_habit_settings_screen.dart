@@ -133,8 +133,8 @@ class _DanceHabitSettingsScreenState extends State<DanceHabitSettingsScreen> {
         const SizedBox(height: 18),
         VitalisReminderTimeField(
           time: _startTime,
-          label: 'HORARIO DE INICIO',
-          helperText: 'Defina o horario em que o treino ou aula comeca.',
+          label: 'Horário de início',
+          helperText: 'Defina o horário em que o treino ou aula começa.',
           trailingIcon: Icons.schedule_outlined,
           onChanged: (value) => setState(() => _startTime = value),
         ),
