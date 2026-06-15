@@ -6,6 +6,8 @@ import 'package:vitalis_app/components/components/home/vitalis_motivation_carous
 import 'package:vitalis_app/components/components/home/vitalis_tutorial_banner_card.dart';
 import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
+import 'package:vitalis_app/components/common/vitalis_habit_actions_sheet.dart';
+import 'package:vitalis_app/components/common/vitalis_habit_settings_routes.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/screens/habits/select_habits_screen.dart';
 import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
@@ -116,6 +118,25 @@ class HomeScreen extends StatelessWidget {
       await Navigator.of(context).push<bool>(
         MaterialPageRoute(builder: (_) => const SelectHabitsScreen()),
       );
+    }
+
+    Future<void> handleHabitCardPressed(VitalisHabit habit, String title) async {
+      final action = await VitalisHabitActionsSheet.show(
+        context,
+        habitTitle: title,
+      );
+      if (!context.mounted || action == null) return;
+
+      switch (action) {
+        case VitalisHabitSheetAction.viewDetails:
+          await Navigator.of(context).push<bool>(
+            createVitalisHabitSettingsRoute(habit),
+          );
+          return;
+        case VitalisHabitSheetAction.delete:
+          habitsController.remove(habit);
+          return;
+      }
     }
 
     return Scaffold(
@@ -542,6 +563,7 @@ class HomeScreen extends StatelessWidget {
                       topRightText: dynamicTopRightText,
                       iconBackgroundColor: d.iconBackgroundColor,
                       iconSize: d.iconSize,
+                      onPressed: () => handleHabitCardPressed(d.habit, d.title),
                     );
                   },
                 ),
