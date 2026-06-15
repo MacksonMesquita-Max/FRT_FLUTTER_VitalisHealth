@@ -97,10 +97,10 @@ class _SocialHabitSettingsScreenState extends State<SocialHabitSettingsScreen> {
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         Text(
-          'NOME DO EVENTO SOCIAL',
+          'Nome do Evento Social',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w600,
             letterSpacing: 0.4,
           ),
         ),

@@ -112,7 +112,7 @@ class _StudiesHabitSettingsScreenState extends State<StudiesHabitSettingsScreen>
         ),
         const SizedBox(height: 18),
         VitalisSettingSliderCard(
-          title: 'TEMPO DE ESTUDO',
+          title: 'Tempo de estudo',
           valueText: '${_studyMinutes.round()} min',
           value: _studyMinutes,
           min: 10,

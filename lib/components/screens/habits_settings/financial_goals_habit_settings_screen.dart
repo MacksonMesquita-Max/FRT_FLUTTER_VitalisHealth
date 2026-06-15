@@ -128,7 +128,7 @@ class _FinancialGoalsHabitSettingsScreenState
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         Text(
-          'PROPÓSITO DA META',
+          'Propósito da meta',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,

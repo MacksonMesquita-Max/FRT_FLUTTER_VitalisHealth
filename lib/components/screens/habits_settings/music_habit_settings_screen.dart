@@ -81,7 +81,7 @@ class _MusicHabitSettingsScreenState extends State<MusicHabitSettingsScreen> {
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         VitalisSettingSliderCard(
-          title: 'TEMPO DE PRATICA',
+          title: 'Tempo de pratica',
           valueText: '${_practiceMinutes.round()} min',
           value: _practiceMinutes,
           min: 10,

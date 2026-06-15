@@ -186,10 +186,10 @@ class _ReadingHabitSettingsScreenState extends State<ReadingHabitSettingsScreen>
                     ),
                     const SizedBox(height: 18),
                     Text(
-                      'NOME DO LIVRO',
+                      'Nome do Livro',
                       style: textTheme.labelLarge?.copyWith(
                         color: AppColors.onSurface,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: 0.4,
                       ),
                     ),
@@ -206,7 +206,7 @@ class _ReadingHabitSettingsScreenState extends State<ReadingHabitSettingsScreen>
                     ),
                     const SizedBox(height: 18),
                     _SectionCard(
-                      title: 'META DE PÁGINAS',
+                      title: 'Meta de Páginas',
                       trailing: Text(
                         '${_pageGoal.round()} páginas',
                         style: textTheme.titleSmall?.copyWith(

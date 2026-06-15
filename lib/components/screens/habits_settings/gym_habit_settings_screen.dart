@@ -294,7 +294,7 @@ class _GymHabitSettingsScreenState extends State<GymHabitSettingsScreen> {
                       'Intensidade',
                       style: textTheme.headlineSmall?.copyWith(
                         color: AppColors.onSurface,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         fontSize: 20,
                       ),
                     ),
@@ -331,7 +331,7 @@ class _GymHabitSettingsScreenState extends State<GymHabitSettingsScreen> {
                       'Foco do Treino',
                       style: textTheme.headlineSmall?.copyWith(
                         color: AppColors.onSurface,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         fontSize: 20,
                       ),
                     ),
