@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
+import 'package:vitalis_app/components/common/vitalis_user_profile_controller.dart';
 import 'package:vitalis_app/components/screens/start/entry_animation_screen.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _habitsController = VitalisHabitsController();
+  final _userProfileController = VitalisUserProfileController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +37,12 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       builder: (context, child) {
-        return VitalisHabitsScope(
-          controller: _habitsController,
-          child: child ?? const SizedBox.shrink(),
+        return VitalisUserProfileScope(
+          controller: _userProfileController,
+          child: VitalisHabitsScope(
+            controller: _habitsController,
+            child: child ?? const SizedBox.shrink(),
+          ),
         );
       },
       home: const EntryAnimationScreen(),

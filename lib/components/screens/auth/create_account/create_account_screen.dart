@@ -5,6 +5,7 @@ import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_password_field.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 import 'package:vitalis_app/components/common/vitalis_text_field.dart';
+import 'package:vitalis_app/components/common/vitalis_user_profile_controller.dart';
 import 'package:vitalis_app/components/screens/home/home_screen.dart';
 
 class CreateAccountScreen extends StatefulWidget {
@@ -83,9 +84,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
 
     Future.delayed(const Duration(milliseconds: 450), () {
       if (!mounted) return;
+      final sessionEntryDate = DateTime.now();
+      VitalisUserProfileScope.of(context).initializeSession(
+        displayName: name,
+        memberSince: sessionEntryDate,
+      );
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => HomeScreen(userName: name),
+          builder: (_) => const HomeScreen(),
         ),
       );
     });

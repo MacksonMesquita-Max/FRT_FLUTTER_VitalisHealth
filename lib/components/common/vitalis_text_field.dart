@@ -11,7 +11,12 @@ class VitalisTextField extends StatelessWidget {
     this.obscureText = false,
     this.onChanged,
     this.suffixIcon,
+    this.prefixIcon,
     this.errorText,
+    this.maxLines = 1,
+    this.minLines,
+    this.readOnly = false,
+    this.onTap,
   });
 
   final String hintText;
@@ -21,7 +26,12 @@ class VitalisTextField extends StatelessWidget {
   final bool obscureText;
   final ValueChanged<String>? onChanged;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final String? errorText;
+  final int maxLines;
+  final int? minLines;
+  final bool readOnly;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +44,10 @@ class VitalisTextField extends StatelessWidget {
       textInputAction: textInputAction,
       obscureText: obscureText,
       onChanged: onChanged,
+      maxLines: maxLines,
+      minLines: minLines,
+      readOnly: readOnly,
+      onTap: onTap,
       decoration: InputDecoration(
         hintText: hintText,
         errorText: hasError ? errorText : null,
@@ -79,6 +93,7 @@ class VitalisTextField extends StatelessWidget {
             width: 1.5,
           ),
         ),
+        prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),
     );

@@ -5,11 +5,15 @@ class VitalisBottomNavBar extends StatelessWidget {
   const VitalisBottomNavBar({
     super.key,
     this.onHomePressed,
+    this.onProfilePressed,
     this.isHomeSelected = true,
+    this.isProfileSelected = false,
   });
 
   final VoidCallback? onHomePressed;
+  final VoidCallback? onProfilePressed;
   final bool isHomeSelected;
+  final bool isProfileSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -24,40 +28,70 @@ class VitalisBottomNavBar extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InkWell(
-              borderRadius: BorderRadius.circular(999),
-              onTap: onHomePressed,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                decoration: BoxDecoration(
-                  color: isHomeSelected ? const Color(0xFFD7F6ED) : Colors.white,
-                  borderRadius: BorderRadius.circular(999),
-                  border: Border.all(
-                    color: isHomeSelected ? Colors.transparent : AppColors.surfaceContainer,
-                    width: 1,
+            _BottomNavItem(
+              label: 'Inicio',
+              icon: Icons.home_rounded,
+              isSelected: isHomeSelected,
+              onPressed: onHomePressed,
+            ),
+            _BottomNavItem(
+              label: 'Perfil',
+              icon: Icons.person_rounded,
+              isSelected: isProfileSelected,
+              onPressed: onProfilePressed,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomNavItem extends StatelessWidget {
+  const _BottomNavItem({
+    required this.label,
+    required this.icon,
+    required this.isSelected,
+    required this.onPressed,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(999),
+      onTap: onPressed,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFD7F6ED) : Colors.white,
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(
+            color: isSelected ? Colors.transparent : AppColors.surfaceContainer,
+            width: 1,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: AppColors.primary,
+              size: 22,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w800,
                   ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.home_rounded,
-                      color: AppColors.primary,
-                      size: 22,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Início',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w800,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
             ),
           ],
         ),
