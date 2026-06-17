@@ -117,7 +117,7 @@ class _ReligiousHabitSettingsScreenState
         ),
         const SizedBox(height: 10),
         VitalisTextField(
-          hintText: 'Ex: Oracao, Estudo Biblico, Rezo',
+          hintText: 'Ex: Oração, Estudo Biblico, Rezo',
           controller: _practiceController,
           textInputAction: TextInputAction.done,
           errorText: _practiceError,

@@ -237,7 +237,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: 8),
               _DropdownField<String>(
                 value: _selectedGender,
-                items: const ['Masculino', 'Feminino', 'Outro', 'Prefiro nao informar'],
+                items: const ['Masculino', 'Feminino', 'Outro', 'Prefiro não informar'],
                 onChanged: (value) {
                   if (value == null) return;
                   setState(() => _selectedGender = value);
@@ -288,20 +288,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _ToggleSettingTile(
                     icon: Icons.verified_user_outlined,
                     iconBackgroundColor: const Color(0xFFE4F4E8),
-                    title: 'Autenticacao de dois fatores',
-                    subtitle: 'Mais protecao para sua conta',
+                    title: 'Autenticação de dois fatores',
+                    subtitle: 'Mais proteção para sua conta',
                     value: _twoFactorEnabled,
                     onChanged: (value) => setState(() => _twoFactorEnabled = value),
                   ),
                   _NavigationSettingTile(
                     icon: Icons.lock_reset_outlined,
                     iconBackgroundColor: const Color(0xFFF1F2F2),
-                    title: 'Alteracao de senha',
-                    subtitle: 'Ultima alteracao ha 3 meses',
+                    title: 'Alteração de senha',
+                    subtitle: 'Ultima alteração há 3 meses',
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Alteracao de senha em breve.'),
+                          content: Text('Alteração de senha em breve.'),
                         ),
                       );
                     },
@@ -310,7 +310,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 22),
               Text(
-                'Permissoes do app',
+                'Permissões do app',
                 style: textTheme.titleMedium?.copyWith(
                   color: AppColors.onSurface,
                   fontWeight: FontWeight.w800,
@@ -323,7 +323,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     icon: Icons.contacts_outlined,
                     iconBackgroundColor: const Color(0xFFEAF2FF),
                     title: 'Acesso aos contatos',
-                    subtitle: 'Usado para conexoes e convites',
+                    subtitle: 'Usado para conexões e convites',
                     value: _contactsPermission,
                     onChanged: (value) => setState(() => _contactsPermission = value),
                   ),
@@ -331,7 +331,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     icon: Icons.call_outlined,
                     iconBackgroundColor: const Color(0xFFFFF1E6),
                     title: 'Chamadas telefonicas',
-                    subtitle: 'Usado para recursos de suporte rapido',
+                    subtitle: 'Usado para recursos de suporte rápido',
                     value: _phonePermission,
                     onChanged: (value) => setState(() => _phonePermission = value),
                   ),
@@ -346,7 +346,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _ToggleSettingTile(
                     icon: Icons.camera_alt_outlined,
                     iconBackgroundColor: const Color(0xFFEAF9F0),
-                    title: 'Camera',
+                    title: 'Câmera',
                     subtitle: 'Usado para capturar foto de perfil',
                     value: _cameraPermission,
                     onChanged: (value) => setState(() => _cameraPermission = value),
@@ -354,8 +354,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _ToggleSettingTile(
                     icon: Icons.notifications_outlined,
                     iconBackgroundColor: const Color(0xFFFFF6E8),
-                    title: 'Notificacoes',
-                    subtitle: 'Usado para lembretes e atualizacoes',
+                    title: 'Notificções',
+                    subtitle: 'Usado para lembretes e atualizções',
                     value: _notificationsPermission,
                     onChanged: (value) =>
                         setState(() => _notificationsPermission = value),
@@ -364,7 +364,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 24),
               VitalisPrimaryButton(
-                label: 'Salvar Alteracoes',
+                label: 'Salvar Alterações',
                 trailing: const Icon(Icons.save_outlined, size: 18),
                 onPressed: _save,
               ),

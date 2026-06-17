@@ -174,7 +174,7 @@ class _PremiumUpgradeCard extends StatelessWidget {
                   'Mudar para\nPremium',
                   style: textTheme.headlineSmall?.copyWith(
                     color: const Color(0xFF7FF1C8),
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w700,
                     height: 1.08,
                   ),
                 ),

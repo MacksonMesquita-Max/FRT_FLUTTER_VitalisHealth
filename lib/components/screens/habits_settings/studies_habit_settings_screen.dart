@@ -72,7 +72,7 @@ class _StudiesHabitSettingsScreenState extends State<StudiesHabitSettingsScreen>
     final subject = _subjectController.text.trim();
 
     setState(() {
-      _subjectError = subject.isEmpty ? 'Informe a materia.' : null;
+      _subjectError = subject.isEmpty ? 'Informe a matéria.' : null;
       _daysError = _selectedDays.isEmpty ? 'Selecione ao menos um dia.' : null;
     });
 
@@ -98,9 +98,9 @@ class _StudiesHabitSettingsScreenState extends State<StudiesHabitSettingsScreen>
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         _QuestionCard(
-          title: 'Qual materia você vai estudar?',
+          title: 'Qual matéria você vai estudar?',
           child: VitalisTextField(
-            hintText: 'Ex: Matematica, Ingles, Programacao...',
+            hintText: 'Ex: Matematica, Ingles, Programação...',
             controller: _subjectController,
             textInputAction: TextInputAction.done,
             errorText: _subjectError,

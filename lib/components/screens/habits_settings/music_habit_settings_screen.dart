@@ -16,7 +16,7 @@ class _MusicHabitSettingsScreenState extends State<MusicHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
     heroTitle: 'Musica',
-    heroSubtitle: 'Treine um pouco por dia e perceba a evolucao semana a semana.',
+    heroSubtitle: 'Treine um pouco por dia e perceba a evolução da sua vida, semana a semana.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/musicForHabits.png',
   );
 
