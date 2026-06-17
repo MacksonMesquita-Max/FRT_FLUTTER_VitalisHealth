@@ -744,6 +744,93 @@ class VitalisHabitsController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void clearAll() {
+    _habits.clear();
+
+    _hydrationGoalMl = null;
+    _hydrationConsumedMl = 0;
+    _sleepGoalMinutes = null;
+    _sleepMinutes = 0;
+    _movementGoalMeters = null;
+    _movementMeters = 0;
+    _movementDaysOfWeek.clear();
+    _swimmingGoalMeters = null;
+    _swimmingMeters = 0;
+    _swimmingDaysOfWeek.clear();
+    _moodLastWeekLevel = null;
+    _moodTargetLevel = null;
+    _moodGoalMethod = null;
+    _gymDurationMinutes = null;
+    _gymIntensity = null;
+    _gymFocus = null;
+    _gymDaysOfWeek.clear();
+    _readingBookName = null;
+    _readingPageGoal = null;
+    _readingDaysOfWeek.clear();
+    _fastingPurpose = null;
+    _fastingDurationHours = null;
+    _extraNotificationsTitle = null;
+    _extraNotificationsDurationMinutes = null;
+    _extraNotificationsDaysOfWeek.clear();
+    _extraNotificationsReminderMinutes = null;
+    _extraNotificationsSubject = null;
+    _extraNotificationsIconKey = null;
+    _religiousPracticeName = null;
+    _religiousDurationMinutes = null;
+    _religiousDaysOfWeek.clear();
+    _religiousReminderMinutes = null;
+    _languagesName = null;
+    _languagesStudyMinutes = null;
+    _languagesDaysOfWeek.clear();
+    _languagesReminderMinutes = null;
+    _drawingPaintingTechnique = null;
+    _drawingPaintingDurationMinutes = null;
+    _drawingPaintingDaysOfWeek.clear();
+    _drawingPaintingReminderMinutes = null;
+    _medicineName = null;
+    _medicineDaysOfWeek.clear();
+    _medicineReminderMinutes = null;
+    _studiesSubject = null;
+    _studiesStudyMinutes = null;
+    _studiesDaysOfWeek.clear();
+    _studiesReminderMinutes = null;
+    _climbingGoalMeters = null;
+    _climbingMeters = 0;
+    _climbingDaysOfWeek.clear();
+    _climbingReminderMinutes = null;
+    _musicStudyMinutes = null;
+    _musicDaysOfWeek.clear();
+    _musicReminderMinutes = null;
+    _socialEventName = null;
+    _socialDaysOfWeek.clear();
+    _socialStartMinutes = null;
+    _socialReminderMinutes = null;
+    _martialArtName = null;
+    _martialArtsDaysOfWeek.clear();
+    _martialArtsStartMinutes = null;
+    _martialArtsReminderMinutes = null;
+    _danceStyleName = null;
+    _danceDaysOfWeek.clear();
+    _danceStartMinutes = null;
+    _danceReminderMinutes = null;
+    _financialPurposeName = null;
+    _financialSavedAmount = null;
+    _financialTargetAmount = null;
+    _financialDaysOfWeek.clear();
+    _financialReminderMinutes = null;
+    _travelDestinationName = null;
+    _travelDate = null;
+    _travelPackingItems.clear();
+    _travelDaysOfWeek.clear();
+    _travelReminderMinutes = null;
+    _cyclingGoalMeters = null;
+    _cyclingMeters = 0;
+    _cyclingDaysOfWeek.clear();
+    _cyclingReminderMinutes = null;
+
+    notifyListeners();
+  }
 }
 
 class VitalisHabitsScope extends InheritedNotifier<VitalisHabitsController> {
