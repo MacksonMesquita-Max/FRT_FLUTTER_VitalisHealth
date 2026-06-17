@@ -37,6 +37,13 @@ class VitalisUserProfileController extends ChangeNotifier {
     _avatarImagePath = avatarImagePath;
     notifyListeners();
   }
+
+  void resetSession() {
+    _displayName = 'Vitalis';
+    _memberSince = DateTime.now();
+    _avatarImagePath = null;
+    notifyListeners();
+  }
 }
 
 class VitalisUserProfileScope

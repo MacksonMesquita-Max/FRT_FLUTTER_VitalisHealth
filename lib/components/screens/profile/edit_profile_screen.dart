@@ -29,11 +29,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _selectedGender = 'Masculino';
   DateTime _birthDate = DateTime(1992, 4, 15);
   bool _twoFactorEnabled = true;
-  bool _contactsPermission = false;
-  bool _phonePermission = false;
-  bool _galleryPermission = true;
-  bool _cameraPermission = false;
-  bool _notificationsPermission = true;
   String? _avatarImagePath;
   String? _nameError;
   bool _initialized = false;
@@ -276,7 +271,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 22),
               Text(
-                'Seguranca',
+                'Segurança',
                 style: textTheme.titleMedium?.copyWith(
                   color: AppColors.onSurface,
                   fontWeight: FontWeight.w800,
@@ -305,60 +300,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       );
                     },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 22),
-              Text(
-                'Permissões do app',
-                style: textTheme.titleMedium?.copyWith(
-                  color: AppColors.onSurface,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 12),
-              _SettingsCard(
-                children: [
-                  _ToggleSettingTile(
-                    icon: Icons.contacts_outlined,
-                    iconBackgroundColor: const Color(0xFFEAF2FF),
-                    title: 'Acesso aos contatos',
-                    subtitle: 'Usado para conexões e convites',
-                    value: _contactsPermission,
-                    onChanged: (value) => setState(() => _contactsPermission = value),
-                  ),
-                  _ToggleSettingTile(
-                    icon: Icons.call_outlined,
-                    iconBackgroundColor: const Color(0xFFFFF1E6),
-                    title: 'Chamadas telefonicas',
-                    subtitle: 'Usado para recursos de suporte rápido',
-                    value: _phonePermission,
-                    onChanged: (value) => setState(() => _phonePermission = value),
-                  ),
-                  _ToggleSettingTile(
-                    icon: Icons.photo_library_outlined,
-                    iconBackgroundColor: const Color(0xFFEDEFFF),
-                    title: 'Galeria do celular',
-                    subtitle: 'Usado para selecionar foto de perfil',
-                    value: _galleryPermission,
-                    onChanged: (value) => setState(() => _galleryPermission = value),
-                  ),
-                  _ToggleSettingTile(
-                    icon: Icons.camera_alt_outlined,
-                    iconBackgroundColor: const Color(0xFFEAF9F0),
-                    title: 'Câmera',
-                    subtitle: 'Usado para capturar foto de perfil',
-                    value: _cameraPermission,
-                    onChanged: (value) => setState(() => _cameraPermission = value),
-                  ),
-                  _ToggleSettingTile(
-                    icon: Icons.notifications_outlined,
-                    iconBackgroundColor: const Color(0xFFFFF6E8),
-                    title: 'Notificções',
-                    subtitle: 'Usado para lembretes e atualizções',
-                    value: _notificationsPermission,
-                    onChanged: (value) =>
-                        setState(() => _notificationsPermission = value),
                   ),
                 ],
               ),

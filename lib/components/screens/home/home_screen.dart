@@ -151,6 +151,13 @@ class HomeScreen extends StatelessWidget {
           return;
         case VitalisHabitSheetAction.delete:
           habitsController.remove(habit);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Hábito excluido com sucesso'),
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: AppColors.secondary,
+            ),
+          );
           return;
       }
     }

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/components/home/vitalis_bottom_nav_bar.dart';
 import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
+import 'package:vitalis_app/components/components/profile/vitalis_achievements_card.dart';
+import 'package:vitalis_app/components/components/profile/vitalis_app_permissions_card.dart';
+import 'package:vitalis_app/components/components/profile/vitalis_logout_account_button.dart';
+import 'package:vitalis_app/components/components/profile/vitalis_theme_app_button.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
+import 'package:vitalis_app/components/common/vitalis_confirmation_sheet.dart';
+import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 import 'package:vitalis_app/components/common/vitalis_user_profile_controller.dart';
 import 'package:vitalis_app/components/screens/profile/edit_profile_screen.dart';
 import 'package:vitalis_app/components/screens/home/home_screen.dart';
 import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
+import 'package:vitalis_app/components/screens/start/start_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -34,6 +41,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final profileController = VitalisUserProfileScope.of(context);
+    final habitsController = VitalisHabitsScope.of(context);
     final userName = profileController.displayName;
     final memberSince = profileController.memberSince;
     final userId = profileController.userId;
@@ -60,6 +68,32 @@ class ProfileScreen extends StatelessWidget {
           builder: (_) => const EditProfileScreen(),
         ),
       );
+    }
+
+    Future<void> logout() async {
+      habitsController.clearAll();
+      profileController.resetSession();
+
+      await Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (_) => const StartScreen(),
+        ),
+        (route) => false,
+      );
+    }
+
+    Future<void> confirmLogout() async {
+      final confirmed = await VitalisConfirmationSheet.show(
+        context,
+        title: 'Sair da conta',
+        message: 'Deseja realmente sair do app?',
+        confirmLabel: 'Sair',
+        cancelLabel: 'Cancelar',
+      );
+      if (!context.mounted) return;
+      if (confirmed == true) {
+        await logout();
+      }
     }
 
     return Scaffold(
@@ -138,6 +172,14 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 28),
               _PremiumUpgradeCard(onPressed: openPremium),
+              const SizedBox(height: 16),
+              const VitalisAchievementsCard(),
+              const SizedBox(height: 16),
+              const VitalisAppPermissionsCard(),
+              const SizedBox(height: 16),
+              const VitalisThemeAppButton(),
+              const SizedBox(height: 16),
+              VitalisLogoutAccountButton(onPressed: confirmLogout),
             ],
           ),
         ),
@@ -172,7 +214,7 @@ class _PremiumUpgradeCard extends StatelessWidget {
               children: [
                 Text(
                   'Mudar para\nPremium',
-                  style: textTheme.headlineSmall?.copyWith(
+                  style: textTheme.titleLarge?.copyWith(
                     color: const Color(0xFF7FF1C8),
                     fontWeight: FontWeight.w700,
                     height: 1.08,
