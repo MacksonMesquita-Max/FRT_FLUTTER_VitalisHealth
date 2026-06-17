@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
+import 'package:vitalis_app/components/components/profile/vitalis_profile_banner.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_back_button.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
@@ -15,6 +16,19 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  static const List<String> _defaultBannerAssets = [
+    'lib/assets/images/bannersImages/ImageForBackground1.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground2.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground3.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground4.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground5.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground6.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground7.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground8.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground9.jpg',
+    'lib/assets/images/bannersImages/ImageForBackground10.jpg',
+  ];
+
   final _picker = ImagePicker();
   final _nameController = TextEditingController();
   final _cpfController = TextEditingController(text: '***.***.432-09');
@@ -30,6 +44,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   DateTime _birthDate = DateTime(1992, 4, 15);
   bool _twoFactorEnabled = true;
   String? _avatarImagePath;
+  String? _bannerAssetPath;
+  String? _bannerImagePath;
   String? _nameError;
   bool _initialized = false;
 
@@ -41,6 +57,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final profileController = VitalisUserProfileScope.of(context);
     _nameController.text = profileController.displayName;
     _avatarImagePath = profileController.avatarImagePath;
+    _bannerAssetPath = profileController.bannerAssetPath;
+    _bannerImagePath = profileController.bannerImagePath;
     _initialized = true;
   }
 
@@ -68,6 +86,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
+  Future<void> _pickBannerImage() async {
+    final file = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 90,
+      maxWidth: 2200,
+    );
+    if (!mounted || file == null) return;
+
+    setState(() {
+      _bannerImagePath = file.path;
+      _bannerAssetPath = null;
+    });
+  }
+
+  void _selectBannerAsset(String assetPath) {
+    setState(() {
+      _bannerAssetPath = assetPath;
+      _bannerImagePath = null;
+    });
+  }
+
   Future<void> _pickBirthDate() async {
     final picked = await showDatePicker(
       context: context,
@@ -89,11 +128,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
     if (_nameError != null) return;
 
-    VitalisUserProfileScope.of(context).updateProfile(
-      displayName: displayName,
-      avatarImagePath: _avatarImagePath,
-    );
-    Navigator.of(context).pop(true);
+    final messenger = ScaffoldMessenger.of(context);
+
+    try {
+      VitalisUserProfileScope.of(context).updateProfile(
+        displayName: displayName,
+        avatarImagePath: _avatarImagePath,
+        bannerAssetPath: _bannerAssetPath,
+        bannerImagePath: _bannerImagePath,
+      );
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Dados pessoais atualizados com sucesso'),
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: AppColors.secondary,
+        ),
+      );
+      Navigator.of(context).pop(true);
+    } catch (_) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao atualizar dados pessoais'),
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: Color(0xFFB3261E),
+        ),
+      );
+    }
   }
 
   String _formatDate(DateTime value) {
@@ -105,6 +165,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final hasGalleryBanner = _bannerImagePath != null && _bannerImagePath!.isNotEmpty;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -128,58 +189,172 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ],
               ),
               const SizedBox(height: 22),
-              Center(
-                child: Column(
+              SizedBox(
+                height: 228,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  clipBehavior: Clip.none,
                   children: [
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        VitalisUserAvatar(
-                          size: 92,
-                          imagePathOverride: _avatarImagePath,
-                        ),
-                        Positioned(
-                          right: -2,
-                          bottom: -2,
-                          child: InkWell(
-                            onTap: _pickProfileImage,
-                            customBorder: const CircleBorder(),
-                            child: Container(
-                              width: 34,
-                              height: 34,
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 3,
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Stack(
+                        children: [
+                          VitalisProfileBanner(
+                            height: 180,
+                            assetPath: _bannerAssetPath,
+                            filePath: _bannerImagePath,
+                          ),
+                          Positioned(
+                            top: 12,
+                            right: 12,
+                            child: Material(
+                              color: Colors.white.withValues(alpha: 0.92),
+                              borderRadius: BorderRadius.circular(12),
+                              child: InkWell(
+                                onTap: _pickBannerImage,
+                                borderRadius: BorderRadius.circular(12),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 10,
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.photo_library_outlined,
+                                        size: 18,
+                                        color: AppColors.primary,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        'Galeria',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              child: const Icon(
-                                Icons.camera_alt_outlined,
-                                size: 16,
-                                color: Colors.white,
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: _pickProfileImage,
-                      child: Text(
-                        'Alterar foto de perfil',
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: AppColors.outline,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    Positioned(
+                      top: 116,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          VitalisUserAvatar(
+                            size: 92,
+                            imagePathOverride: _avatarImagePath,
+                          ),
+                          Positioned(
+                            right: -2,
+                            bottom: -2,
+                            child: InkWell(
+                              onTap: _pickProfileImage,
+                              customBorder: const CircleBorder(),
+                              child: Container(
+                                width: 34,
+                                height: 34,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 3,
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt_outlined,
+                                  size: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+              TextButton(
+                onPressed: _pickProfileImage,
+                child: Text(
+                  'Alterar foto de perfil',
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: AppColors.outline,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 2),
+              _FieldLabel(text: 'Banner de fundo'),
+              const SizedBox(height: 8),
+              Text(
+                'Escolha um banner padrão ou use uma imagem da sua galeria.',
+                style: textTheme.bodyMedium?.copyWith(
+                  color: AppColors.outline,
+                  height: 1.3,
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                height: 90,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _defaultBannerAssets.length + 1,
+                  separatorBuilder: (_, _) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return _BannerPickerTile(
+                        label: 'Galeria',
+                        isSelected: hasGalleryBanner,
+                        onTap: _pickBannerImage,
+                        child: const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add_photo_alternate_outlined,
+                                color: AppColors.primary,
+                              ),
+                              SizedBox(height: 6),
+                              Text(
+                                'Escolher',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    final assetPath = _defaultBannerAssets[index - 1];
+
+                    return _BannerPickerTile(
+                      label: 'Banner $index',
+                      isSelected: _bannerAssetPath == assetPath,
+                      onTap: () => _selectBannerAsset(assetPath),
+                      child: Image.asset(
+                        assetPath,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 18),
               _FieldLabel(text: 'Nome'),
               const SizedBox(height: 8),
               VitalisTextField(
@@ -330,6 +505,75 @@ class _FieldLabel extends StatelessWidget {
             color: AppColors.onSurface,
             fontWeight: FontWeight.w600,
           ),
+    );
+  }
+}
+
+class _BannerPickerTile extends StatelessWidget {
+  const _BannerPickerTile({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    required this.child,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: label,
+      button: true,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Ink(
+            width: 122,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isSelected ? AppColors.primary : AppColors.outlineVariant,
+                width: isSelected ? 2 : 1,
+              ),
+            ),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: child,
+                  ),
+                ),
+                if (isSelected)
+                  const Positioned(
+                    top: 8,
+                    right: 8,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.check,
+                          size: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
