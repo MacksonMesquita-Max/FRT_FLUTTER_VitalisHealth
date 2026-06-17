@@ -4,6 +4,7 @@ import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart'
 import 'package:vitalis_app/components/components/profile/vitalis_achievements_card.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_app_permissions_card.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_logout_account_button.dart';
+import 'package:vitalis_app/components/components/profile/vitalis_profile_banner.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_theme_app_button.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 import 'package:vitalis_app/components/common/vitalis_confirmation_sheet.dart';
@@ -45,6 +46,8 @@ class ProfileScreen extends StatelessWidget {
     final userName = profileController.displayName;
     final memberSince = profileController.memberSince;
     final userId = profileController.userId;
+    final bannerAssetPath = profileController.bannerAssetPath;
+    final bannerImagePath = profileController.bannerImagePath;
 
     Future<void> openHome() async {
       await Navigator.of(context).pushReplacement(
@@ -129,11 +132,30 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
-              const Center(
-                child: VitalisUserAvatar(size: 77),
+              const SizedBox(height: 28),
+              SizedBox(
+                height: 220,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: VitalisProfileBanner(
+                        height: 180,
+                        assetPath: bannerAssetPath,
+                        filePath: bannerImagePath,
+                      ),
+                    ),
+                    const Positioned(
+                      top: 116,
+                      child: VitalisUserAvatar(size: 84),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 6),
               Text(
                 userName,
                 textAlign: TextAlign.center,
