@@ -108,23 +108,23 @@ class _ReligiousHabitSettingsScreenState
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         Text(
-          'NOME DA PRATICA',
+          'Nome da Prática',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w600,
             letterSpacing: 0.4,
           ),
         ),
         const SizedBox(height: 10),
         VitalisTextField(
-          hintText: 'Ex: Oracao, Estudo Biblico, Rezo',
+          hintText: 'Ex: Oração, Estudo Biblico, Rezo',
           controller: _practiceController,
           textInputAction: TextInputAction.done,
           errorText: _practiceError,
         ),
         const SizedBox(height: 18),
         VitalisSettingSliderCard(
-          title: 'TEMPO DE DEDICACAO',
+          title: 'Tempo de dedicação',
           valueText: '${_durationMinutes.round()} min',
           value: _durationMinutes,
           min: 5,

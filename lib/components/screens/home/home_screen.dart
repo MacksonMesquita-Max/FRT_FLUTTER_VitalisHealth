@@ -6,23 +6,25 @@ import 'package:vitalis_app/components/components/home/vitalis_motivation_carous
 import 'package:vitalis_app/components/components/home/vitalis_tutorial_banner_card.dart';
 import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
+import 'package:vitalis_app/components/common/vitalis_habit_actions_sheet.dart';
+import 'package:vitalis_app/components/common/vitalis_habit_settings_routes.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
+import 'package:vitalis_app/components/common/vitalis_user_profile_controller.dart';
 import 'package:vitalis_app/components/screens/habits/select_habits_screen.dart';
+import 'package:vitalis_app/components/screens/profile/edit_profile_screen.dart';
+import 'package:vitalis_app/components/screens/profile/profile_screen.dart';
 import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    super.key,
-    required this.userName,
-  });
-
-  final String userName;
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final selectedHabits = VitalisHabitsScope.of(context).habits;
     final habitsController = VitalisHabitsScope.of(context);
+    final profileController = VitalisUserProfileScope.of(context);
+    final userName = profileController.displayName;
     final selectedDefinitions = VitalisHabitsCatalog.definitions
         .where((d) => selectedHabits.contains(d.habit))
         .toList();
@@ -118,6 +120,41 @@ class HomeScreen extends StatelessWidget {
       );
     }
 
+    Future<void> openProfile() async {
+      await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => const ProfileScreen(),
+        ),
+      );
+    }
+
+    Future<void> openEditProfile() async {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => const EditProfileScreen(),
+        ),
+      );
+    }
+
+    Future<void> handleHabitCardPressed(VitalisHabit habit, String title) async {
+      final action = await VitalisHabitActionsSheet.show(
+        context,
+        habitTitle: title,
+      );
+      if (!context.mounted || action == null) return;
+
+      switch (action) {
+        case VitalisHabitSheetAction.viewDetails:
+          await Navigator.of(context).push<bool>(
+            createVitalisHabitSettingsRoute(habit),
+          );
+          return;
+        case VitalisHabitSheetAction.delete:
+          habitsController.remove(habit);
+          return;
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       floatingActionButton: FloatingActionButton(
@@ -127,7 +164,9 @@ class HomeScreen extends StatelessWidget {
         onPressed: openSelectHabits,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: const VitalisBottomNavBar(),
+      bottomNavigationBar: VitalisBottomNavBar(
+        onProfilePressed: openProfile,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(18, 10, 18, 22),
@@ -153,11 +192,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Configurações em breve.')),
-                      );
-                    },
+                    onPressed: openEditProfile,
                     icon: const Icon(Icons.settings_outlined),
                     color: AppColors.onSurface,
                   ),
@@ -542,6 +577,7 @@ class HomeScreen extends StatelessWidget {
                       topRightText: dynamicTopRightText,
                       iconBackgroundColor: d.iconBackgroundColor,
                       iconSize: d.iconSize,
+                      onPressed: () => handleHabitCardPressed(d.habit, d.title),
                     );
                   },
                 ),

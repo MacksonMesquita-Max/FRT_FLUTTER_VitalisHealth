@@ -16,7 +16,7 @@ class _MusicHabitSettingsScreenState extends State<MusicHabitSettingsScreen> {
   static const _spec = VitalisHabitSettingsSpec(
     appBarTitle: 'Vitalis',
     heroTitle: 'Musica',
-    heroSubtitle: 'Treine um pouco por dia e perceba a evolucao semana a semana.',
+    heroSubtitle: 'Treine um pouco por dia e perceba a evolução da sua vida, semana a semana.',
     backgroundImageAsset: 'lib/assets/images/habitsImages/musicForHabits.png',
   );
 
@@ -81,7 +81,7 @@ class _MusicHabitSettingsScreenState extends State<MusicHabitSettingsScreen> {
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         VitalisSettingSliderCard(
-          title: 'TEMPO DE PRATICA',
+          title: 'Tempo de pratica',
           valueText: '${_practiceMinutes.round()} min',
           value: _practiceMinutes,
           min: 10,

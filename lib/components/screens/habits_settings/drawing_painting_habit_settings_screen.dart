@@ -155,7 +155,7 @@ class _DrawingPaintingHabitSettingsScreenState
         const _BenefitsCard(
           title: 'Beneficios da Arte',
           description:
-              'Praticar artes visuais estimula a neuroplasticidade, criando novas conexoes neurais. Alem disso, o foco na criacao promove estado de fluxo, reduzindo drasticamente os niveis de cortisol e estresse.',
+              'Praticar artes visuais estimula a neuroplasticidade, criando novas conexoes neurais. Alem disso, o foco na criação de artes promove estado de fluxo, reduzindo drasticamente os niveis de cortisol e estresse.',
           tags: ['#SaudeMental', '#Criatividade'],
         ),
       ],

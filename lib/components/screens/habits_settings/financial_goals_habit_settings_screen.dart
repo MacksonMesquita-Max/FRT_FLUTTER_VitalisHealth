@@ -89,11 +89,11 @@ class _FinancialGoalsHabitSettingsScreenState
       _purposeError = purposeName.isEmpty ? 'Informe o objetivo financeiro.' : null;
       _savedError = savedAmount == null ? 'Informe quanto você ja guardou.' : null;
       _targetError = targetAmount == null
-          ? 'Informe quanto você quer alcancar.'
+          ? 'Informe quanto você quer alcançar.'
           : targetAmount <= 0
               ? 'A meta precisa ser maior que zero.'
               : savedAmount != null && targetAmount < savedAmount
-                  ? 'A meta final nao pode ser menor que o valor atual.'
+                  ? 'A meta final não pode ser menor que o valor atual.'
                   : null;
       _daysError = _selectedDays.isEmpty ? 'Selecione ao menos um dia.' : null;
     });
@@ -128,7 +128,7 @@ class _FinancialGoalsHabitSettingsScreenState
       confirmTrailing: const Icon(Icons.check_circle_outline, size: 18),
       children: [
         Text(
-          'PROPÓSITO DA META',
+          'Propósito da meta',
           style: textTheme.labelLarge?.copyWith(
             color: AppColors.onSurface,
             fontWeight: FontWeight.w800,

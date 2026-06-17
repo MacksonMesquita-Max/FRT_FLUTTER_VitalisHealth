@@ -6,7 +6,7 @@ class VitalisWeekdaySelectorCard extends StatelessWidget {
     super.key,
     required this.selectedDays,
     required this.onToggleDay,
-    this.title = 'DIAS DA SEMANA',
+    this.title = 'Dias da semana',
     this.helperText,
   });
 

@@ -738,6 +738,12 @@ class VitalisHabitsController extends ChangeNotifier {
     _habits.addAll(habits);
     if (_habits.length != before) notifyListeners();
   }
+
+  void remove(VitalisHabit habit) {
+    if (_habits.remove(habit)) {
+      notifyListeners();
+    }
+  }
 }
 
 class VitalisHabitsScope extends InheritedNotifier<VitalisHabitsController> {
