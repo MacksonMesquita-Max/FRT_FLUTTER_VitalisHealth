@@ -89,11 +89,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
     if (_nameError != null) return;
 
-    VitalisUserProfileScope.of(context).updateProfile(
-      displayName: displayName,
-      avatarImagePath: _avatarImagePath,
-    );
-    Navigator.of(context).pop(true);
+    final messenger = ScaffoldMessenger.of(context);
+
+    try {
+      VitalisUserProfileScope.of(context).updateProfile(
+        displayName: displayName,
+        avatarImagePath: _avatarImagePath,
+      );
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Dados pessoais atualizados com sucesso'),
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: AppColors.secondary,
+        ),
+      );
+      Navigator.of(context).pop(true);
+    } catch (_) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Erro ao atualizar dados pessoais'),
+          behavior: SnackBarBehavior.fixed,
+          backgroundColor: Color(0xFFB3261E),
+        ),
+      );
+    }
   }
 
   String _formatDate(DateTime value) {

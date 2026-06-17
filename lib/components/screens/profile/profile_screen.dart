@@ -22,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
     const months = <int, String>{
       1: 'Janeiro',
       2: 'Fevereiro',
-      3: 'Marco',
+      3: 'Março',
       4: 'Abril',
       5: 'Maio',
       6: 'Junho',
@@ -86,7 +86,7 @@ class ProfileScreen extends StatelessWidget {
       final confirmed = await VitalisConfirmationSheet.show(
         context,
         title: 'Sair da conta',
-        message: 'Deseja realmente sair do app?',
+        message: 'Deseja realmente sair do app? \nA sessão atual será encerrada.',
         confirmLabel: 'Sair',
         cancelLabel: 'Cancelar',
       );
@@ -129,9 +129,9 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 42),
+              const SizedBox(height: 40),
               const Center(
-                child: VitalisUserAvatar(size: 72),
+                child: VitalisUserAvatar(size: 77),
               ),
               const SizedBox(height: 20),
               Text(
@@ -160,7 +160,7 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 22),
               Center(
                 child: SizedBox(
                   width: 180,
@@ -170,15 +170,15 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 25),
               _PremiumUpgradeCard(onPressed: openPremium),
-              const SizedBox(height: 16),
+              const SizedBox(height: 15),
               const VitalisAchievementsCard(),
-              const SizedBox(height: 16),
+              const SizedBox(height: 15),
               const VitalisAppPermissionsCard(),
-              const SizedBox(height: 16),
+              const SizedBox(height: 15),
               const VitalisThemeAppButton(),
-              const SizedBox(height: 16),
+              const SizedBox(height: 15),
               VitalisLogoutAccountButton(onPressed: confirmLogout),
             ],
           ),
@@ -222,8 +222,8 @@ class _PremiumUpgradeCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Desbloqueie\nmeditacoes guiadas e\nanalises detalhadas.',
-                  style: textTheme.bodyLarge?.copyWith(
+                  'Desbloqueie\nanalises detalhadas, novos recursos\nhábitos adicionais e muito mais.',
+                  style: textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFFA9D8C8),
                     height: 1.28,
                     fontWeight: FontWeight.w500,
