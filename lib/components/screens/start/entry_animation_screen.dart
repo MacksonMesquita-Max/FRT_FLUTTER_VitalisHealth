@@ -12,8 +12,7 @@ class EntryAnimationScreen extends StatefulWidget {
 class _EntryAnimationScreenState extends State<EntryAnimationScreen>
     with SingleTickerProviderStateMixin {
   static const _backgroundColor = Color(0xFF22292F);
-  static const _animationAsset =
-      'lib/assets/animations/fb2fc25e-1171-11ee-a8aa-7f6b716e0d2c.json';
+  static const _animationAsset = 'lib/assets/animations/fb2fc25e-1171-11ee-a8aa-7f6b716e0d2c.json';
 
   late final AnimationController _controller;
   bool _hasNavigated = false;

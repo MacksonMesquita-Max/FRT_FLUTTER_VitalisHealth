@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/components/habits/vitalis_habits_catalog.dart';
+import 'package:vitalis_app/components/components/home/premuimCardsContent/vitalis_book_recommendations_card.dart';
+import 'package:vitalis_app/components/components/home/premuimCardsContent/vitalis_psychology_support_card.dart';
+import 'package:vitalis_app/components/components/home/premuimCardsContent/vitalis_meditation_card.dart';
+import 'package:vitalis_app/components/components/home/premuimCardsContent/vitalis_friends_connection_card.dart';
 import 'package:vitalis_app/components/components/home/vitalis_bottom_nav_bar.dart';
 import 'package:vitalis_app/components/components/home/vitalis_habit_card.dart';
 import 'package:vitalis_app/components/components/home/vitalis_motivation_carousel.dart';
+import 'package:vitalis_app/components/components/home/vitalis_motivation_quotes.dart';
 import 'package:vitalis_app/components/components/home/vitalis_tutorial_banner_card.dart';
 import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
@@ -14,6 +19,8 @@ import 'package:vitalis_app/components/screens/habits/select_habits_screen.dart'
 import 'package:vitalis_app/components/screens/profile/edit_profile_screen.dart';
 import 'package:vitalis_app/components/screens/profile/profile_screen.dart';
 import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
+import 'package:vitalis_app/components/utils/mood_formatter.dart';
+import 'package:vitalis_app/components/utils/vitalis_formatters.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,80 +32,7 @@ class HomeScreen extends StatelessWidget {
     final habitsController = VitalisHabitsScope.of(context);
     final profileController = VitalisUserProfileScope.of(context);
     final userName = profileController.displayName;
-    final selectedDefinitions = VitalisHabitsCatalog.definitions
-        .where((d) => selectedHabits.contains(d.habit))
-        .toList();
-
-    String formatLiters(int ml) {
-      final liters = ml / 1000;
-      final fixed = liters.toStringAsFixed(1);
-      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
-    }
-
-    String formatHours(int minutes) {
-      final hours = minutes / 60;
-      final fixed = hours.toStringAsFixed(1);
-      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
-    }
-
-    String formatKm(int meters) {
-      final km = meters / 1000;
-      final fixed = km.toStringAsFixed(1);
-      return fixed.endsWith('.0') ? fixed.substring(0, fixed.length - 2) : fixed;
-    }
-
-    String formatTimeFromMinutes(int totalMinutes) {
-      final normalized = totalMinutes.clamp(0, 1439);
-      final hour = (normalized ~/ 60).toString().padLeft(2, '0');
-      final minute = (normalized % 60).toString().padLeft(2, '0');
-      return '$hour:$minute';
-    }
-
-    String formatMoney(int amount) {
-      final digits = amount.toString();
-      final buffer = StringBuffer();
-      for (var i = 0; i < digits.length; i++) {
-        buffer.write(digits[i]);
-        final remaining = digits.length - i - 1;
-        if (remaining > 0 && remaining % 3 == 0) {
-          buffer.write('.');
-        }
-      }
-      return 'R\$ ${buffer.toString()}';
-    }
-
-    String formatDate(DateTime value) {
-      final day = value.day.toString().padLeft(2, '0');
-      final month = value.month.toString().padLeft(2, '0');
-      return '$day/$month/${value.year}';
-    }
-
-    String formatDaysOfWeek(Set<int> daysOfWeek) {
-      if (daysOfWeek.isEmpty) return '';
-      if (daysOfWeek.length >= 7) return 'Todos os dias';
-      const labels = <int, String>{
-        1: 'Seg',
-        2: 'Ter',
-        3: 'Qua',
-        4: 'Qui',
-        5: 'Sex',
-        6: 'Sáb',
-        7: 'Dom',
-      };
-      final ordered = daysOfWeek.toList()..sort();
-      final text = ordered.map((d) => labels[d]).whereType<String>().join(', ');
-      return text.isEmpty ? '' : 'Dias: $text';
-    }
-
-    String moodLabel(int level) {
-      return switch (level.clamp(0, 4)) {
-        0 => 'Radiante',
-        1 => 'Feliz',
-        2 => 'Calmo',
-        3 => 'Ansioso',
-        _ => 'Triste',
-      };
-    }
+    final selectedDefinitions = VitalisHabitsCatalog.definitions.where((d) => selectedHabits.contains(d.habit)).toList();
 
     void openPremium() {
       Navigator.of(context).push(
@@ -185,6 +119,8 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      const VitalisUserAvatar(),
+                      const SizedBox(width: 9),
                       Text(
                         'Vitalis',
                         style: textTheme.titleLarge?.copyWith(
@@ -193,8 +129,6 @@ class HomeScreen extends StatelessWidget {
                           letterSpacing: 0.2,
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      const VitalisUserAvatar(),
                     ],
                   ),
                   const Spacer(),
@@ -225,52 +159,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 16),
               VitalisTutorialBannerCard(onPressed: openTutorial),
               const SizedBox(height: 16),
-              const VitalisMotivationCarousel(
-                quotes: [
-                  VitalisQuote(
-                    text: 'A persistência é o caminho do êxito.',
-                    author: 'Charles Chaplin',
-                  ),
-                  VitalisQuote(
-                    text: 'Não reze por uma vida fácil, reze por forças para suportar uma difícil.',
-                    author: 'Bruce Lee',
-                  ),
-                  VitalisQuote(
-                    text: 'O que não provoca minha morte faz com que eu fique mais forte.',
-                    author: 'Friedrich Nietzsche',
-                  ),
-                  VitalisQuote(
-                    text:
-                        'A vida não é fácil para nenhum de nós. Temos que ter persistência e, acima de tudo, confiança em nós mesmos.',
-                    author: 'Marie Curie',
-                  ),
-                  VitalisQuote(
-                    text:
-                        'Sem disciplina, o talento não serve pra nada.',
-                    author: 'Cristiano Ronaldo',
-                  ),
-                  VitalisQuote(
-                    text:
-                        'Na vida, não existem soluções. Existem forças em marcha: é preciso criá-las e, então, a elas seguem-se as soluções.',
-                    author: 'Antoine de Saint-Exupéry',
-                  ),
-                  VitalisQuote(
-                    text:
-                        'Não é preciso ter olhos abertos para ver o sol, Para ser vitorioso você precisa ver o que não está visível.',
-                    author: 'Sun Tzu',
-                  ),
-                  VitalisQuote(
-                    text:
-                        'Acima de tudo, não tenha medo dos momentos difíceis. O que há de melhor vem com eles.',
-                    author: 'Rita Levi Montalcini',
-                  ),
-                  VitalisQuote(
-                    text:
-                        'Pois que aproveita ao homem se ganhar o mundo inteiro e perder a sua alma? Ou que dará o homem em troca da sua vida?',
-                    author: 'Jesus Cristo',
-                  ),
-                ],
-              ),
+              const VitalisMotivationCarousel(quotes: vitalisMotivationQuotes),
               const SizedBox(height: 16),
               const _DailyProgressCard(progressPercent: 0.72),
               const SizedBox(height: 16),
@@ -589,45 +478,13 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
               const SizedBox(height: 16),
-              _ImageCtaCard(
-                imageAsset: 'lib/assets/images/backgorundImageWinnerFriends.png',
-                icon: Icons.groups_outlined,
-                iconBackgroundColor: const Color(0xFFEAF9F0),
-                title: 'Conecte-se com seus amigos\ne pratique disputas saudáveis!',
-                description: 'A motivação é maior quando compartilhada.\nCrie desafios e celebre vitórias juntos.',
-                actionText: 'Iniciar Conexão',
-                onPressed: openPremium,
-              ),
+              VitalisFriendsConnectionCard(onPressed: openPremium),
               const SizedBox(height: 6),
-              _ImageCtaCard(
-                imageAsset: 'lib/assets/images/backgorundImagePisicology.png',
-                icon: Icons.psychology_outlined,
-                iconBackgroundColor: const Color(0xFFEDEFFF),
-                title: 'Precisa de ajuda?\nConte com nossa equipe de psicólogos.',
-                description: 'Uma mente merece cuidado profissional.\nEncontre suporte quando mais precisar.',
-                actionText: 'Ver Mais',
-                onPressed: openPremium,
-              ),
+              VitalisPsychologySupportCard(onPressed: openPremium),
               const SizedBox(height: 6),
-              _ImageCtaCard(
-                imageAsset: 'lib/assets/images/backgorundImageLibrary.png',
-                icon: Icons.menu_book_outlined,
-                iconBackgroundColor: const Color(0xFFEAF2FF),
-                title: 'Sem boas leituras?\nConfira nossa lista de livros!',
-                description: 'Expanda seus horizontes com curadorias\nfocadas em desenvolvimento pessoal.',
-                actionText: 'Ver Mais',
-                onPressed: openPremium,
-              ),
+              VitalisBookRecommendationsCard(onPressed: openPremium),
               const SizedBox(height: 6),
-              _ImageCtaCard(
-                imageAsset: 'lib/assets/images/backgorundImageMedita.png',
-                icon: Icons.self_improvement_outlined,
-                iconBackgroundColor: const Color(0xFFFFF1E6),
-                title: 'Mantenha a calma e respire\nfundo.',
-                description: 'Sessões guiadas para reduzir estresse, aumentar foco\ne relaxar.',
-                actionText: 'Iniciar Meditação',
-                onPressed: openPremium,
-              ),
+              VitalisMeditationCard(onPressed: openPremium),
               const SizedBox(height: 30),
             ],
           ),
@@ -782,122 +639,6 @@ class _NoHabitsCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ImageCtaCard extends StatelessWidget {
-  const _ImageCtaCard({
-    required this.imageAsset,
-    required this.icon,
-    required this.iconBackgroundColor,
-    required this.title,
-    required this.description,
-    required this.actionText,
-    this.onPressed,
-  });
-
-  final String imageAsset;
-  final IconData icon;
-  final Color iconBackgroundColor;
-  final String title;
-  final String description;
-  final String actionText;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(18),
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(18),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: AppColors.surfaceContainer, width: 1),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: iconBackgroundColor,
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: SizedBox(
-                  width: 46,
-                  height: 46,
-                  child: Icon(icon, color: AppColors.secondary),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w900,
-                        color: AppColors.onSurface,
-                        height: 1.12,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      description,
-                      style: textTheme.bodySmall?.copyWith(
-                        color: AppColors.outline,
-                        height: 1.25,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          actionText,
-                          style: textTheme.labelLarge?.copyWith(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        const Icon(
-                          Icons.arrow_forward,
-                          size: 16,
-                          color: AppColors.secondary,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.surfaceContainer, width: 1),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    imageAsset,
-                    width: 56,
-                    height: 56,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                  ),
                 ),
               ),
             ],
