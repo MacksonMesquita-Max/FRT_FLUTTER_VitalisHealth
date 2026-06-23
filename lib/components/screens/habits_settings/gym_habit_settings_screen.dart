@@ -32,6 +32,7 @@ class _GymHabitSettingsScreenState extends State<GymHabitSettingsScreen> {
     _initialized = true;
   }
 
+  // ignore: unused_element
   String _intensityLabel(VitalisGymIntensity intensity) {
     return switch (intensity) {
       VitalisGymIntensity.leve => 'Leve',
