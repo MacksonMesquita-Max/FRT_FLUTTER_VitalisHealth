@@ -1,73 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
+import 'package:vitalis_app/components/screens/all_achievements_screen/achievements_catalog/vitalis_achievements_catalog.dart';
 
 class VitalisMyAchievementCard extends StatelessWidget {
-  const VitalisMyAchievementCard({super.key});
+  const VitalisMyAchievementCard({
+    super.key,
+    this.onPressed,
+  });
 
-  static const _items = <_AchievementItem>[
-    _AchievementItem(
-      label: 'Hidratada',
-      icon: Icons.water_drop,
-      backgroundColor: Color(0xFFD8F3E8),
-      iconColor: AppColors.secondary,
-    ),
-    _AchievementItem(
-      label: 'Zen',
-      icon: Icons.self_improvement,
-      backgroundColor: Color(0xFFD8F3E8),
-      iconColor: AppColors.secondary,
-    ),
-    _AchievementItem(
-      label: 'Caminhada',
-      icon: Icons.directions_walk_outlined,
-      backgroundColor: Color(0xFFE6E6E6),
-      iconColor: AppColors.outline,
-    ),
-  ];
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final unlockedAchievements = vitalisAchievementsCatalog.where((item) => item.isUnlocked).take(3).toList();
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.surfaceContainer,
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+        child: Ink(
+          padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: AppColors.surfaceContainer,
+              width: 1,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Text(
-                  'Minhas Conquistas',
-                  style: textTheme.titleMedium?.copyWith(
-                    color: AppColors.onSurface,
-                    fontWeight: FontWeight.w600,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Minhas Conquistas',
+                      style: textTheme.titleMedium?.copyWith(
+                        color: AppColors.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
+                  const Icon(
+                    Icons.emoji_events_outlined,
+                    color: AppColors.secondary,
+                    size: 22,
+                  ),
+                ],
               ),
-              const Icon(
-                Icons.emoji_events_outlined,
-                color: AppColors.secondary,
-                size: 22,
+              const SizedBox(height: 20),
+              if (unlockedAchievements.isEmpty)
+                Text(
+                  'Nenhuma conquista desbloqueada ainda.',
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: AppColors.outline,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              else
+                Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  spacing: 10,
+                  runSpacing: 16,
+                  children: unlockedAchievements
+                      .map(
+                        (item) => _AchievementBadge(
+                          title: item.title,
+                          icon: item.icon,
+                        ),
+                      )
+                      .toList(),
+                ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Ver mais',
+                    style: textTheme.labelLarge?.copyWith(
+                      color: AppColors.secondary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.secondary,
+                    size: 18,
+                  ),
+                ],
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _items
-                .map((item) => _AchievementBadge(item: item))
-                .toList(),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -75,36 +103,42 @@ class VitalisMyAchievementCard extends StatelessWidget {
 
 class _AchievementBadge extends StatelessWidget {
   const _AchievementBadge({
-    required this.item,
+    required this.title,
+    required this.icon,
   });
 
-  final _AchievementItem item;
+  final String title;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final width = (MediaQuery.sizeOf(context).width - 36 - 36 - 24) / 3;
 
-    return Expanded(
+    return SizedBox(
+      width: width.clamp(76.0, 100.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 62,
-            height: 62,
-            decoration: BoxDecoration(
-              color: item.backgroundColor,
+            width: 56,
+            height: 56,
+            decoration: const BoxDecoration(
+              color: Color(0xFFD8F3E8),
               shape: BoxShape.circle,
             ),
             child: Icon(
-              item.icon,
-              color: item.iconColor,
-              size: 28,
+              icon,
+              color: AppColors.secondary,
+              size: 24,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Text(
-            item.label,
+            title,
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: textTheme.bodyMedium?.copyWith(
               color: AppColors.onSurface,
               fontWeight: FontWeight.w500,
@@ -114,18 +148,4 @@ class _AchievementBadge extends StatelessWidget {
       ),
     );
   }
-}
-
-class _AchievementItem {
-  const _AchievementItem({
-    required this.label,
-    required this.icon,
-    required this.backgroundColor,
-    required this.iconColor,
-  });
-
-  final String label;
-  final IconData icon;
-  final Color backgroundColor;
-  final Color iconColor;
 }

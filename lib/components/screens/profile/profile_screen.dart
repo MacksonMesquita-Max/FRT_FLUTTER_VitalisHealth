@@ -11,6 +11,7 @@ import 'package:vitalis_app/components/common/vitalis_confirmation_sheet.dart';
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_primary_button.dart';
 import 'package:vitalis_app/components/common/vitalis_user_profile_controller.dart';
+import 'package:vitalis_app/components/screens/all_achievements_screen/all_achievements_screen.dart';
 import 'package:vitalis_app/components/screens/profile/edit_profile_screen.dart';
 import 'package:vitalis_app/components/screens/home/home_screen.dart';
 import 'package:vitalis_app/components/screens/progress/progress_screen.dart';
@@ -60,6 +61,14 @@ class ProfileScreen extends StatelessWidget {
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (_) => const EditProfileScreen(),
+        ),
+      );
+    }
+
+    Future<void> openAllAchievements() async {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => const AllachievementsScreen(),
         ),
       );
     }
@@ -187,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 25),
               _PremiumUpgradeCard(onPressed: openPremium),
               const SizedBox(height: 15),
-              const VitalisMyAchievementCard(),
+              VitalisMyAchievementCard(onPressed: openAllAchievements),
               const SizedBox(height: 15),
               const VitalisAppPermissionsCard(),
               const SizedBox(height: 15),
@@ -227,7 +236,7 @@ class _PremiumUpgradeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Mudar para\nPremium',
+                  'Mudar para Premium',
                   style: textTheme.titleLarge?.copyWith(
                     color: const Color(0xFF7FF1C8),
                     fontWeight: FontWeight.w700,
