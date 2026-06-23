@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/common/app_colors.dart';
 
-class VitalisAchievementsCard extends StatelessWidget {
-  const VitalisAchievementsCard({super.key});
+class VitalisMyAchievementCard extends StatelessWidget {
+  const VitalisMyAchievementCard({super.key});
 
   static const _items = <_AchievementItem>[
     _AchievementItem(

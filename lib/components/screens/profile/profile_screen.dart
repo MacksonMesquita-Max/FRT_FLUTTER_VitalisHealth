@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vitalis_app/components/components/home/vitalis_bottom_nav_bar.dart';
 import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
-import 'package:vitalis_app/components/components/profile/vitalis_achievements_card.dart';
+import 'package:vitalis_app/components/components/profile/vitalis_my_achievement_card.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_app_permissions_card.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_logout_account_button.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_profile_banner.dart';
@@ -195,7 +195,7 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 25),
               _PremiumUpgradeCard(onPressed: openPremium),
               const SizedBox(height: 15),
-              const VitalisAchievementsCard(),
+              const VitalisMyAchievementCard(),
               const SizedBox(height: 15),
               const VitalisAppPermissionsCard(),
               const SizedBox(height: 15),
