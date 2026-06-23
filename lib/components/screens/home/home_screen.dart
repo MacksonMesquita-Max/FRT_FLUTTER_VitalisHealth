@@ -16,6 +16,7 @@ import 'package:vitalis_app/components/common/vitalis_habit_settings_routes.dart
 import 'package:vitalis_app/components/common/vitalis_habits_controller.dart';
 import 'package:vitalis_app/components/common/vitalis_user_profile_controller.dart';
 import 'package:vitalis_app/components/screens/habits/select_habits_screen.dart';
+import 'package:vitalis_app/components/screens/progress/progress_screen.dart';
 import 'package:vitalis_app/components/screens/profile/edit_profile_screen.dart';
 import 'package:vitalis_app/components/screens/profile/profile_screen.dart';
 import 'package:vitalis_app/components/screens/premium/vitalis_premium_screen.dart';
@@ -58,6 +59,14 @@ class HomeScreen extends StatelessWidget {
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (_) => const ProfileScreen(),
+        ),
+      );
+    }
+
+    Future<void> openProgress() async {
+      await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => const ProgressScreen(),
         ),
       );
     }
@@ -106,6 +115,7 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: VitalisBottomNavBar(
+        onProgressPressed: openProgress,
         onProfilePressed: openProfile,
       ),
       body: SafeArea(
