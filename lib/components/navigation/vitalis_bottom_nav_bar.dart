@@ -6,12 +6,20 @@ class VitalisBottomNavBar extends StatelessWidget {
     super.key,
     this.onHomePressed,
     this.onProfilePressed,
+    this.onDiaryPressed,
+    this.onProgressPressed,
     this.isHomeSelected = true,
+    this.isDiarySelected = false,
+    this.isProgressSelected = false,
     this.isProfileSelected = false,
   });
 
   final VoidCallback? onHomePressed;
+  final VoidCallback? onDiaryPressed;
+  final VoidCallback? onProgressPressed;
   final VoidCallback? onProfilePressed;
+  final bool isDiarySelected;
+  final bool isProgressSelected;
   final bool isHomeSelected;
   final bool isProfileSelected;
 
@@ -35,6 +43,18 @@ class VitalisBottomNavBar extends StatelessWidget {
               icon: Icons.home_rounded,
               isSelected: isHomeSelected,
               onPressed: onHomePressed,
+            ),
+            _BottomNavItem(
+              label: 'Diário',
+              icon: Icons.library_books,
+              isSelected: isDiarySelected,
+              onPressed: onDiaryPressed,
+            ),
+            _BottomNavItem(
+              label: 'Progresso',
+              icon: Icons.query_stats_rounded,
+              isSelected: isProgressSelected,
+              onPressed: onProgressPressed,
             ),
             _BottomNavItem(
               label: 'Perfil',

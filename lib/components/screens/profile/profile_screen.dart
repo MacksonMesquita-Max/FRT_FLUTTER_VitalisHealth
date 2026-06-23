@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vitalis_app/components/components/home/vitalis_bottom_nav_bar.dart';
+import 'package:vitalis_app/components/navigation/vitalis_bottom_nav_bar.dart';
 import 'package:vitalis_app/components/components/home/vitalis_user_avatar.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_my_achievement_card.dart';
 import 'package:vitalis_app/components/components/profile/vitalis_app_permissions_card.dart';

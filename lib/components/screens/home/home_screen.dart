@@ -4,7 +4,7 @@ import 'package:vitalis_app/components/components/home/premuimCardsContent/vital
 import 'package:vitalis_app/components/components/home/premuimCardsContent/vitalis_psychology_support_card.dart';
 import 'package:vitalis_app/components/components/home/premuimCardsContent/vitalis_meditation_card.dart';
 import 'package:vitalis_app/components/components/home/premuimCardsContent/vitalis_friends_connection_card.dart';
-import 'package:vitalis_app/components/components/home/vitalis_bottom_nav_bar.dart';
+import 'package:vitalis_app/components/navigation/vitalis_bottom_nav_bar.dart';
 import 'package:vitalis_app/components/components/home/vitalis_habit_card.dart';
 import 'package:vitalis_app/components/components/home/vitalis_motivation_carousel.dart';
 import 'package:vitalis_app/components/components/home/vitalis_motivation_quotes.dart';
