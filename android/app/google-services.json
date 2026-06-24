@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "198538455691",
+    "project_id": "vitalis-health-10cba",
+    "storage_bucket": "vitalis-health-10cba.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198538455691:android:97127f86068be42693428e",
+        "android_client_info": {
+          "package_name": "com.vitalishealth.vitalis_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198538455691-ffnhth9k2s4n1lemsjr5kdhr7ud43kts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxVqBxywLypO94OfaTL8foj3-Pjc2xcZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198538455691-ffnhth9k2s4n1lemsjr5kdhr7ud43kts.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
